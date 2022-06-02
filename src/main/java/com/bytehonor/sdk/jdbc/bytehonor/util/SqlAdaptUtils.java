@@ -17,7 +17,7 @@ import com.bytehonor.sdk.lang.bytehonor.getter.IntegerGetter;
 import com.bytehonor.sdk.lang.bytehonor.getter.LongGetter;
 
 public class SqlAdaptUtils {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(SqlAdaptUtils.class);
 
     public static PreparedStatement convert(PrepareStatement statement, List<ModelKeyValue> items,
