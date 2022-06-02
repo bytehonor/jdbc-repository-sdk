@@ -1,12 +1,12 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
-import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTable;
 import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
 public class DeletePrepareStatement extends MysqlPrepareStatement {
 
-    public DeletePrepareStatement(MetaTable table, MatchCondition condition) {
-        super(table, condition);
+    public DeletePrepareStatement(Class<?> clazz, MatchCondition condition) {
+        super(clazz, condition);
     }
 
     @Override
@@ -17,7 +17,8 @@ public class DeletePrepareStatement extends MysqlPrepareStatement {
         if (condition.getGroup() == null) {
             throw new RuntimeException("delete sql condition group null");
         }
-        sql.append(condition.getGroup().toSql());
+
+        sql.append(SqlStringUtils.toWhereSql(condition.getGroup()));
         return sql.toString();
     }
 
@@ -29,7 +30,7 @@ public class DeletePrepareStatement extends MysqlPrepareStatement {
         if (condition.getGroup().getHolder().isEmpty()) {
             throw new RuntimeException("delete sql condition group holder isEmpty");
         }
-        return condition.getGroup().args();
+        return condition.getGroup().args().toArray();
     }
 
 }

@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
-import com.bytehonor.sdk.jdbc.bytehonor.annotation.IGetter;
+import com.bytehonor.sdk.jdbc.bytehonor.annotation.ObjectGetter;
 import com.bytehonor.sdk.jdbc.bytehonor.annotation.IConvert;
 import com.bytehonor.sdk.jdbc.bytehonor.annotation.Getter;
 import com.bytehonor.sdk.jdbc.bytehonor.annotation.SqlColumn;
@@ -34,7 +34,7 @@ public class AnnotationTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        IGetter<String> getter = student::getNickname;
+        ObjectGetter<String> getter = student::getNickname;
         LOG.info("getter:{} = {}", getter.toString(), getter.get());
 
         IConvert<String, String> converter = student::repeat;

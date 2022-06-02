@@ -1,12 +1,14 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
-import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTable;
+import org.springframework.util.CollectionUtils;
+
 import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
 public class SelectPrepareStatement extends MysqlPrepareStatement {
 
-    public SelectPrepareStatement(MetaTable table, MatchCondition condition) {
-        super(table, condition);
+    public SelectPrepareStatement(Class<?> clazz, MatchCondition condition) {
+        super(clazz, condition);
     }
 
     @Override
@@ -14,15 +16,9 @@ public class SelectPrepareStatement extends MysqlPrepareStatement {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ").append(table.formColumns()).append(" FROM ").append(table.getTableName());
 
-        if (condition.getGroup() != null) {
-            sql.append(condition.getGroup().toSql());
-        }
-        if (condition.getOrder() != null) {
-            sql.append(condition.getOrder().toSql());
-        }
-        if (condition.getPage() != null) {
-            sql.append(condition.getPage().toSql());
-        }
+        sql.append(SqlStringUtils.toWhereSql(condition.getGroup()));
+        sql.append(SqlStringUtils.toOrderSql(condition.getOrder()));
+        sql.append(SqlStringUtils.toLimitSql(condition.getPage()));
         return sql.toString();
     }
 
@@ -31,7 +27,9 @@ public class SelectPrepareStatement extends MysqlPrepareStatement {
         if (condition.getGroup() == null) {
             return new Object[0];
         }
-        return condition.getGroup().args();
+        if (condition.getGroup() == null || CollectionUtils.isEmpty(condition.getGroup().args())) {
+            return new Object[0];
+        }
+        return condition.getGroup().args().toArray();
     }
-
 }

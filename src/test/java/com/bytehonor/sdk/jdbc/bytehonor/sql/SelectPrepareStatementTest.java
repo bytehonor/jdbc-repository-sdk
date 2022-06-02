@@ -9,8 +9,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaParseUtils;
-import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTable;
 import com.bytehonor.sdk.jdbc.bytehonor.model.Student;
 import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
 
@@ -24,13 +22,12 @@ public class SelectPrepareStatementTest {
         set.add(1);
         set.add(2);
         set.add(3);
-        MetaTable table = MetaParseUtils.parse(Student.class);
         MatchCondition condition = MatchCondition.create();
         condition.inInt("age", set);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.descBy("age");
-        PrepareStatement statement = new SelectPrepareStatement(table, condition);
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
         String sql = statement.sql();
         Object[] args = statement.args();
 

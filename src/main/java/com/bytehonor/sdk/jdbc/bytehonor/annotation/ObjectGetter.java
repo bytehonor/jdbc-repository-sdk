@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.jdbc.bytehonor.annotation;
 
 @FunctionalInterface
-public interface IGetter<T> {
+public interface ObjectGetter<T> {
     T get();
 }

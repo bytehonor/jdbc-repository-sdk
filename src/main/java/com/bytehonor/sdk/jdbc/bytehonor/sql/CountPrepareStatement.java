@@ -1,12 +1,14 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
-import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTable;
+import org.springframework.util.CollectionUtils;
+
 import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
 public class CountPrepareStatement extends MysqlPrepareStatement {
 
-    public CountPrepareStatement(MetaTable table, MatchCondition condition) {
-        super(table, condition);
+    public CountPrepareStatement(Class<?> clazz, MatchCondition condition) {
+        super(clazz, condition);
     }
 
     @Override
@@ -14,18 +16,16 @@ public class CountPrepareStatement extends MysqlPrepareStatement {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT COUNT(").append(table.getPrimaryKey()).append(") FROM ").append(table.getTableName());
 
-        if (condition.getGroup() != null) {
-            sql.append(condition.getGroup().toSql());
-        }
+        sql.append(SqlStringUtils.toWhereSql(condition.getGroup()));
         return sql.toString();
     }
 
     @Override
     public Object[] args() {
-        if (condition.getGroup() == null) {
+        if (condition.getGroup() == null || CollectionUtils.isEmpty(condition.getGroup().args())) {
             return new Object[0];
         }
-        return condition.getGroup().args();
+        return condition.getGroup().args().toArray();
     }
 
 }

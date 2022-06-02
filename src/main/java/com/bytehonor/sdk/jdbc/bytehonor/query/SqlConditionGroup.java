@@ -49,11 +49,11 @@ public class SqlConditionGroup {
         return sb.toString();
     }
 
-    public Object[] args() {
+    public List<Object> args() {
         if (holder == null) {
-            return new Object[0];
+            return new ArrayList<Object>();
         }
-        return holder.getArgs().toArray();
+        return holder.getArgs();
     }
 
     @Override
