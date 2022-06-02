@@ -27,10 +27,11 @@ public class SqlMetaUtils {
     public static MetaTable parse(Class<?> clazz) {
         Objects.requireNonNull(clazz, "clazz");
 
-        if (clazz.isAnnotationPresent(SqlTable.class) == false) {
-            throw new RuntimeException("No SqlTable Annotation");
-        }
         String clazzName = clazz.getName();
+        if (clazz.isAnnotationPresent(SqlTable.class) == false) {
+            throw new RuntimeException("No SqlTable Annotation, clazz:" + clazzName);
+        }
+
         MetaTable metaTable = TABLES.get(clazzName);
         if (metaTable != null) {
             return metaTable;
@@ -42,7 +43,7 @@ public class SqlMetaUtils {
         SqlTable sqlTable = AnnotationUtils.getAnnotation(clazz, SqlTable.class);
         String primary = sqlTable.primary();
         if (StringObject.isEmpty(primary)) {
-            throw new RuntimeException("No SqlTable primary, clazzName:" + clazzName);
+            throw new RuntimeException("No SqlTable primary, clazz:" + clazzName);
         }
 
         metaTable.setTableName(sqlTable.name());
@@ -52,28 +53,29 @@ public class SqlMetaUtils {
         List<MetaTableColumn> columns = new ArrayList<MetaTableColumn>();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            String fieldName = field.getName();
-            if (primary.equals(fieldName)) {
+            String key = field.getName();
+            if (primary.equals(key)) {
                 continue;
             }
             if (Modifier.isStatic(field.getModifiers())) {
                 continue;
             }
+
             MetaTableColumn column = new MetaTableColumn();
-            column.setKey(fieldName);
+            column.setKey(key);
 
             String columnName = "";
             if (field.isAnnotationPresent(SqlColumn.class)) {
                 SqlColumn sqlColumn = AnnotationUtils.getAnnotation(field, SqlColumn.class);
-                LOG.debug("fieldName:{}, column name:{}, ignore:{}", fieldName, sqlColumn.name(), sqlColumn.ignore());
+                LOG.debug("key:{}, column name:{}, ignore:{}", key, sqlColumn.name(), sqlColumn.ignore());
                 if (sqlColumn.ignore()) {
                     continue;
                 }
                 columnName = sqlColumn.name();
             }
             if (StringObject.isEmpty(columnName)) {
-                LOG.debug("fieldName:{}, use camelToUnderline", fieldName);
-                columnName = SqlColumnUtils.camelToUnderline(fieldName);
+                LOG.debug("key:{}, use camelToUnderline", key);
+                columnName = SqlColumnUtils.camelToUnderline(key);
             }
             column.setColumn(columnName);
             columns.add(column);

@@ -25,6 +25,7 @@ public class InsertPrepareStatementTest {
             @Override
             public ModelGetterGroup<Student> create() {
                 ModelGetterGroup<Student> group = ModelGetterGroup.create(Student.class);
+                group.add("id", Student::getId);
                 group.add("age", Student::getAge);
                 group.add("nickname", Student::getNickname);
                 group.add("create_at", Student::getCreateAt);

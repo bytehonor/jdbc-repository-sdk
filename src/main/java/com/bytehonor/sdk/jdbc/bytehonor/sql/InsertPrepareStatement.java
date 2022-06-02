@@ -1,9 +1,5 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,10 +15,6 @@ import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
-import com.bytehonor.sdk.lang.bytehonor.getter.BooleanGetter;
-import com.bytehonor.sdk.lang.bytehonor.getter.DoubleGetter;
-import com.bytehonor.sdk.lang.bytehonor.getter.IntegerGetter;
-import com.bytehonor.sdk.lang.bytehonor.getter.LongGetter;
 
 public class InsertPrepareStatement extends MysqlPrepareStatement {
 
@@ -37,42 +29,6 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         this.insertArgs = new ArrayList<Object>();
     }
 
-    public static PreparedStatement convert(PrepareStatement statement, List<ModelKeyValue> items,
-            Connection connection) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(statement.sql(), Statement.RETURN_GENERATED_KEYS);
-        int idx = 1;
-        for (ModelKeyValue item : items) {
-            set(ps, idx, item);
-            idx++;
-        }
-        return ps;
-    }
-
-    private static void set(PreparedStatement ps, int idx, ModelKeyValue item) throws SQLException {
-        if (String.class.getName().equals(item.getType())) {
-            ps.setString(idx, item.getValue().toString());
-            return;
-        }
-        if (Long.class.getName().equals(item.getType())) {
-            ps.setLong(idx, LongGetter.optional(item.getValue().toString(), 0L));
-            return;
-        }
-        if (Integer.class.getName().equals(item.getType())) {
-            ps.setInt(idx, IntegerGetter.optional(item.getValue().toString(), 0));
-            return;
-        }
-        if (Boolean.class.getName().equals(item.getType())) {
-            ps.setBoolean(idx, BooleanGetter.optional(item.getValue().toString(), false));
-            return;
-        }
-        if (Double.class.getName().equals(item.getType())) {
-            ps.setDouble(idx, DoubleGetter.optional(item.getValue().toString(), 0.0));
-            return;
-        }
-        LOG.error("not support type, set key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
-        throw new RuntimeException("not support type");
-    }
-
     @Override
     public <T> List<ModelKeyValue> prepare(T model, ModelMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
@@ -81,14 +37,56 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         ModelGetterGroup<T> group = mapper.create();
         Objects.requireNonNull(group, "group");
 
+        String primary = getTable().getPrimaryKey();
         List<ModelKeyValue> items = group.out(model);
         for (ModelKeyValue item : items) {
+            if (primary.equals(item.getKey())) {
+                LOG.debug("insert {} pass", item.getKey());
+                continue;
+            }
+            if (SqlConstants.CREATE_AT_COLUMN.equals(item.getKey())) {
+                LOG.debug("insert {} pass", item.getKey());
+                continue;
+            }
+            if (SqlConstants.UPDATE_AT_COLUMN.equals(item.getKey())) {
+                LOG.debug("insert {} pass", item.getKey());
+                continue;
+            }
             LOG.info("key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
             insertColumns.add(item.getKey());
             insertArgs.add(item.getValue());
         }
-        // TODO create_at update_at
+
+        long now = System.currentTimeMillis();
+        if (enabledUpdateAt()) {
+            insertColumns.add(SqlConstants.UPDATE_AT_COLUMN);
+            insertArgs.add(now);
+        }
+        if (enabledCreateAt()) {
+            insertColumns.add(SqlConstants.CREATE_AT_COLUMN);
+            insertArgs.add(now);
+        }
         return items;
+    }
+
+    private boolean enabledUpdateAt() {
+        if (getTable().getKeySet().contains(SqlConstants.UPDATE_AT_KEY)) {
+            return true;
+        }
+        if (getTable().getColumnSet().contains(SqlConstants.UPDATE_AT_COLUMN)) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean enabledCreateAt() {
+        if (getTable().getKeySet().contains(SqlConstants.CREATE_AT_KEY)) {
+            return true;
+        }
+        if (getTable().getColumnSet().contains(SqlConstants.CREATE_AT_COLUMN)) {
+            return true;
+        }
+        return false;
     }
 
     @Override
