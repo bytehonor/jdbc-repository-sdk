@@ -61,6 +61,13 @@ public class SqlConditionGroup {
         return holder.getArgs();
     }
 
+    public List<Integer> types() {
+        if (holder == null) {
+            return new ArrayList<Integer>();
+        }
+        return holder.getTypes();
+    }
+
     @Override
     public String toString() {
         return toSql();

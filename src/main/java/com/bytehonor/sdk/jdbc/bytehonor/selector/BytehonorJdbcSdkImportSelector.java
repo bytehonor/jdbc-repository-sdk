@@ -3,12 +3,12 @@ package com.bytehonor.sdk.jdbc.bytehonor.selector;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
-import com.bytehonor.sdk.jdbc.bytehonor.config.SpringBootStandardConfiguration;
+import com.bytehonor.sdk.jdbc.bytehonor.config.BytehonorJdbcSdkConfiguration;
 
-public class SpringBootStandardImportSelector implements ImportSelector {
+public class BytehonorJdbcSdkImportSelector implements ImportSelector {
 
     @Override
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-        return new String[]{SpringBootStandardConfiguration.class.getName()};
+        return new String[] { BytehonorJdbcSdkConfiguration.class.getName() };
     }
 }

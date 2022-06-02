@@ -3,6 +3,7 @@ package com.bytehonor.sdk.jdbc.bytehonor.sql;
 import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
 public class SelectPrepareStatement extends MysqlPrepareStatement {
@@ -31,5 +32,13 @@ public class SelectPrepareStatement extends MysqlPrepareStatement {
             return new Object[0];
         }
         return condition.getGroup().args().toArray();
+    }
+
+    @Override
+    public int[] types() {
+        if (condition.getGroup() == null || CollectionUtils.isEmpty(condition.getGroup().types())) {
+            return new int[0];
+        }
+        return SqlInjectUtils.listArray(condition.getGroup().types());
     }
 }

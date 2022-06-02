@@ -20,7 +20,7 @@ public class SqlArgHolder {
 
     private final List<Object> args;
 
-    private final List<Integer> argTypes;
+    private final List<Integer> types;
 
     private int size;
 
@@ -28,7 +28,7 @@ public class SqlArgHolder {
         this.logic = logic != null ? logic : SqlLogic.AND;
         this.sql = new StringBuilder();
         this.args = new ArrayList<Object>();
-        this.argTypes = new ArrayList<Integer>();
+        this.types = new ArrayList<Integer>();
         this.size = 0;
     }
 
@@ -67,7 +67,7 @@ public class SqlArgHolder {
         this.sql.append(column).append(BLANK).append(condition.getOperator().getOpt()).append(BLANK)
                 .append(SqlConstants.PARAM);
         this.args.add(condition.getValue());
-        this.argTypes.add(condition.getType());
+        this.types.add(condition.getType());
 
         return this;
     }
@@ -97,8 +97,8 @@ public class SqlArgHolder {
         return args;
     }
 
-    public List<Integer> getArgTypes() {
-        return argTypes;
+    public List<Integer> getTypes() {
+        return types;
     }
 
 }

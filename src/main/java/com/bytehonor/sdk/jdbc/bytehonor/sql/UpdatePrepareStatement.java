@@ -13,6 +13,7 @@ import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelKeyValue;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
 public class UpdatePrepareStatement extends MysqlPrepareStatement {
@@ -42,6 +43,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
             updateColumns.add(item.getKey());
             updateArgs.add(item.getValue());
         }
+        // TODO update_at
     }
 
     @Override
@@ -77,6 +79,14 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         args.addAll(condition.getGroup().args());
 
         return args.toArray();
+    }
+
+    @Override
+    public int[] types() {
+        if (condition.getGroup() == null || CollectionUtils.isEmpty(condition.getGroup().types())) {
+            return new int[0];
+        }
+        return SqlInjectUtils.listArray(condition.getGroup().types());
     }
 
 }

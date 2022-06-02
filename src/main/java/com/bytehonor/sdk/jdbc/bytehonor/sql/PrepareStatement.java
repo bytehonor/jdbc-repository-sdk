@@ -9,4 +9,6 @@ public interface PrepareStatement {
     public String sql();
 
     public Object[] args();
+
+    public int[] types();
 }
