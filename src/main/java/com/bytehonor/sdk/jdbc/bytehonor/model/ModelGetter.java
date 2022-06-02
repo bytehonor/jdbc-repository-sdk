@@ -1,5 +1,7 @@
 package com.bytehonor.sdk.jdbc.bytehonor.model;
 
+import java.util.Objects;
+
 import com.bytehonor.sdk.jdbc.bytehonor.function.ClassGetter;
 
 public class ModelGetter<T> {
@@ -9,11 +11,20 @@ public class ModelGetter<T> {
     private ClassGetter<T, ?> getter;
 
     public static <T> ModelGetter<T> create(String key, ClassGetter<T, ?> getter) {
+        Objects.requireNonNull(key, "key");
+        Objects.requireNonNull(getter, "getter");
+
         ModelGetter<T> model = new ModelGetter<T>();
         model.setKey(key);
         model.setGetter(getter);
 
         return model;
+    }
+
+    public Object value(T t) {
+        Objects.requireNonNull(t, "t");
+
+        return this.getter.apply(t);
     }
 
     public String getKey() {
