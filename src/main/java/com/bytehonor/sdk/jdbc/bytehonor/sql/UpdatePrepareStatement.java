@@ -37,13 +37,40 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         ModelGetterGroup<T> group = mapper.create();
         Objects.requireNonNull(group, "group");
 
+        String primary = getTable().getPrimaryKey();
         List<ModelKeyValue> items = group.out(model);
         for (ModelKeyValue item : items) {
-            LOG.info("key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
+            if (primary.equals(item.getKey())) {
+                LOG.debug("update {} pass", item.getKey());
+                continue;
+            }
+            if (SqlConstants.CREATE_AT_COLUMN.equals(item.getKey())) {
+                LOG.debug("update {} pass", item.getKey());
+                continue;
+            }
+            if (SqlConstants.UPDATE_AT_COLUMN.equals(item.getKey())) {
+                LOG.debug("update {} pass", item.getKey());
+                continue;
+            }
+            LOG.debug("update key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
             updateColumns.add(item.getKey());
             updateArgs.add(item.getValue());
         }
-        // TODO update_at
+
+        if (enabledUpdateAt()) {
+            updateColumns.add(SqlConstants.UPDATE_AT_COLUMN);
+            updateArgs.add(System.currentTimeMillis());
+        }
+    }
+
+    private boolean enabledUpdateAt() {
+        if (getTable().getKeySet().contains(SqlConstants.UPDATE_AT_KEY)) {
+            return true;
+        }
+        if (getTable().getColumnSet().contains(SqlConstants.UPDATE_AT_COLUMN)) {
+            return true;
+        }
+        return false;
     }
 
     @Override

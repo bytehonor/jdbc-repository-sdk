@@ -27,6 +27,7 @@ public class UpdatePrepareStatementTest {
                 ModelGetterGroup<Student> group = ModelGetterGroup.create(Student.class);
                 group.add("age", Student::getAge);
                 group.add("nickname", Student::getNickname);
+                group.add("createAt", Student::getCreateAt);
                 return group;
             }
 
@@ -44,9 +45,9 @@ public class UpdatePrepareStatementTest {
 
         long now = System.currentTimeMillis();
         Student student = new Student();
+        student.setId(123L);
         student.setAge(1);
         student.setNickname("boy");
-        student.setId(123L);
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
