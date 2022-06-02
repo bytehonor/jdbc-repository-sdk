@@ -7,9 +7,12 @@ import java.util.Objects;
 import com.bytehonor.sdk.define.bytehonor.util.StringObject;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlLogic;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlOperator;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
 
 public class SqlArgHolder {
+
+    private static final String BLANK = SqlConstants.BLANK;
 
     private final SqlLogic logic;
 
@@ -42,23 +45,30 @@ public class SqlArgHolder {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(condition.getOperator(), "operator");
 
-        if (StringObject.isEmpty(condition.getKey()) || condition.getValue() == null) {
+        if (condition.getValue() == null) {
             return this;
         }
+
+        String column = SqlColumnUtils.camelToUnderline(condition.getKey());
+        if (StringObject.isEmpty(column)) {
+            return this;
+        }
+
         if (size > 0) {
-            this.sql.append(SqlConstants.BLANK).append(logic.getKey()).append(SqlConstants.BLANK);
+            this.sql.append(BLANK).append(logic.getKey()).append(BLANK);
         }
         size++;
 
         if (SqlOperator.IN.getKey().equals(condition.getOperator().getKey())) {
-            this.sql.append(condition.getKey()).append(SqlConstants.BLANK).append(condition.getOperator().getOpt())
-                    .append(SqlConstants.BLANK).append(condition.getValue());
+            this.sql.append(column).append(BLANK).append(condition.getOperator().getOpt()).append(BLANK)
+                    .append(condition.getValue());
             return this;
         }
-        this.sql.append(condition.getKey()).append(SqlConstants.BLANK).append(condition.getOperator().getOpt())
-                .append(SqlConstants.BLANK).append(SqlConstants.PARAM);
+        this.sql.append(column).append(BLANK).append(condition.getOperator().getOpt()).append(BLANK)
+                .append(SqlConstants.PARAM);
         this.args.add(condition.getValue());
         this.argTypes.add(condition.getType());
+
         return this;
     }
 

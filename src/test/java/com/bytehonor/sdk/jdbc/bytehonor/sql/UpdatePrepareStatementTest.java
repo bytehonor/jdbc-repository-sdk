@@ -38,7 +38,7 @@ public class UpdatePrepareStatementTest {
         set.add(3);
         QueryCondition condition = QueryCondition.create();
         condition.inInt("age", set);
-        condition.gt("create_at", System.currentTimeMillis());
+        condition.gt("createAt", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.descBy("age");
 

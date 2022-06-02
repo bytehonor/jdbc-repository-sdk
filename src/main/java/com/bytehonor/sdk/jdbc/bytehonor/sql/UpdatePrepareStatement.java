@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelKeyValue;
+import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
@@ -56,7 +57,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
                 sql.append(" , ");
             }
             idx++;
-            sql.append(column).append(" = ?");
+            sql.append(column).append(" = ").append(SqlConstants.PARAM);
         }
 
         sql.append(SqlStringUtils.toWhereSql(condition.getGroup()));
