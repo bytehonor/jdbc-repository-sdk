@@ -66,6 +66,12 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
             insertColumns.add(SqlConstants.CREATE_AT_COLUMN);
             insertArgs.add(now);
         }
+        // 检查参数数目
+        int keySize = getTable().getKeySet().size();
+        int argSize = insertArgs.size();
+        if (keySize != argSize) {
+            LOG.warn("miss key! {}, keySize:{} != argSize:{}", getTable().getModelClazz(), keySize, argSize);
+        }
         return items;
     }
 

@@ -33,7 +33,11 @@ public class ModelGetterGroup<T> {
     public List<ModelKeyValue> out(T t) {
         List<ModelKeyValue> result = new ArrayList<ModelKeyValue>();
         for (ModelGetter<T> item : list) {
-            result.add(item.value(t));
+            ModelKeyValue value = item.value(t);
+            if (value == null) {
+                continue;
+            }
+            result.add(value);
         }
         return result;
     }

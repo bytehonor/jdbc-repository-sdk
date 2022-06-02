@@ -26,6 +26,9 @@ public class ModelGetter<T> {
         Objects.requireNonNull(t, "t");
 
         Object val = this.getter.apply(t);
+        if (val == null) {
+            return null;
+        }
         return ModelKeyValue.of(SqlColumnUtils.camelToUnderline(key), val, val.getClass().getName());
     }
 
