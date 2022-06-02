@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.jdbc.bytehonor.model.KevValueType;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
-import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
 public class UpdatePrepareStatement extends MysqlPrepareStatement {
@@ -21,7 +21,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
     private final List<String> updateColumns;
     private final List<Object> updateArgs;
 
-    public UpdatePrepareStatement(Class<?> clazz, MatchCondition condition) {
+    public UpdatePrepareStatement(Class<?> clazz, QueryCondition condition) {
         super(clazz, condition);
         this.updateColumns = new ArrayList<String>();
         this.updateArgs = new ArrayList<Object>();
@@ -35,8 +35,8 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         ModelGetterGroup<T> group = mapper.create();
         Objects.requireNonNull(group, "group");
 
-        List<KevValueType> items = group.out(model);
-        for (KevValueType item : items) {
+        List<ColumnValue> items = group.out(model);
+        for (ColumnValue item : items) {
             LOG.info("key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
             updateColumns.add(item.getKey());
             updateArgs.add(item.getValue());

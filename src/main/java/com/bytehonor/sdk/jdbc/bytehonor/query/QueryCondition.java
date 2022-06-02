@@ -10,10 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.define.bytehonor.constant.HttpConstants;
-import com.bytehonor.sdk.define.bytehonor.error.ServerBasicException;
 import com.bytehonor.sdk.define.bytehonor.util.StringObject;
+import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlLogicEnum;
 import com.bytehonor.sdk.jdbc.bytehonor.getter.RequestGetter;
-import com.bytehonor.sdk.jdbc.bytehonor.jdbc.MatchColumnHolder;
 
 /**
  * 
@@ -24,172 +23,188 @@ public final class QueryCondition {
 
     private static final Logger LOG = LoggerFactory.getLogger(QueryCondition.class);
 
-    private int offset;
+    private static int LIMIT_DEF = HttpConstants.LIMIT_DEF;
 
-    private int limit;
+    private SqlPage page;
 
     private SqlOrder order;
 
-    private final MatchColumnHolder columnHolder;
+    private final SqlConditionGroup group;
 
-    private QueryCondition() {
-        this(0, HttpConstants.LIMIT_MAX, null);
+    private QueryCondition(SqlLogicEnum logic) {
+        this.page = SqlPage.create();
+        this.order = null;
+        this.group = SqlConditionGroup.create(logic);
     }
 
-    private QueryCondition(int offset, int limit, SqlOrder order) {
-        this.offset = offset;
-        this.limit = limit;
-        this.order = order;
-        this.columnHolder = MatchColumnHolder.create();
+    public static QueryCondition id(Long id) {
+        return and(0, 1).eq("id", id);
     }
 
     public static QueryCondition create() {
-        return create(0, HttpConstants.LIMIT_MAX, null);
+        return and();
     }
 
-    public static QueryCondition create(HttpServletRequest request) {
+    public static QueryCondition and() {
+        return and(0, LIMIT_DEF);
+    }
+
+    public static QueryCondition and(HttpServletRequest request) {
         Objects.requireNonNull(request, "request");
         int offset = RequestGetter.getOffset(request);
         int limit = RequestGetter.getLimit(request);
-        return create(offset, limit);
+        return and(offset, limit);
     }
 
-    public static QueryCondition create(int offset, int limit) {
-        return create(offset, limit, null);
+    public static QueryCondition and(int offset, int limit) {
+        return create(SqlLogicEnum.AND, SqlPage.of(offset, limit));
     }
 
-    public static QueryCondition create(int offset, int limit, SqlOrder order) {
-        QueryCondition codition = new QueryCondition();
-        codition.setOffset(offset);
-        codition.setLimit(limit);
-        codition.setOrder(order);
+    public static QueryCondition or() {
+        return or(0, LIMIT_DEF);
+    }
+
+    public static QueryCondition or(HttpServletRequest request) {
+        Objects.requireNonNull(request, "request");
+        int offset = RequestGetter.getOffset(request);
+        int limit = RequestGetter.getLimit(request);
+        return or(offset, limit);
+    }
+
+    public static QueryCondition or(int offset, int limit) {
+        return create(SqlLogicEnum.OR, SqlPage.of(offset, limit));
+    }
+
+    public static QueryCondition create(SqlLogicEnum logic, SqlPage page) {
+        Objects.requireNonNull(logic, "logic");
+        Objects.requireNonNull(page, "page");
+
+        QueryCondition codition = new QueryCondition(logic);
+        codition.setPage(page);
         return codition;
     }
 
-    private QueryCondition and(MatchColumn column) {
-        Objects.requireNonNull(column, "column");
-        if (StringObject.isEmpty(column.getKey())) {
-            throw new ServerBasicException(44, "column key cann't be empty");
+    private QueryCondition add(SqlCondition condition) {
+        if (StringObject.isEmpty(condition.getKey()) || condition.getValue() == null) {
+            LOG.warn("put error condition, key:{}, value:{}", condition.getKey(), condition.getValue());
+            return this;
         }
-        columnHolder.and(column);
+        group.and(condition);
         return this;
     }
 
     public QueryCondition eq(String key, String value) {
-        return this.and(MatchColumn.eq(key, value));
+        return this.add(SqlCondition.eq(key, value));
     }
 
     public QueryCondition eq(String key, Long value) {
-        return this.and(MatchColumn.eq(key, value));
+        return this.add(SqlCondition.eq(key, value));
     }
 
     public QueryCondition eq(String key, Integer value) {
-        return this.and(MatchColumn.eq(key, value));
+        return this.add(SqlCondition.eq(key, value));
     }
 
     public QueryCondition eq(String key, Boolean value) {
-        return this.and(MatchColumn.eq(key, value));
+        return this.add(SqlCondition.eq(key, value));
     }
 
     public QueryCondition neq(String key, String value) {
-        return this.and(MatchColumn.eq(key, value));
+        return this.add(SqlCondition.eq(key, value));
     }
 
     public QueryCondition neq(String key, Long value) {
-        return this.and(MatchColumn.neq(key, value));
+        return this.add(SqlCondition.neq(key, value));
     }
 
     public QueryCondition neq(String key, Integer value) {
-        return this.and(MatchColumn.neq(key, value));
+        return this.add(SqlCondition.neq(key, value));
     }
 
     public QueryCondition neq(String key, Boolean value) {
-        return this.and(MatchColumn.neq(key, value));
+        return this.add(SqlCondition.neq(key, value));
     }
 
     public QueryCondition gt(String key, Long value) {
-        return this.and(MatchColumn.gt(key, value));
+        return this.add(SqlCondition.gt(key, value));
     }
 
     public QueryCondition gt(String key, Integer value) {
-        return this.and(MatchColumn.gt(key, value));
+        return this.add(SqlCondition.gt(key, value));
     }
 
     public QueryCondition egt(String key, Long value) {
-        return this.and(MatchColumn.egt(key, value));
+        return this.add(SqlCondition.egt(key, value));
     }
 
     public QueryCondition egt(String key, Integer value) {
-        return this.and(MatchColumn.egt(key, value));
+        return this.add(SqlCondition.egt(key, value));
     }
 
     public QueryCondition lt(String key, String value) {
-        return this.and(MatchColumn.lt(key, value));
+        return this.add(SqlCondition.lt(key, value));
     }
-    
+
     public QueryCondition lt(String key, Long value) {
-        return this.and(MatchColumn.lt(key, value));
+        return this.add(SqlCondition.lt(key, value));
     }
 
     public QueryCondition lt(String key, Integer value) {
-        return this.and(MatchColumn.lt(key, value));
+        return this.add(SqlCondition.lt(key, value));
     }
 
     public QueryCondition elt(String key, Long value) {
-        return this.and(MatchColumn.elt(key, value));
+        return this.add(SqlCondition.elt(key, value));
     }
 
     public QueryCondition elt(String key, Integer value) {
-        return this.and(MatchColumn.elt(key, value));
+        return this.add(SqlCondition.elt(key, value));
     }
 
     public QueryCondition like(String key, String value) {
-        return this.and(MatchColumn.like(key, value));
+        return this.add(SqlCondition.like(key, value));
     }
 
     public QueryCondition in(String key, List<String> value) {
-        return this.and(MatchColumn.in(key, value));
+        return this.add(SqlCondition.in(key, value));
     }
 
     public QueryCondition in(String key, Set<String> value) {
-        return this.and(MatchColumn.in(key, value));
+        return this.add(SqlCondition.in(key, value));
     }
 
     public QueryCondition inLong(String key, List<Long> value) {
-        return this.and(MatchColumn.inLong(key, value));
+        return this.add(SqlCondition.inLong(key, value));
     }
 
     public QueryCondition inLong(String key, Set<Long> value) {
-        return this.and(MatchColumn.inLong(key, value));
+        return this.add(SqlCondition.inLong(key, value));
     }
 
     public QueryCondition inInt(String key, List<Integer> value) {
-        return this.and(MatchColumn.inInt(key, value));
+        return this.add(SqlCondition.inInt(key, value));
     }
 
     public QueryCondition inInt(String key, Set<Integer> value) {
-        return this.and(MatchColumn.inInt(key, value));
+        return this.add(SqlCondition.inInt(key, value));
     }
 
-    public QueryCondition orderBy(SqlOrder order) {
-        this.order = order;
+    public QueryCondition descBy(String key) {
+        this.order = SqlOrder.descOf(key);
         return this;
     }
 
-    public int getOffset() {
-        return offset;
+    public QueryCondition ascBy(String key) {
+        this.order = SqlOrder.ascOf(key);
+        return this;
     }
 
-    public void setOffset(int offset) {
-        this.offset = offset;
+    public SqlPage getPage() {
+        return page;
     }
 
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
+    public void setPage(SqlPage page) {
+        this.page = page;
     }
 
     public SqlOrder getOrder() {
@@ -200,17 +215,8 @@ public final class QueryCondition {
         this.order = order;
     }
 
-    public MatchColumnHolder getMatchHolder() {
-        return columnHolder;
-    }
-
-    public String offsetLimitSql() {
-        if (limit > HttpConstants.LIMIT_MAX_TOP) {
-            LOG.warn("[WARN] limit:{} cann't exceed {}", limit, HttpConstants.LIMIT_MAX_TOP);
-            limit = HttpConstants.LIMIT_MAX_TOP;
-        }
-        StringBuilder sb = new StringBuilder(" LIMIT ").append(offset).append(",").append(limit);
-        return sb.toString();
+    public SqlConditionGroup getGroup() {
+        return group;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.server.bytehonor;
+package com.bytehonor.sdk.jdbc.bytehonor;
 
 import static org.junit.Assert.assertTrue;
 
@@ -43,11 +43,11 @@ public class AnnotationTest {
         Getter<Student, ?> nn = Student::getNickname;
         Object nnApply = nn.apply(student);
         LOG.info("getNickname:{}, class:{}", nnApply, nnApply.getClass().getSimpleName());
-        
+
         Getter<Student, ?> ca = Student::getCreateAt;
         Object caApply = ca.apply(student);
         LOG.info("getCreateAt:{}, class:{}", caApply, caApply.getClass().getSimpleName());
-        
+
         // 获取Person的Class对象
         Class<?> clazz = student.getClass();
         // 判断person对象上是否有Info注解
@@ -81,7 +81,7 @@ public class AnnotationTest {
         }
     }
 
-    private String getColumn(SerializedLambda lambda) {
+    public String getColumn(SerializedLambda lambda) {
         return lambda.getImplMethodName();
     }
 

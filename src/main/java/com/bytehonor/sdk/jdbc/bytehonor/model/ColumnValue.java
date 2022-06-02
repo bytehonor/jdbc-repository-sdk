@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.jdbc.bytehonor.model;
 
-public class KevValueType {
+public class ColumnValue {
 
     private String key;
 
@@ -8,8 +8,8 @@ public class KevValueType {
 
     private String type;
 
-    public static KevValueType of(String key, Object value, String type) {
-        KevValueType model = new KevValueType();
+    public static ColumnValue of(String key, Object value, String type) {
+        ColumnValue model = new ColumnValue();
         model.setKey(key);
         model.setValue(value);
         model.setType(type);

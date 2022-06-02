@@ -3,8 +3,8 @@ package com.bytehonor.sdk.jdbc.bytehonor.query;
 import java.util.Objects;
 
 import com.bytehonor.sdk.define.bytehonor.util.StringObject;
-import com.bytehonor.sdk.jdbc.bytehonor.jdbc.SqlConstants;
-import com.bytehonor.sdk.jdbc.bytehonor.jdbc.SqlInjectUtils;
+import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 
 public class SqlOrder {
 

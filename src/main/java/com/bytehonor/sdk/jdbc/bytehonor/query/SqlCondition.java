@@ -4,7 +4,7 @@ import java.sql.Types;
 import java.util.List;
 import java.util.Set;
 
-import com.bytehonor.sdk.jdbc.bytehonor.jdbc.SqlOperator;
+import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlOperator;
 import com.bytehonor.sdk.lang.bytehonor.string.StringCreator;
 import com.bytehonor.sdk.lang.bytehonor.util.ListJoinUtils;
 import com.bytehonor.sdk.lang.bytehonor.util.SetJoinUtils;

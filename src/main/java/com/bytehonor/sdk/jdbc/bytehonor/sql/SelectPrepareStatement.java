@@ -2,12 +2,12 @@ package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
 public class SelectPrepareStatement extends MysqlPrepareStatement {
 
-    public SelectPrepareStatement(Class<?> clazz, MatchCondition condition) {
+    public SelectPrepareStatement(Class<?> clazz, QueryCondition condition) {
         super(clazz, condition);
     }
 

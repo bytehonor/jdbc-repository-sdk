@@ -5,7 +5,7 @@ package com.bytehonor.sdk.jdbc.bytehonor.constant;
  * @author lijianqiang
  *
  */
-public enum QueryLogicEnum {
+public enum SqlLogicEnum {
 
     AND("AND", "AND"),
 
@@ -17,17 +17,17 @@ public enum QueryLogicEnum {
 
     private String name;
 
-    private QueryLogicEnum(String key, String name) {
+    private SqlLogicEnum(String key, String name) {
         this.key = key;
         this.name = name;
     }
 
-    public static QueryLogicEnum keyOf(String key) {
+    public static SqlLogicEnum keyOf(String key) {
         if (key == null) {
             return AND;
         }
         key = key.toLowerCase();
-        for (QueryLogicEnum item : QueryLogicEnum.values()) {
+        for (SqlLogicEnum item : SqlLogicEnum.values()) {
             if (item.getKey().equals(key)) {
                 return item;
             }

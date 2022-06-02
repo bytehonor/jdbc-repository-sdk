@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.jdbc.bytehonor.model.Student;
+import com.bytehonor.sdk.jdbc.bytehonor.util.MetaParseUtils;
 
 public class MetaParseUtilsTest {
 

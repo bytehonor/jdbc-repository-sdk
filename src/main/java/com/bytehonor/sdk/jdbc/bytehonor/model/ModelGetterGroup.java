@@ -44,12 +44,12 @@ public class ModelGetterGroup<T> {
         }
     }
 
-    public List<KevValueType> out(T t) {
-        List<KevValueType> result = new ArrayList<KevValueType>();
+    public List<ColumnValue> out(T t) {
+        List<ColumnValue> result = new ArrayList<ColumnValue>();
         for (ModelGetter<T> item : list) {
             Object obj = item.getGetter().apply(t);
             LOG.info("key:{}, obj:{}, class:{}", item.getKey(), obj, obj.getClass().getSimpleName());
-            result.add(KevValueType.of(item.getKey(), obj, obj.getClass().getSimpleName()));
+            result.add(ColumnValue.of(item.getKey(), obj, obj.getClass().getSimpleName()));
         }
         return result;
     }

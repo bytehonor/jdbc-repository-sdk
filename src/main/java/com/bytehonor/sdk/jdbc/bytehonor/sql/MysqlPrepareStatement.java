@@ -1,9 +1,9 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
-import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaParseUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTable;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
-import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.util.MetaParseUtils;
 
 public abstract class MysqlPrepareStatement implements PrepareStatement {
 
@@ -11,9 +11,9 @@ public abstract class MysqlPrepareStatement implements PrepareStatement {
 
     protected final MetaTable table;
 
-    protected final MatchCondition condition;
+    protected final QueryCondition condition;
 
-    public MysqlPrepareStatement(Class<?> clazz, MatchCondition condition) {
+    public MysqlPrepareStatement(Class<?> clazz, QueryCondition condition) {
         this.clazz = clazz;
         this.table = MetaParseUtils.parse(clazz);
         this.condition = condition;
@@ -32,7 +32,7 @@ public abstract class MysqlPrepareStatement implements PrepareStatement {
         return table;
     }
 
-    public MatchCondition getCondition() {
+    public QueryCondition getCondition() {
         return condition;
     }
 

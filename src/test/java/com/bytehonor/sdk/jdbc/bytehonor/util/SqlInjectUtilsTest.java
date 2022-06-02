@@ -1,12 +1,10 @@
-package com.bytehonor.sdk.server.bytehonor.jdbc;
+package com.bytehonor.sdk.jdbc.bytehonor.util;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.bytehonor.sdk.jdbc.bytehonor.jdbc.SqlInjectUtils;
 
 public class SqlInjectUtilsTest {
 
@@ -28,4 +26,5 @@ public class SqlInjectUtilsTest {
         LOG.info("column esc:{}", esc);
         assertTrue("testColumn", esc.length() == (src.length() - 2));
     }
+
 }

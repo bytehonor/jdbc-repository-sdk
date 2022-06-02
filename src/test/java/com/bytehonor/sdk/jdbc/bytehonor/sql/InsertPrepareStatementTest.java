@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.model.Student;
-import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 
 public class InsertPrepareStatementTest {
 
@@ -37,7 +37,7 @@ public class InsertPrepareStatementTest {
         set.add(1);
         set.add(2);
         set.add(3);
-        MatchCondition condition = MatchCondition.create();
+        QueryCondition condition = QueryCondition.create();
         condition.inInt("age", set);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");

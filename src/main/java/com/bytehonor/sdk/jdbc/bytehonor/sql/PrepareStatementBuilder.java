@@ -2,11 +2,11 @@ package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
 import java.util.Objects;
 
-import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 
 public final class PrepareStatementBuilder {
 
-    public static PrepareStatement select(Class<?> clazz, MatchCondition condition) {
+    public static PrepareStatement select(Class<?> clazz, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -17,10 +17,10 @@ public final class PrepareStatementBuilder {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
 
-        return select(clazz, MatchCondition.id(id));
+        return select(clazz, QueryCondition.id(id));
     }
 
-    public static PrepareStatement count(Class<?> clazz, MatchCondition condition) {
+    public static PrepareStatement count(Class<?> clazz, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -33,14 +33,14 @@ public final class PrepareStatementBuilder {
         return new InsertPrepareStatement(clazz);
     }
 
-    public static PrepareStatement update(Class<?> clazz, MatchCondition condition) {
+    public static PrepareStatement update(Class<?> clazz, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
         return new UpdatePrepareStatement(clazz, condition);
     }
 
-    public static PrepareStatement delete(Class<?> clazz, MatchCondition condition) {
+    public static PrepareStatement delete(Class<?> clazz, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -51,6 +51,6 @@ public final class PrepareStatementBuilder {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
 
-        return delete(clazz, MatchCondition.id(id));
+        return delete(clazz, QueryCondition.id(id));
     }
 }

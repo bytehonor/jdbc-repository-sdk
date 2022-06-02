@@ -1,11 +1,11 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
-import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
 public class DeletePrepareStatement extends MysqlPrepareStatement {
 
-    public DeletePrepareStatement(Class<?> clazz, MatchCondition condition) {
+    public DeletePrepareStatement(Class<?> clazz, QueryCondition condition) {
         super(clazz, condition);
     }
 

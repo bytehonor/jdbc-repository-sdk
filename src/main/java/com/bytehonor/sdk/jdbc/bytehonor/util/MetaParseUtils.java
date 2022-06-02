@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.jdbc.bytehonor.meta;
+package com.bytehonor.sdk.jdbc.bytehonor.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -13,6 +13,8 @@ import org.springframework.core.annotation.AnnotationUtils;
 import com.bytehonor.sdk.define.bytehonor.util.StringObject;
 import com.bytehonor.sdk.jdbc.bytehonor.annotation.SqlColumn;
 import com.bytehonor.sdk.jdbc.bytehonor.annotation.SqlTable;
+import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTable;
+import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTableColumn;
 
 public class MetaParseUtils {
 

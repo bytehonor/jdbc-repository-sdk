@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.jdbc.bytehonor.model.KevValueType;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
-import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
 public class InsertPrepareStatement extends MysqlPrepareStatement {
@@ -22,7 +22,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
     private final List<Object> insertArgs;
 
     public InsertPrepareStatement(Class<?> clazz) {
-        super(clazz, MatchCondition.and());
+        super(clazz, QueryCondition.and());
         this.insertColumns = new ArrayList<String>();
         this.insertArgs = new ArrayList<Object>();
     }
@@ -35,8 +35,8 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         ModelGetterGroup<T> group = mapper.create();
         Objects.requireNonNull(group, "group");
 
-        List<KevValueType> items = group.out(model);
-        for (KevValueType item : items) {
+        List<ColumnValue> items = group.out(model);
+        for (ColumnValue item : items) {
             LOG.info("key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
             insertColumns.add(item.getKey());
             insertArgs.add(item.getValue());

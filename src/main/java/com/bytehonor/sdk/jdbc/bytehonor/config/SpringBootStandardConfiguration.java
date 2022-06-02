@@ -6,19 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
-
-import com.bytehonor.sdk.jdbc.bytehonor.web.advisor.ErrorResponseAdvisor;
-import com.bytehonor.sdk.jdbc.bytehonor.web.advisor.JsonResponseAdvisor;
-import com.bytehonor.sdk.jdbc.bytehonor.web.mvc.BytehonorWebMvcConfig;
 
 @Configuration
 @ConditionalOnWebApplication
@@ -47,27 +40,27 @@ public class SpringBootStandardConfiguration {
 //        return new CustomErrorController(errorAttributes, this.serverProperties.getError(), this.errorViewResolvers);
 //    }
 
-    @Bean
-    @ConditionalOnProperty(prefix = "server.core.web", name = "error.advisor.enable", matchIfMissing = true)
-    @ConditionalOnMissingBean(value = ErrorResponseAdvisor.class)
-    public ErrorResponseAdvisor errorResponseAdvisor() {
-        LOG.info("[standard boot bean] ErrorResponseAdvisor");
-        return new ErrorResponseAdvisor();
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "server.core.web", name = "response.advisor.enable", matchIfMissing = true)
-    @ConditionalOnMissingBean(value = JsonResponseAdvisor.class)
-    public JsonResponseAdvisor jsonResponseAdvisor() {
-        LOG.info("[standard boot bean] JsonResponseAdvisor");
-        return new JsonResponseAdvisor();
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "server.core.web", name = "mvc-custom-enable", matchIfMissing = true)
-    public BytehonorWebMvcConfig bytehonorWebMvcConfig() {
-        serverProperties.getPort();
-        LOG.info("[standard boot bean] BytehonorWebMvcConfig");
-        return new BytehonorWebMvcConfig();
-    }
+//    @Bean
+//    @ConditionalOnProperty(prefix = "server.core.web", name = "error.advisor.enable", matchIfMissing = true)
+//    @ConditionalOnMissingBean(value = ErrorResponseAdvisor.class)
+//    public ErrorResponseAdvisor errorResponseAdvisor() {
+//        LOG.info("[standard boot bean] ErrorResponseAdvisor");
+//        return new ErrorResponseAdvisor();
+//    }
+//
+//    @Bean
+//    @ConditionalOnProperty(prefix = "server.core.web", name = "response.advisor.enable", matchIfMissing = true)
+//    @ConditionalOnMissingBean(value = JsonResponseAdvisor.class)
+//    public JsonResponseAdvisor jsonResponseAdvisor() {
+//        LOG.info("[standard boot bean] JsonResponseAdvisor");
+//        return new JsonResponseAdvisor();
+//    }
+//
+//    @Bean
+//    @ConditionalOnProperty(prefix = "server.core.web", name = "mvc-custom-enable", matchIfMissing = true)
+//    public BytehonorWebMvcConfig bytehonorWebMvcConfig() {
+//        serverProperties.getPort();
+//        LOG.info("[standard boot bean] BytehonorWebMvcConfig");
+//        return new BytehonorWebMvcConfig();
+//    }
 }
