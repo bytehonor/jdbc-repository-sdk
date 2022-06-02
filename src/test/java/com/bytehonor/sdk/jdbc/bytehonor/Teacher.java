@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.jdbc.bytehonor.model;
+package com.bytehonor.sdk.jdbc.bytehonor;
 
 import com.bytehonor.sdk.jdbc.bytehonor.annotation.SqlTable;
 

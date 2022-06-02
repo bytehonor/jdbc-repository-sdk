@@ -2,7 +2,7 @@ package com.bytehonor.sdk.jdbc.bytehonor.meta;
 
 public class MetaTableColumn {
 
-    private String field;
+    private String key;
 
     private String column;
 
@@ -10,17 +10,17 @@ public class MetaTableColumn {
         this("", "");
     }
 
-    public MetaTableColumn(String field, String column) {
-        this.field = field;
+    public MetaTableColumn(String key, String column) {
+        this.key = key;
         this.column = column;
     }
 
-    public String getField() {
-        return field;
+    public String getKey() {
+        return key;
     }
 
-    public void setField(String field) {
-        this.field = field;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getColumn() {

@@ -50,7 +50,7 @@ public class MetaParseUtils {
                 continue;
             }
             MetaTableColumn column = new MetaTableColumn();
-            column.setField(fieldName);
+            column.setKey(fieldName);
 
             String columnName = "";
             if (field.isAnnotationPresent(SqlColumn.class)) {

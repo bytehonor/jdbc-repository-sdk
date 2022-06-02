@@ -3,28 +3,21 @@ package com.bytehonor.sdk.jdbc.bytehonor.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.bytehonor.sdk.jdbc.bytehonor.annotation.Getter;
+import com.bytehonor.sdk.jdbc.bytehonor.function.ClassGetter;
 
 public class ModelGetterGroup<T> {
-
-    private static final Logger LOG = LoggerFactory.getLogger(ModelGetterGroup.class);
 
     private List<ModelGetter<T>> list;
 
     private ModelGetterGroup() {
-
+        this.list = new ArrayList<ModelGetter<T>>();
     }
 
     public static <T> ModelGetterGroup<T> create(Class<T> clazz) {
-        ModelGetterGroup<T> model = new ModelGetterGroup<T>();
-        model.setList(new ArrayList<ModelGetter<T>>());
-        return model;
+        return new ModelGetterGroup<T>();
     }
 
-    public ModelGetterGroup<T> add(String key, Getter<T, ?> getter) {
+    public ModelGetterGroup<T> add(String key, ClassGetter<T, ?> getter) {
         list.add(ModelGetter.create(key, getter));
         return this;
     }
@@ -37,19 +30,11 @@ public class ModelGetterGroup<T> {
         this.list = list;
     }
 
-    public void print(T t) {
+    public List<ModelColumn> out(T t) {
+        List<ModelColumn> result = new ArrayList<ModelColumn>();
         for (ModelGetter<T> item : list) {
             Object obj = item.getGetter().apply(t);
-            LOG.info("key:{}, obj:{}, class:{}", item.getKey(), obj, obj.getClass().getSimpleName());
-        }
-    }
-
-    public List<ColumnValue> out(T t) {
-        List<ColumnValue> result = new ArrayList<ColumnValue>();
-        for (ModelGetter<T> item : list) {
-            Object obj = item.getGetter().apply(t);
-            LOG.info("key:{}, obj:{}, class:{}", item.getKey(), obj, obj.getClass().getSimpleName());
-            result.add(ColumnValue.of(item.getKey(), obj, obj.getClass().getSimpleName()));
+            result.add(ModelColumn.of(item.getKey(), obj, obj.getClass().getName()));
         }
         return result;
     }

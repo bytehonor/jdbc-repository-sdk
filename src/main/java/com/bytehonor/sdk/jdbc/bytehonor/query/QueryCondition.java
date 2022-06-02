@@ -4,15 +4,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.define.bytehonor.constant.HttpConstants;
 import com.bytehonor.sdk.define.bytehonor.util.StringObject;
-import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlLogicEnum;
-import com.bytehonor.sdk.jdbc.bytehonor.getter.RequestGetter;
+import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlLogic;
 
 /**
  * 
@@ -31,7 +28,7 @@ public final class QueryCondition {
 
     private final SqlConditionGroup group;
 
-    private QueryCondition(SqlLogicEnum logic) {
+    private QueryCondition(SqlLogic logic) {
         this.page = SqlPage.create();
         this.order = null;
         this.group = SqlConditionGroup.create(logic);
@@ -49,33 +46,19 @@ public final class QueryCondition {
         return and(0, LIMIT_DEF);
     }
 
-    public static QueryCondition and(HttpServletRequest request) {
-        Objects.requireNonNull(request, "request");
-        int offset = RequestGetter.getOffset(request);
-        int limit = RequestGetter.getLimit(request);
-        return and(offset, limit);
-    }
-
     public static QueryCondition and(int offset, int limit) {
-        return create(SqlLogicEnum.AND, SqlPage.of(offset, limit));
+        return create(SqlLogic.AND, SqlPage.of(offset, limit));
     }
 
     public static QueryCondition or() {
         return or(0, LIMIT_DEF);
     }
 
-    public static QueryCondition or(HttpServletRequest request) {
-        Objects.requireNonNull(request, "request");
-        int offset = RequestGetter.getOffset(request);
-        int limit = RequestGetter.getLimit(request);
-        return or(offset, limit);
-    }
-
     public static QueryCondition or(int offset, int limit) {
-        return create(SqlLogicEnum.OR, SqlPage.of(offset, limit));
+        return create(SqlLogic.OR, SqlPage.of(offset, limit));
     }
 
-    public static QueryCondition create(SqlLogicEnum logic, SqlPage page) {
+    public static QueryCondition create(SqlLogic logic, SqlPage page) {
         Objects.requireNonNull(logic, "logic");
         Objects.requireNonNull(page, "page");
 

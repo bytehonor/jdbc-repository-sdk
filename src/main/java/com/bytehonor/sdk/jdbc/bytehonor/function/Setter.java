@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.jdbc.bytehonor.annotation;
+package com.bytehonor.sdk.jdbc.bytehonor.function;
 
 import java.io.Serializable;
 import java.util.function.Function;

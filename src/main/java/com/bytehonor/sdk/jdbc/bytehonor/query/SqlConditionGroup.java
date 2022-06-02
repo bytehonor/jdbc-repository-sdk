@@ -7,23 +7,23 @@ import java.util.Objects;
 import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.define.bytehonor.util.StringObject;
-import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlLogicEnum;
+import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlLogic;
 
 public class SqlConditionGroup {
 
-    private final SqlLogicEnum logic;
+    private final SqlLogic logic;
 
     private final List<SqlCondition> conditions;
 
     private final SqlArgHolder holder;
 
-    private SqlConditionGroup(SqlLogicEnum logic) {
+    private SqlConditionGroup(SqlLogic logic) {
         this.logic = logic;
         this.conditions = new ArrayList<SqlCondition>();
         this.holder = SqlArgHolder.create(logic);
     }
 
-    public static SqlConditionGroup create(SqlLogicEnum logic) {
+    public static SqlConditionGroup create(SqlLogic logic) {
         Objects.requireNonNull(logic, "logic");
 
         return new SqlConditionGroup(logic);
@@ -61,7 +61,7 @@ public class SqlConditionGroup {
         return toSql();
     }
 
-    public SqlLogicEnum getLogic() {
+    public SqlLogic getLogic() {
         return logic;
     }
 

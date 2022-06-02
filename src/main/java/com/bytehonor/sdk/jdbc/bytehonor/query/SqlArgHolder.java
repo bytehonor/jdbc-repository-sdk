@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Objects;
 
 import com.bytehonor.sdk.define.bytehonor.util.StringObject;
-import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlLogicEnum;
+import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlLogic;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlOperator;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
 
 public class SqlArgHolder {
 
-    private final SqlLogicEnum logic;
+    private final SqlLogic logic;
 
     private final StringBuilder sql;
 
@@ -21,15 +21,15 @@ public class SqlArgHolder {
 
     private int size;
 
-    private SqlArgHolder(SqlLogicEnum logic) {
-        this.logic = logic != null ? logic : SqlLogicEnum.AND;
+    private SqlArgHolder(SqlLogic logic) {
+        this.logic = logic != null ? logic : SqlLogic.AND;
         this.sql = new StringBuilder();
         this.args = new ArrayList<Object>();
         this.argTypes = new ArrayList<Integer>();
         this.size = 0;
     }
 
-    public static SqlArgHolder create(SqlLogicEnum logic) {
+    public static SqlArgHolder create(SqlLogic logic) {
         return new SqlArgHolder(logic);
     }
 
@@ -75,7 +75,7 @@ public class SqlArgHolder {
         return sql.toString();
     }
 
-    public SqlLogicEnum getLogic() {
+    public SqlLogic getLogic() {
         return logic;
     }
 

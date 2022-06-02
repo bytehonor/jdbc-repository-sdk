@@ -1,9 +1,17 @@
 package com.bytehonor.sdk.jdbc.bytehonor.model;
 
+import java.util.List;
+
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bytehonor.sdk.jdbc.bytehonor.Student;
 
 public class ModelGetterGroupTest {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ModelGetterGroupTest.class);
+    
     @Test
     public void test() {
         ModelGetterGroup<Student> group = ModelGetterGroup.create(Student.class);
@@ -19,7 +27,10 @@ public class ModelGetterGroupTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        group.print(student);
+        List<ModelColumn> items = group.out(student);
+        for (ModelColumn item : items) {
+            LOG.info("key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
+        }
     }
 
 }

@@ -1,14 +1,14 @@
 package com.bytehonor.sdk.jdbc.bytehonor.model;
 
-import com.bytehonor.sdk.jdbc.bytehonor.annotation.Getter;
+import com.bytehonor.sdk.jdbc.bytehonor.function.ClassGetter;
 
 public class ModelGetter<T> {
 
     private String key;
 
-    private Getter<T, ?> getter;
+    private ClassGetter<T, ?> getter;
 
-    public static <T> ModelGetter<T> create(String key, Getter<T, ?> getter) {
+    public static <T> ModelGetter<T> create(String key, ClassGetter<T, ?> getter) {
         ModelGetter<T> model = new ModelGetter<T>();
         model.setKey(key);
         model.setGetter(getter);
@@ -24,11 +24,11 @@ public class ModelGetter<T> {
         this.key = key;
     }
 
-    public Getter<T, ?> getGetter() {
+    public ClassGetter<T, ?> getGetter() {
         return getter;
     }
 
-    public void setGetter(Getter<T, ?> getter) {
+    public void setGetter(ClassGetter<T, ?> getter) {
         this.getter = getter;
     }
 

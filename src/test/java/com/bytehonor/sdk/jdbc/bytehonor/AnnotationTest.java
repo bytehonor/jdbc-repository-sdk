@@ -13,12 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
-import com.bytehonor.sdk.jdbc.bytehonor.annotation.ObjectGetter;
-import com.bytehonor.sdk.jdbc.bytehonor.annotation.IConvert;
-import com.bytehonor.sdk.jdbc.bytehonor.annotation.Getter;
 import com.bytehonor.sdk.jdbc.bytehonor.annotation.SqlColumn;
 import com.bytehonor.sdk.jdbc.bytehonor.annotation.SqlTable;
-import com.bytehonor.sdk.jdbc.bytehonor.model.Student;
+import com.bytehonor.sdk.jdbc.bytehonor.function.ClassGetter;
+import com.bytehonor.sdk.jdbc.bytehonor.function.IConvert;
+import com.bytehonor.sdk.jdbc.bytehonor.function.ObjectGetter;
 
 public class AnnotationTest {
 
@@ -40,11 +39,11 @@ public class AnnotationTest {
         IConvert<String, String> converter = student::repeat;
         LOG.info("converter:{}", converter.convert("111"));
 
-        Getter<Student, ?> nn = Student::getNickname;
+        ClassGetter<Student, ?> nn = Student::getNickname;
         Object nnApply = nn.apply(student);
         LOG.info("getNickname:{}, class:{}", nnApply, nnApply.getClass().getSimpleName());
 
-        Getter<Student, ?> ca = Student::getCreateAt;
+        ClassGetter<Student, ?> ca = Student::getCreateAt;
         Object caApply = ca.apply(student);
         LOG.info("getCreateAt:{}, class:{}", caApply, caApply.getClass().getSimpleName());
 
