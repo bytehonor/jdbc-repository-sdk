@@ -1,6 +1,9 @@
 package com.bytehonor.sdk.jdbc.bytehonor.meta;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.bytehonor.sdk.define.bytehonor.util.StringObject;
 
@@ -14,18 +17,31 @@ public class MetaTable {
 
     private List<MetaTableColumn> columns;
 
+    private Set<String> keySet;
+
+    private Set<String> columnSet;
+
     private String sqlColumns;
 
-    public String formColumns() {
+    public MetaTable() {
+        columns = new ArrayList<MetaTableColumn>();
+        keySet = new HashSet<String>();
+        columnSet = new HashSet<String>();
+    }
+
+    public void finish() {
         if (StringObject.isEmpty(sqlColumns)) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(primaryKey);
-            for (MetaTableColumn column : columns) {
-                sb.append(", ").append(column.getColumn());
-            }
-            sqlColumns = sb.toString();
         }
-        return sqlColumns;
+        keySet = new HashSet<String>();
+        columnSet = new HashSet<String>();
+        StringBuilder sb = new StringBuilder();
+        sb.append(primaryKey);
+        for (MetaTableColumn column : columns) {
+            keySet.add(column.getKey());
+            columnSet.add(column.getColumn());
+            sb.append(", ").append(column.getColumn());
+        }
+        sqlColumns = sb.toString();
     }
 
     public String getModelClazz() {
@@ -58,6 +74,30 @@ public class MetaTable {
 
     public void setColumns(List<MetaTableColumn> columns) {
         this.columns = columns;
+    }
+
+    public Set<String> getKeySet() {
+        return keySet;
+    }
+
+    public void setKeySet(Set<String> keySet) {
+        this.keySet = keySet;
+    }
+
+    public Set<String> getColumnSet() {
+        return columnSet;
+    }
+
+    public void setColumnSet(Set<String> columnSet) {
+        this.columnSet = columnSet;
+    }
+
+    public String getSqlColumns() {
+        return sqlColumns;
+    }
+
+    public void setSqlColumns(String sqlColumns) {
+        this.sqlColumns = sqlColumns;
     }
 
 }

@@ -4,7 +4,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +18,11 @@ import com.bytehonor.sdk.jdbc.bytehonor.annotation.SqlTable;
 import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTable;
 import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTableColumn;
 
-public class MetaParseUtils {
+public class SqlMetaUtils {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MetaParseUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SqlMetaUtils.class);
+
+    private static final Map<String, MetaTable> TABLES = new ConcurrentHashMap<String, MetaTable>();
 
     public static MetaTable parse(Class<?> clazz) {
         Objects.requireNonNull(clazz, "clazz");
@@ -26,18 +30,24 @@ public class MetaParseUtils {
         if (clazz.isAnnotationPresent(SqlTable.class) == false) {
             throw new RuntimeException("No SqlTable Annotation");
         }
-        MetaTable table = new MetaTable();
-        table.setModelClazz(clazz.getName());
+        String clazzName = clazz.getName();
+        MetaTable metaTable = TABLES.get(clazzName);
+        if (metaTable != null) {
+            return metaTable;
+        }
+
+        metaTable = new MetaTable();
+        metaTable.setModelClazz(clazz.getName());
 
         SqlTable sqlTable = AnnotationUtils.getAnnotation(clazz, SqlTable.class);
         String primary = sqlTable.primary();
         if (StringObject.isEmpty(primary)) {
-            throw new RuntimeException("No SqlTable primary");
+            throw new RuntimeException("No SqlTable primary, clazzName:" + clazzName);
         }
 
-        table.setTableName(sqlTable.name());
-        table.setPrimaryKey(primary);
-        LOG.debug("table name:{}, primary:{}", table.getTableName(), primary);
+        metaTable.setTableName(sqlTable.name());
+        metaTable.setPrimaryKey(primary);
+        LOG.debug("table name:{}, primary:{}", metaTable.getTableName(), primary);
 
         List<MetaTableColumn> columns = new ArrayList<MetaTableColumn>();
         Field[] fields = clazz.getDeclaredFields();
@@ -68,7 +78,10 @@ public class MetaParseUtils {
             column.setColumn(columnName);
             columns.add(column);
         }
-        table.setColumns(columns);
-        return table;
+        metaTable.setColumns(columns);
+
+        metaTable.finish();
+        TABLES.put(clazzName, metaTable);
+        return metaTable;
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.bytehonor.sdk.jdbc.bytehonor.jdbc.JdbcProxyDao;
 
 @Configuration
-@ConditionalOnWebApplication
 @ConditionalOnClass({ DataSourceProperties.class, JdbcTemplate.class })
 @AutoConfigureBefore(DataSourceAutoConfiguration.class)
 public class BytehonorJdbcSdkConfiguration {

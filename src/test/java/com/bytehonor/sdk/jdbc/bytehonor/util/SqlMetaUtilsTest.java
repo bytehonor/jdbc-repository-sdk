@@ -10,13 +10,13 @@ import com.bytehonor.sdk.jdbc.bytehonor.Student;
 import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTable;
 import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTableColumn;
 
-public class MetaParseUtilsTest {
+public class SqlMetaUtilsTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MetaParseUtilsTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SqlMetaUtilsTest.class);
 
     @Test
     public void testParse() {
-        MetaTable table = MetaParseUtils.parse(Student.class);
+        MetaTable table = SqlMetaUtils.parse(Student.class);
         LOG.info("tableName:{}, primaryKey:{}", table.getTableName(), table.getPrimaryKey());
         List<MetaTableColumn> columns = table.getColumns();
         for (MetaTableColumn column : columns) {

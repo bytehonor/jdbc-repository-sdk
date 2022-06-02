@@ -3,7 +3,7 @@ package com.bytehonor.sdk.jdbc.bytehonor.sql;
 import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTable;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
-import com.bytehonor.sdk.jdbc.bytehonor.util.MetaParseUtils;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlMetaUtils;
 
 public abstract class MysqlPrepareStatement implements PrepareStatement {
 
@@ -15,7 +15,7 @@ public abstract class MysqlPrepareStatement implements PrepareStatement {
 
     public MysqlPrepareStatement(Class<?> clazz, QueryCondition condition) {
         this.clazz = clazz;
-        this.table = MetaParseUtils.parse(clazz);
+        this.table = SqlMetaUtils.parse(clazz);
         this.condition = condition;
     }
 
