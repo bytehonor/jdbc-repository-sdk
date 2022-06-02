@@ -30,11 +30,10 @@ public class ModelGetterGroup<T> {
         this.list = list;
     }
 
-    public List<ModelColumn> out(T t) {
-        List<ModelColumn> result = new ArrayList<ModelColumn>();
+    public List<ModelKeyValue> out(T t) {
+        List<ModelKeyValue> result = new ArrayList<ModelKeyValue>();
         for (ModelGetter<T> item : list) {
-            Object val = item.value(t);
-            result.add(ModelColumn.of(item.getKey(), val, val.getClass().getName()));
+            result.add(item.value(t));
         }
         return result;
     }

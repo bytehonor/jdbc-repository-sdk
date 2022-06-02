@@ -63,7 +63,7 @@ public class MetaParseUtils {
             }
             if (StringObject.isEmpty(columnName)) {
                 LOG.debug("fieldName:{}, use camelToUnderline", fieldName);
-                columnName = StringObject.camelToUnderline(fieldName);
+                columnName = SqlColumnUtils.camelToUnderline(fieldName);
             }
             column.setColumn(columnName);
             columns.add(column);

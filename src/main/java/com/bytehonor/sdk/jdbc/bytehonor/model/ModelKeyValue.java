@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.jdbc.bytehonor.model;
 
-public class ModelColumn {
+public class ModelKeyValue {
 
     private String key;
 
@@ -8,8 +8,8 @@ public class ModelColumn {
 
     private String type;
 
-    public static ModelColumn of(String key, Object value, String type) {
-        ModelColumn model = new ModelColumn();
+    public static ModelKeyValue of(String key, Object value, String type) {
+        ModelKeyValue model = new ModelKeyValue();
         model.setKey(key);
         model.setValue(value);
         model.setType(type);

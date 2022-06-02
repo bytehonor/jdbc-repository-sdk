@@ -21,10 +21,11 @@ public class ModelGetter<T> {
         return model;
     }
 
-    public Object value(T t) {
+    public ModelKeyValue value(T t) {
         Objects.requireNonNull(t, "t");
 
-        return this.getter.apply(t);
+        Object val = this.getter.apply(t);
+        return ModelKeyValue.of(key, val, val.getClass().getName());
     }
 
     public String getKey() {

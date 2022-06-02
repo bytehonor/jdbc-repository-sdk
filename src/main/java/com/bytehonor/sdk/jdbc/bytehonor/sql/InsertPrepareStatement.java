@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumn;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelKeyValue;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
@@ -35,8 +35,8 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         ModelGetterGroup<T> group = mapper.create();
         Objects.requireNonNull(group, "group");
 
-        List<ModelColumn> items = group.out(model);
-        for (ModelColumn item : items) {
+        List<ModelKeyValue> items = group.out(model);
+        for (ModelKeyValue item : items) {
             LOG.info("key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
             insertColumns.add(item.getKey());
             insertArgs.add(item.getValue());
