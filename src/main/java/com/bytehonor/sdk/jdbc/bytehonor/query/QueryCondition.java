@@ -36,6 +36,10 @@ public final class QueryCondition {
         return and();
     }
 
+    public static QueryCondition create(int offset, int limit) {
+        return and(offset, limit);
+    }
+
     public static QueryCondition and() {
         return and(0, LIMIT_DEF);
     }
