@@ -13,6 +13,7 @@ import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
 public class UpdatePrepareStatement extends MysqlPrepareStatement {
@@ -39,7 +40,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         List<ModelKeyValue> items = group.out(model);
         for (ModelKeyValue item : items) {
             LOG.info("key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
-            updateColumns.add(item.getKey());
+            updateColumns.add(SqlColumnUtils.camelToUnderline(item.getKey()));
             updateArgs.add(item.getValue());
         }
     }
