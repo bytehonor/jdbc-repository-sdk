@@ -30,10 +30,10 @@ public class ModelGetterGroup<T> {
         this.list = list;
     }
 
-    public List<ModelKeyValue> out(T t) {
-        List<ModelKeyValue> result = new ArrayList<ModelKeyValue>();
+    public List<ModelColumnValue> out(T t) {
+        List<ModelColumnValue> result = new ArrayList<ModelColumnValue>();
         for (ModelGetter<T> item : list) {
-            ModelKeyValue value = item.value(t);
+            ModelColumnValue value = item.value(t);
             if (value == null) {
                 continue;
             }

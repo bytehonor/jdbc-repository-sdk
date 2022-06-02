@@ -22,14 +22,14 @@ public class ModelGetter<T> {
         return model;
     }
 
-    public ModelKeyValue value(T t) {
+    public ModelColumnValue value(T t) {
         Objects.requireNonNull(t, "t");
 
         Object val = this.getter.apply(t);
         if (val == null) {
             return null;
         }
-        return ModelKeyValue.of(SqlColumnUtils.camelToUnderline(key), val, val.getClass().getName());
+        return ModelColumnValue.of(SqlColumnUtils.camelToUnderline(key), val, val.getClass().getName());
     }
 
     public String getKey() {

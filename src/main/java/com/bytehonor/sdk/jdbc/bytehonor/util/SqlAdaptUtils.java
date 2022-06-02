@@ -9,7 +9,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelKeyValue;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.sql.PrepareStatement;
 import com.bytehonor.sdk.lang.bytehonor.getter.BooleanGetter;
 import com.bytehonor.sdk.lang.bytehonor.getter.DoubleGetter;
@@ -20,18 +20,18 @@ public class SqlAdaptUtils {
 
     private static final Logger LOG = LoggerFactory.getLogger(SqlAdaptUtils.class);
 
-    public static PreparedStatement convert(PrepareStatement statement, List<ModelKeyValue> items,
+    public static PreparedStatement convert(PrepareStatement statement, List<ModelColumnValue> items,
             Connection connection) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(statement.sql(), Statement.RETURN_GENERATED_KEYS);
         int idx = 1;
-        for (ModelKeyValue item : items) {
+        for (ModelColumnValue item : items) {
             set(ps, idx, item);
             idx++;
         }
         return ps;
     }
 
-    private static void set(PreparedStatement ps, int idx, ModelKeyValue item) throws SQLException {
+    private static void set(PreparedStatement ps, int idx, ModelColumnValue item) throws SQLException {
         if (String.class.getName().equals(item.getType())) {
             ps.setString(idx, item.getValue().toString());
             return;
@@ -52,7 +52,7 @@ public class SqlAdaptUtils {
             ps.setDouble(idx, DoubleGetter.optional(item.getValue().toString(), 0.0));
             return;
         }
-        LOG.error("not support type, set key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
+        LOG.error("not support type, set key:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
         throw new RuntimeException("not support type");
     }
 }

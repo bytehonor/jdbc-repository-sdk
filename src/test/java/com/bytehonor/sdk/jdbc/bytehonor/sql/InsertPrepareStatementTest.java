@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.jdbc.bytehonor.Student;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 
 public class InsertPrepareStatementTest {
@@ -20,7 +20,7 @@ public class InsertPrepareStatementTest {
 
     @Test
     public void test() {
-        ModelMapper<Student> mapper = new ModelMapper<Student>() {
+        ModelConvertMapper<Student> mapper = new ModelConvertMapper<Student>() {
 
             @Override
             public ModelGetterGroup<Student> create() {

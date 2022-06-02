@@ -10,8 +10,8 @@ import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelKeyValue;
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
@@ -30,7 +30,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
     }
 
     @Override
-    public <T> List<ModelKeyValue> prepare(T model, ModelMapper<T> mapper) {
+    public <T> List<ModelColumnValue> prepare(T model, ModelConvertMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
@@ -38,22 +38,22 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         Objects.requireNonNull(group, "group");
 
         String primary = getTable().getPrimaryKey();
-        List<ModelKeyValue> items = group.out(model);
-        for (ModelKeyValue item : items) {
-            if (primary.equals(item.getKey())) {
-                LOG.debug("insert {} pass", item.getKey());
+        List<ModelColumnValue> items = group.out(model);
+        for (ModelColumnValue item : items) {
+            if (primary.equals(item.getColumn())) {
+                LOG.debug("insert {} pass", item.getColumn());
                 continue;
             }
-            if (SqlConstants.CREATE_AT_COLUMN.equals(item.getKey())) {
-                LOG.debug("insert {} pass", item.getKey());
+            if (SqlConstants.CREATE_AT_COLUMN.equals(item.getColumn())) {
+                LOG.debug("insert {} pass", item.getColumn());
                 continue;
             }
-            if (SqlConstants.UPDATE_AT_COLUMN.equals(item.getKey())) {
-                LOG.debug("insert {} pass", item.getKey());
+            if (SqlConstants.UPDATE_AT_COLUMN.equals(item.getColumn())) {
+                LOG.debug("insert {} pass", item.getColumn());
                 continue;
             }
-            LOG.info("key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
-            insertColumns.add(item.getKey());
+            LOG.info("column:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
+            insertColumns.add(item.getColumn());
             insertArgs.add(item.getValue());
         }
 

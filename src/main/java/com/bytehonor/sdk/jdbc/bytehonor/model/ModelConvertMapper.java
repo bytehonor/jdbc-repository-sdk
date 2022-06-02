@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.jdbc.bytehonor.model;
 
-public interface ModelMapper<T> {
+public interface ModelConvertMapper<T> {
 
     public ModelGetterGroup<T> create();
 

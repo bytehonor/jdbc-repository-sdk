@@ -3,8 +3,8 @@ package com.bytehonor.sdk.jdbc.bytehonor.sql;
 import java.util.List;
 
 import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTable;
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelKeyValue;
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlMetaUtils;
 
@@ -23,7 +23,7 @@ public abstract class MysqlPrepareStatement implements PrepareStatement {
     }
 
     @Override
-    public <T> List<ModelKeyValue> prepare(T model, ModelMapper<T> mapper) {
+    public <T> List<ModelColumnValue> prepare(T model, ModelConvertMapper<T> mapper) {
         return null;
     }
 

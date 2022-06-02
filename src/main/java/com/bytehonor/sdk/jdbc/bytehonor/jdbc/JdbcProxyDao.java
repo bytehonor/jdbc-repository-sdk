@@ -15,8 +15,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelKeyValue;
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.sql.PrepareStatement;
 import com.bytehonor.sdk.jdbc.bytehonor.sql.PrepareStatementBuilder;
@@ -103,7 +103,7 @@ public class JdbcProxyDao {
         }
     }
 
-    public <T> int update(T model, QueryCondition condition, ModelMapper<T> mapper) {
+    public <T> int update(T model, QueryCondition condition, ModelConvertMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
@@ -119,13 +119,13 @@ public class JdbcProxyDao {
         return jdbcTemplate.update(sql, args);
     }
 
-    public <T> long insert(T model, ModelMapper<T> mapper) {
+    public <T> long insert(T model, ModelConvertMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
         final Class<? extends Object> clazz = model.getClass();
         final PrepareStatement statement = PrepareStatementBuilder.insert(clazz);
-        final List<ModelKeyValue> items = statement.prepare(model, mapper);
+        final List<ModelColumnValue> items = statement.prepare(model, mapper);
 
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -145,7 +145,7 @@ public class JdbcProxyDao {
         return holder.getKey().longValue();
     }
 
-    public <T> int insertQuick(T model, ModelMapper<T> mapper) {
+    public <T> int insertQuick(T model, ModelConvertMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
