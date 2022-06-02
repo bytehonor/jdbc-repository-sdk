@@ -30,7 +30,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
     }
 
     @Override
-    public <T> void prepare(T model, ModelMapper<T> mapper) {
+    public <T> List<ModelKeyValue> prepare(T model, ModelMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
@@ -61,6 +61,8 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
             updateColumns.add(SqlConstants.UPDATE_AT_COLUMN);
             updateArgs.add(System.currentTimeMillis());
         }
+
+        return items;
     }
 
     private boolean enabledUpdateAt() {

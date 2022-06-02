@@ -1,5 +1,9 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,6 +19,10 @@ import com.bytehonor.sdk.jdbc.bytehonor.model.ModelMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
+import com.bytehonor.sdk.lang.bytehonor.getter.BooleanGetter;
+import com.bytehonor.sdk.lang.bytehonor.getter.DoubleGetter;
+import com.bytehonor.sdk.lang.bytehonor.getter.IntegerGetter;
+import com.bytehonor.sdk.lang.bytehonor.getter.LongGetter;
 
 public class InsertPrepareStatement extends MysqlPrepareStatement {
 
@@ -29,8 +37,44 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         this.insertArgs = new ArrayList<Object>();
     }
 
+    public static PreparedStatement convert(PrepareStatement statement, List<ModelKeyValue> items,
+            Connection connection) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement(statement.sql(), Statement.RETURN_GENERATED_KEYS);
+        int idx = 1;
+        for (ModelKeyValue item : items) {
+            set(ps, idx, item);
+            idx++;
+        }
+        return ps;
+    }
+
+    private static void set(PreparedStatement ps, int idx, ModelKeyValue item) throws SQLException {
+        if (String.class.getName().equals(item.getType())) {
+            ps.setString(idx, item.getValue().toString());
+            return;
+        }
+        if (Long.class.getName().equals(item.getType())) {
+            ps.setLong(idx, LongGetter.optional(item.getValue().toString(), 0L));
+            return;
+        }
+        if (Integer.class.getName().equals(item.getType())) {
+            ps.setInt(idx, IntegerGetter.optional(item.getValue().toString(), 0));
+            return;
+        }
+        if (Boolean.class.getName().equals(item.getType())) {
+            ps.setBoolean(idx, BooleanGetter.optional(item.getValue().toString(), false));
+            return;
+        }
+        if (Double.class.getName().equals(item.getType())) {
+            ps.setDouble(idx, DoubleGetter.optional(item.getValue().toString(), 0.0));
+            return;
+        }
+        LOG.error("not support type, set key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getType());
+        throw new RuntimeException("not support type");
+    }
+
     @Override
-    public <T> void prepare(T model, ModelMapper<T> mapper) {
+    public <T> List<ModelKeyValue> prepare(T model, ModelMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
@@ -44,6 +88,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
             insertArgs.add(item.getValue());
         }
         // TODO create_at update_at
+        return items;
     }
 
     @Override
