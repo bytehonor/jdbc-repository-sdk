@@ -1,0 +1,37 @@
+package com.bytehonor.sdk.jdbc.bytehonor.sql;
+
+import com.bytehonor.sdk.jdbc.bytehonor.meta.MetaTable;
+import com.bytehonor.sdk.jdbc.bytehonor.query.MatchCondition;
+
+public class SelectPrepareStatement extends MysqlPrepareStatement {
+
+    public SelectPrepareStatement(MetaTable table, MatchCondition condition) {
+        super(table, condition);
+    }
+
+    @Override
+    public String sql() {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT ").append(table.formColumns()).append(" FROM ").append(table.getTableName());
+
+        if (condition.getGroup() != null) {
+            sql.append(condition.getGroup().toSql());
+        }
+        if (condition.getOrder() != null) {
+            sql.append(condition.getOrder().toSql());
+        }
+        if (condition.getPage() != null) {
+            sql.append(condition.getPage().toSql());
+        }
+        return sql.toString();
+    }
+
+    @Override
+    public Object[] args() {
+        if (condition.getGroup() == null) {
+            return new Object[0];
+        }
+        return condition.getGroup().args();
+    }
+
+}
