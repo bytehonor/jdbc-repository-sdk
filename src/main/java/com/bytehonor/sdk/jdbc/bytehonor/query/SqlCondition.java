@@ -4,7 +4,9 @@ import java.sql.Types;
 import java.util.List;
 import java.util.Set;
 
+import com.bytehonor.sdk.define.bytehonor.util.StringObject;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlOperator;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.lang.bytehonor.string.StringCreator;
 import com.bytehonor.sdk.lang.bytehonor.util.ListJoinUtils;
 import com.bytehonor.sdk.lang.bytehonor.util.SetJoinUtils;
@@ -18,6 +20,18 @@ public class SqlCondition {
     private int type;
 
     private SqlOperator operator;
+
+    public static boolean accept(SqlCondition condition) {
+        if (StringObject.isEmpty(condition.getKey()) || condition.getValue() == null) {
+            return false;
+        }
+        condition.format();
+        return true;
+    }
+
+    public void format() {
+        this.key = SqlColumnUtils.camelToUnderline(key);
+    }
 
     public static SqlCondition eq(String key, String value) {
         return new SqlCondition(key, value, Types.VARCHAR, SqlOperator.EQ);

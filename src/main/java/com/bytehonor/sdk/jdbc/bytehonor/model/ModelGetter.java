@@ -3,6 +3,7 @@ package com.bytehonor.sdk.jdbc.bytehonor.model;
 import java.util.Objects;
 
 import com.bytehonor.sdk.jdbc.bytehonor.function.ClassGetter;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 
 public class ModelGetter<T> {
 
@@ -25,7 +26,7 @@ public class ModelGetter<T> {
         Objects.requireNonNull(t, "t");
 
         Object val = this.getter.apply(t);
-        return ModelKeyValue.of(key, val, val.getClass().getName());
+        return ModelKeyValue.of(SqlColumnUtils.camelToUnderline(key), val, val.getClass().getName());
     }
 
     public String getKey() {

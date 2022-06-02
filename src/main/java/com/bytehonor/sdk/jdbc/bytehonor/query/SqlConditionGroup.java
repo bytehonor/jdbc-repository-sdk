@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.define.bytehonor.util.StringObject;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlLogic;
 
 public class SqlConditionGroup {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SqlConditionGroup.class);
 
     private final SqlLogic logic;
 
@@ -29,10 +32,12 @@ public class SqlConditionGroup {
         return new SqlConditionGroup(logic);
     }
 
-    public SqlConditionGroup and(SqlCondition condition) {
+    public SqlConditionGroup add(SqlCondition condition) {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(condition.getOperator(), "operator");
-        if (StringObject.isEmpty(condition.getKey()) || condition.getValue() == null) {
+
+        if (SqlCondition.accept(condition) == false) {
+            LOG.warn("put error condition, key:{}, value:{}", condition.getKey(), condition.getValue());
             return this;
         }
         this.conditions.add(condition);

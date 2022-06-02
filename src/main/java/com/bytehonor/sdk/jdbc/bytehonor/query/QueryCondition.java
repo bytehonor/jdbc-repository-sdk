@@ -4,11 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.bytehonor.sdk.define.bytehonor.constant.HttpConstants;
-import com.bytehonor.sdk.define.bytehonor.util.StringObject;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlLogic;
 
 /**
@@ -17,8 +13,6 @@ import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlLogic;
  *
  */
 public final class QueryCondition {
-
-    private static final Logger LOG = LoggerFactory.getLogger(QueryCondition.class);
 
     private static int LIMIT_DEF = HttpConstants.LIMIT_DEF;
 
@@ -67,109 +61,105 @@ public final class QueryCondition {
         return codition;
     }
 
-    private QueryCondition add(SqlCondition condition) {
-        if (StringObject.isEmpty(condition.getKey()) || condition.getValue() == null) {
-            LOG.warn("put error condition, key:{}, value:{}", condition.getKey(), condition.getValue());
-            return this;
-        }
-        group.and(condition);
+    private QueryCondition doAdd(SqlCondition condition) {
+        group.add(condition);
         return this;
     }
 
     public QueryCondition eq(String key, String value) {
-        return this.add(SqlCondition.eq(key, value));
+        return this.doAdd(SqlCondition.eq(key, value));
     }
 
     public QueryCondition eq(String key, Long value) {
-        return this.add(SqlCondition.eq(key, value));
+        return this.doAdd(SqlCondition.eq(key, value));
     }
 
     public QueryCondition eq(String key, Integer value) {
-        return this.add(SqlCondition.eq(key, value));
+        return this.doAdd(SqlCondition.eq(key, value));
     }
 
     public QueryCondition eq(String key, Boolean value) {
-        return this.add(SqlCondition.eq(key, value));
+        return this.doAdd(SqlCondition.eq(key, value));
     }
 
     public QueryCondition neq(String key, String value) {
-        return this.add(SqlCondition.eq(key, value));
+        return this.doAdd(SqlCondition.eq(key, value));
     }
 
     public QueryCondition neq(String key, Long value) {
-        return this.add(SqlCondition.neq(key, value));
+        return this.doAdd(SqlCondition.neq(key, value));
     }
 
     public QueryCondition neq(String key, Integer value) {
-        return this.add(SqlCondition.neq(key, value));
+        return this.doAdd(SqlCondition.neq(key, value));
     }
 
     public QueryCondition neq(String key, Boolean value) {
-        return this.add(SqlCondition.neq(key, value));
+        return this.doAdd(SqlCondition.neq(key, value));
     }
 
     public QueryCondition gt(String key, Long value) {
-        return this.add(SqlCondition.gt(key, value));
+        return this.doAdd(SqlCondition.gt(key, value));
     }
 
     public QueryCondition gt(String key, Integer value) {
-        return this.add(SqlCondition.gt(key, value));
+        return this.doAdd(SqlCondition.gt(key, value));
     }
 
     public QueryCondition egt(String key, Long value) {
-        return this.add(SqlCondition.egt(key, value));
+        return this.doAdd(SqlCondition.egt(key, value));
     }
 
     public QueryCondition egt(String key, Integer value) {
-        return this.add(SqlCondition.egt(key, value));
+        return this.doAdd(SqlCondition.egt(key, value));
     }
 
     public QueryCondition lt(String key, String value) {
-        return this.add(SqlCondition.lt(key, value));
+        return this.doAdd(SqlCondition.lt(key, value));
     }
 
     public QueryCondition lt(String key, Long value) {
-        return this.add(SqlCondition.lt(key, value));
+        return this.doAdd(SqlCondition.lt(key, value));
     }
 
     public QueryCondition lt(String key, Integer value) {
-        return this.add(SqlCondition.lt(key, value));
+        return this.doAdd(SqlCondition.lt(key, value));
     }
 
     public QueryCondition elt(String key, Long value) {
-        return this.add(SqlCondition.elt(key, value));
+        return this.doAdd(SqlCondition.elt(key, value));
     }
 
     public QueryCondition elt(String key, Integer value) {
-        return this.add(SqlCondition.elt(key, value));
+        return this.doAdd(SqlCondition.elt(key, value));
     }
 
     public QueryCondition like(String key, String value) {
-        return this.add(SqlCondition.like(key, value));
+        return this.doAdd(SqlCondition.like(key, value));
     }
 
     public QueryCondition in(String key, List<String> value) {
-        return this.add(SqlCondition.in(key, value));
+        return this.doAdd(SqlCondition.in(key, value));
     }
 
     public QueryCondition in(String key, Set<String> value) {
-        return this.add(SqlCondition.in(key, value));
+        return this.doAdd(SqlCondition.in(key, value));
     }
 
     public QueryCondition inLong(String key, List<Long> value) {
-        return this.add(SqlCondition.inLong(key, value));
+        return this.doAdd(SqlCondition.inLong(key, value));
     }
 
     public QueryCondition inLong(String key, Set<Long> value) {
-        return this.add(SqlCondition.inLong(key, value));
+        return this.doAdd(SqlCondition.inLong(key, value));
     }
 
     public QueryCondition inInt(String key, List<Integer> value) {
-        return this.add(SqlCondition.inInt(key, value));
+        return this.doAdd(SqlCondition.inInt(key, value));
     }
 
     public QueryCondition inInt(String key, Set<Integer> value) {
-        return this.add(SqlCondition.inInt(key, value));
+        return this.doAdd(SqlCondition.inInt(key, value));
     }
 
     public QueryCondition descBy(String key) {
