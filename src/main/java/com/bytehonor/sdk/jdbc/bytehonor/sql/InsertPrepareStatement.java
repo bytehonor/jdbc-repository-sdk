@@ -16,7 +16,6 @@ import com.bytehonor.sdk.jdbc.bytehonor.model.ModelSavePrepareResult;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
-import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
 public class InsertPrepareStatement extends MysqlPrepareStatement {
 
@@ -70,17 +69,16 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         StringBuilder paramHolder = new StringBuilder();
         for (String column : saveColumns) {
             if (idx > 0) {
-                columnHolder.append(",");
-                paramHolder.append(",");
+                columnHolder.append(SqlConstants.CON);
+                paramHolder.append(SqlConstants.CON);
             }
             idx++;
             columnHolder.append(column);
             paramHolder.append(SqlConstants.PARAM);
         }
-        sql.append(" (").append(columnHolder.toString()).append(") ");
-        sql.append(" VALUES (").append(paramHolder.toString()).append(") ");
 
-        sql.append(SqlStringUtils.toWhereSql(condition.getGroup()));
+        sql.append(" (").append(columnHolder.toString()).append(") VALUES (").append(paramHolder.toString())
+                .append(")");
         return sql.toString();
     }
 

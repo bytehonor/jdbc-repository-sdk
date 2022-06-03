@@ -64,7 +64,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         int idx = 0;
         for (String column : saveColumns) {
             if (idx > 0) {
-                sql.append(" , ");
+                sql.append(SqlConstants.CON);
             }
             idx++;
             sql.append(column).append(" = ").append(SqlConstants.PARAM);

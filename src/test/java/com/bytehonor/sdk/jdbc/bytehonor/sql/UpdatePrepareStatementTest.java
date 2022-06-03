@@ -62,7 +62,7 @@ public class UpdatePrepareStatementTest {
             LOG.info("arg:{}", arg);
         }
 
-        String target = "UPDATE tbl_student SET age = ? , nickname = ? , update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
+        String target = "UPDATE tbl_student SET age = ?,nickname = ?,update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
         assertTrue("test", target.equals(sql) && args.length == 4);
     }
 
@@ -96,7 +96,7 @@ public class UpdatePrepareStatementTest {
             LOG.info("arg:{}", arg);
         }
 
-        String target = "UPDATE tbl_student SET age = ? , nickname = ? , update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
+        String target = "UPDATE tbl_student SET age = ?,nickname = ?,update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
         assertTrue("testSetValueEmpty", target.equals(sql) && args.length == 4);
     }
 
@@ -124,7 +124,7 @@ public class UpdatePrepareStatementTest {
             LOG.info("arg:{}", arg);
         }
 
-        String target = "UPDATE tbl_student SET age = ? , update_at = ? WHERE create_at > ?";
+        String target = "UPDATE tbl_student SET age = ?,update_at = ? WHERE create_at > ?";
         assertTrue("testSetValueNull", target.equals(sql) && args.length == 3);
     }
 }
