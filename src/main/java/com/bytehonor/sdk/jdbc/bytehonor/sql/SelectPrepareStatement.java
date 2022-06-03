@@ -15,7 +15,7 @@ public class SelectPrepareStatement extends MysqlPrepareStatement {
     @Override
     public String sql() {
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT ").append(table.getSqlColumns()).append(" FROM ").append(table.getTableName());
+        sql.append("SELECT ").append(table.getFullColumns()).append(" FROM ").append(table.getTableName());
 
         sql.append(SqlStringUtils.toWhereSql(condition.getGroup()));
         sql.append(SqlStringUtils.toOrderSql(condition.getOrder()));

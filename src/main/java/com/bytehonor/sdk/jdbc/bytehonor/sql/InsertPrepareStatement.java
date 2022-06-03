@@ -13,6 +13,7 @@ import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
@@ -40,15 +41,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         String primary = getTable().getPrimaryKey();
         List<ModelColumnValue> items = group.out(model);
         for (ModelColumnValue item : items) {
-            if (primary.equals(item.getColumn())) {
-                LOG.debug("insert {} pass", item.getColumn());
-                continue;
-            }
-            if (SqlConstants.CREATE_AT_COLUMN.equals(item.getColumn())) {
-                LOG.debug("insert {} pass", item.getColumn());
-                continue;
-            }
-            if (SqlConstants.UPDATE_AT_COLUMN.equals(item.getColumn())) {
+            if (SqlColumnUtils.isSaveIgnore(primary, item.getColumn())) {
                 LOG.debug("insert {} pass", item.getColumn());
                 continue;
             }

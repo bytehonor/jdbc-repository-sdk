@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.bytehonor.sdk.define.bytehonor.util.StringObject;
+import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
 import com.bytehonor.sdk.lang.bytehonor.regex.PatternUtils;
 
 public class SqlColumnUtils {
@@ -49,5 +50,18 @@ public class SqlColumnUtils {
             }
             throw new RuntimeException("column only accept _ number letter, column:" + column);
         }
+    }
+
+    public static boolean isSaveIgnore(String primary, String column) {
+        if (StringObject.equals(primary, column)) {
+            return true;
+        }
+        if (SqlConstants.CREATE_AT_COLUMN.equals(column)) {
+            return true;
+        }
+        if (SqlConstants.UPDATE_AT_COLUMN.equals(column)) {
+            return true;
+        }
+        return false;
     }
 }

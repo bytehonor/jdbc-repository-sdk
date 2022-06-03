@@ -29,6 +29,7 @@ public class InsertPrepareStatementTest {
                 group.add("age", Student::getAge);
                 group.add("nickname", Student::getNickname);
                 group.add("create_at", Student::getCreateAt);
+                group.add("updateAt", Student::getUpdateAt);
                 return group;
             }
 

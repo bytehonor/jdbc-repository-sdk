@@ -21,7 +21,7 @@ public class MetaTable {
 
     private Set<String> columnSet;
 
-    private String sqlColumns;
+    private String fullColumns;
 
     public MetaTable() {
         columns = new ArrayList<MetaTableColumn>();
@@ -30,7 +30,7 @@ public class MetaTable {
     }
 
     public void finish() {
-        if (StringObject.isEmpty(sqlColumns)) {
+        if (StringObject.isEmpty(fullColumns)) {
         }
         keySet = new HashSet<String>();
         columnSet = new HashSet<String>();
@@ -41,7 +41,7 @@ public class MetaTable {
             columnSet.add(column.getColumn());
             sb.append(", ").append(column.getColumn());
         }
-        sqlColumns = sb.toString();
+        fullColumns = sb.toString();
     }
 
     public String getModelClazz() {
@@ -92,12 +92,12 @@ public class MetaTable {
         this.columnSet = columnSet;
     }
 
-    public String getSqlColumns() {
-        return sqlColumns;
+    public String getFullColumns() {
+        return fullColumns;
     }
 
-    public void setSqlColumns(String sqlColumns) {
-        this.sqlColumns = sqlColumns;
+    public void setFullColumns(String fullColumns) {
+        this.fullColumns = fullColumns;
     }
 
 }
