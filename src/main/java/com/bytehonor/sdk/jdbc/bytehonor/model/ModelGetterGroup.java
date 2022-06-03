@@ -30,7 +30,13 @@ public class ModelGetterGroup<T> {
         this.list = list;
     }
 
-    public List<ModelColumnValue> out(T t) {
+    /**
+     * 将对象解构成属性值列表
+     * 
+     * @param t
+     * @return
+     */
+    public List<ModelColumnValue> spread(T t) {
         List<ModelColumnValue> result = new ArrayList<ModelColumnValue>();
         for (ModelGetter<T> item : list) {
             ModelColumnValue value = item.value(t);

@@ -12,6 +12,7 @@ import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelSavePrepareResult;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
@@ -21,13 +22,13 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdatePrepareStatement.class);
 
-    private final List<String> updateColumns;
-    private final List<Object> updateArgs;
+    private final List<String> saveColumns;
+    private final List<Object> saveValues;
 
     public UpdatePrepareStatement(Class<?> clazz, QueryCondition condition) {
         super(clazz, condition);
-        this.updateColumns = new ArrayList<String>();
-        this.updateArgs = new ArrayList<Object>();
+        this.saveColumns = new ArrayList<String>();
+        this.saveValues = new ArrayList<Object>();
     }
 
     @Override
@@ -38,46 +39,27 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         ModelGetterGroup<T> group = mapper.create();
         Objects.requireNonNull(group, "group");
 
-        String primary = getTable().getPrimaryKey();
-        List<ModelColumnValue> items = group.out(model);
-        for (ModelColumnValue item : items) {
-            if (SqlColumnUtils.isSaveIgnore(primary, item.getColumn())) {
-                LOG.debug("update {} pass", item.getColumn());
-                continue;
-            }
+        List<ModelColumnValue> items = group.spread(model);
+        ModelSavePrepareResult result = SqlColumnUtils.prepare(getTable(), items, false);
 
-            LOG.debug("update column:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
-            updateColumns.add(item.getColumn());
-            updateArgs.add(item.getValue());
+        saveColumns.addAll(result.getColumns());
+        saveValues.addAll(result.getValues());
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("prepare saveColumns:{}, saveValues:{}", saveColumns.size(), saveValues.size());
         }
-
-        if (enabledUpdateAt()) {
-            updateColumns.add(SqlConstants.UPDATE_AT_COLUMN);
-            updateArgs.add(System.currentTimeMillis());
-        }
-
         return items;
-    }
-
-    private boolean enabledUpdateAt() {
-        if (getTable().getKeySet().contains(SqlConstants.UPDATE_AT_KEY)) {
-            return true;
-        }
-        if (getTable().getColumnSet().contains(SqlConstants.UPDATE_AT_COLUMN)) {
-            return true;
-        }
-        return false;
     }
 
     @Override
     public String sql() {
-        if (CollectionUtils.isEmpty(updateColumns)) {
+        if (CollectionUtils.isEmpty(saveColumns)) {
             throw new RuntimeException("update sql updateColumns empty");
         }
         StringBuilder sql = new StringBuilder();
         sql.append("UPDATE ").append(table.getTableName()).append(" SET ");
         int idx = 0;
-        for (String column : updateColumns) {
+        for (String column : saveColumns) {
             if (idx > 0) {
                 sql.append(" , ");
             }
@@ -99,11 +81,11 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
             throw new RuntimeException("update sql condition group args isEmpty");
         }
 
-        List<Object> params = new ArrayList<Object>();
-        params.addAll(updateArgs);
-        params.addAll(args);
+        List<Object> allArgs = new ArrayList<Object>();
+        allArgs.addAll(saveValues);
+        allArgs.addAll(args);
 
-        return params.toArray();
+        return allArgs.toArray();
     }
 
     @Override

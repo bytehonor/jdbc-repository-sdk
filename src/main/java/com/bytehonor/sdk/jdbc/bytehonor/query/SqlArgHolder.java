@@ -18,17 +18,20 @@ public class SqlArgHolder {
 
     private final StringBuilder sql;
 
-    private final List<Object> args;
+    private final List<Object> values;
 
-    private final List<Integer> types;
+    private final List<Integer> sqlTypes;
+
+    private final List<String> javaTypes;
 
     private int size;
 
     private SqlArgHolder(SqlLogic logic) {
         this.logic = logic != null ? logic : SqlLogic.AND;
         this.sql = new StringBuilder();
-        this.args = new ArrayList<Object>();
-        this.types = new ArrayList<Integer>();
+        this.values = new ArrayList<Object>();
+        this.sqlTypes = new ArrayList<Integer>();
+        this.javaTypes = new ArrayList<String>();
         this.size = 0;
     }
 
@@ -66,9 +69,9 @@ public class SqlArgHolder {
         }
         this.sql.append(column).append(BLANK).append(condition.getOperator().getOpt()).append(BLANK)
                 .append(SqlConstants.PARAM);
-        this.args.add(condition.getValue());
-        this.types.add(condition.getType());
-
+        this.values.add(condition.getValue());
+        this.sqlTypes.add(condition.getType());
+        this.javaTypes.add(condition.getValue().getClass().getName());
         return this;
     }
 
@@ -93,12 +96,12 @@ public class SqlArgHolder {
         return sql;
     }
 
-    public List<Object> getArgs() {
-        return args;
+    public List<Object> getValues() {
+        return values;
     }
 
-    public List<Integer> getTypes() {
-        return types;
+    public List<Integer> getSqlTypes() {
+        return sqlTypes;
     }
 
 }

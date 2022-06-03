@@ -58,14 +58,14 @@ public class SqlConditionGroup {
         if (holder == null) {
             return new ArrayList<Object>();
         }
-        return holder.getArgs();
+        return holder.getValues();
     }
 
     public List<Integer> types() {
         if (holder == null) {
             return new ArrayList<Integer>();
         }
-        return holder.getTypes();
+        return holder.getSqlTypes();
     }
 
     @Override

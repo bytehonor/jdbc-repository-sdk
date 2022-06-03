@@ -29,7 +29,7 @@ public class ModelGetterGroupTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        List<ModelColumnValue> items = group.out(student);
+        List<ModelColumnValue> items = group.spread(student);
         for (ModelColumnValue item : items) {
             LOG.info("key:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
         }

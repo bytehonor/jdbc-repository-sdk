@@ -9,9 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelSavePrepareResult;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
@@ -21,13 +22,13 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdatePrepareStatement.class);
 
-    private final List<String> insertColumns;
-    private final List<Object> insertArgs;
+    private final List<String> saveColumns;
+    private final List<Object> saveValues;
 
     public InsertPrepareStatement(Class<?> clazz) {
         super(clazz, QueryCondition.and());
-        this.insertColumns = new ArrayList<String>();
-        this.insertArgs = new ArrayList<Object>();
+        this.saveColumns = new ArrayList<String>();
+        this.saveValues = new ArrayList<Object>();
     }
 
     @Override
@@ -38,59 +39,28 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         ModelGetterGroup<T> group = mapper.create();
         Objects.requireNonNull(group, "group");
 
-        String primary = getTable().getPrimaryKey();
-        List<ModelColumnValue> items = group.out(model);
-        for (ModelColumnValue item : items) {
-            if (SqlColumnUtils.isSaveIgnore(primary, item.getColumn())) {
-                LOG.debug("insert {} pass", item.getColumn());
-                continue;
-            }
-            LOG.info("column:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
-            insertColumns.add(item.getColumn());
-            insertArgs.add(item.getValue());
-        }
+        List<ModelColumnValue> items = group.spread(model);
+        ModelSavePrepareResult result = SqlColumnUtils.prepare(getTable(), items, true);
 
-        long now = System.currentTimeMillis();
-        if (enabledUpdateAt()) {
-            insertColumns.add(SqlConstants.UPDATE_AT_COLUMN);
-            insertArgs.add(now);
-        }
-        if (enabledCreateAt()) {
-            insertColumns.add(SqlConstants.CREATE_AT_COLUMN);
-            insertArgs.add(now);
-        }
+        saveColumns.addAll(result.getColumns());
+        saveValues.addAll(result.getValues());
+
         // 检查参数数目
         int keySize = getTable().getKeySet().size();
-        int argSize = insertArgs.size();
-        if (keySize != argSize) {
-            LOG.warn("miss key! {}, keySize:{} != argSize:{}", getTable().getModelClazz(), keySize, argSize);
+        int valueSize = saveValues.size();
+        if (keySize != valueSize) {
+            LOG.warn("miss key! {}, keySize:{} != valueSize:{}", getTable().getModelClazz(), keySize, valueSize);
+        }
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("prepare saveColumns:{}, saveValues:{}", saveColumns.size(), valueSize);
         }
         return items;
     }
 
-    private boolean enabledUpdateAt() {
-        if (getTable().getKeySet().contains(SqlConstants.UPDATE_AT_KEY)) {
-            return true;
-        }
-        if (getTable().getColumnSet().contains(SqlConstants.UPDATE_AT_COLUMN)) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean enabledCreateAt() {
-        if (getTable().getKeySet().contains(SqlConstants.CREATE_AT_KEY)) {
-            return true;
-        }
-        if (getTable().getColumnSet().contains(SqlConstants.CREATE_AT_COLUMN)) {
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public String sql() {
-        if (CollectionUtils.isEmpty(insertColumns)) {
+        if (CollectionUtils.isEmpty(saveColumns)) {
             throw new RuntimeException("insert sql insertColumns empty");
         }
         StringBuilder sql = new StringBuilder();
@@ -98,7 +68,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         int idx = 0;
         StringBuilder columnHolder = new StringBuilder();
         StringBuilder paramHolder = new StringBuilder();
-        for (String column : insertColumns) {
+        for (String column : saveColumns) {
             if (idx > 0) {
                 columnHolder.append(",");
                 paramHolder.append(",");
@@ -116,12 +86,11 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (CollectionUtils.isEmpty(insertArgs)) {
+        if (CollectionUtils.isEmpty(saveValues)) {
             throw new RuntimeException("insert sql insertArgs empty");
         }
         List<Object> args = new ArrayList<Object>();
-        args.addAll(insertArgs);
-
+        args.addAll(saveValues);
         return args.toArray();
     }
 

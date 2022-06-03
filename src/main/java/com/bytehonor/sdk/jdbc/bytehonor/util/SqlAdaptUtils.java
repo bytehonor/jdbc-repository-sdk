@@ -9,6 +9,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bytehonor.sdk.jdbc.bytehonor.constant.JavaValueTypes;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.sql.PrepareStatement;
 import com.bytehonor.sdk.lang.bytehonor.getter.BooleanGetter;
@@ -32,23 +33,23 @@ public class SqlAdaptUtils {
     }
 
     private static void set(PreparedStatement ps, int idx, ModelColumnValue item) throws SQLException {
-        if (String.class.getName().equals(item.getType())) {
+        if (JavaValueTypes.STRING.equals(item.getType())) {
             ps.setString(idx, item.getValue().toString());
             return;
         }
-        if (Long.class.getName().equals(item.getType())) {
+        if (JavaValueTypes.LONG.equals(item.getType())) {
             ps.setLong(idx, LongGetter.optional(item.getValue().toString(), 0L));
             return;
         }
-        if (Integer.class.getName().equals(item.getType())) {
+        if (JavaValueTypes.INTEGER.equals(item.getType())) {
             ps.setInt(idx, IntegerGetter.optional(item.getValue().toString(), 0));
             return;
         }
-        if (Boolean.class.getName().equals(item.getType())) {
+        if (JavaValueTypes.BOOLEAN.equals(item.getType())) {
             ps.setBoolean(idx, BooleanGetter.optional(item.getValue().toString(), false));
             return;
         }
-        if (Double.class.getName().equals(item.getType())) {
+        if (JavaValueTypes.DOUBLE.equals(item.getType())) {
             ps.setDouble(idx, DoubleGetter.optional(item.getValue().toString(), 0.0));
             return;
         }
