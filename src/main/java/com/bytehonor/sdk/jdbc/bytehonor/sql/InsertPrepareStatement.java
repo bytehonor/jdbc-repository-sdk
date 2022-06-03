@@ -92,7 +92,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         if (CollectionUtils.isEmpty(saveValues)) {
             throw new RuntimeException("insert sql saveValues empty");
         }
-        List<Object> args = new ArrayList<Object>();
+        List<Object> args = new ArrayList<Object>(256);
         args.addAll(saveValues);
         return args.toArray();
     }
@@ -102,7 +102,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         if (CollectionUtils.isEmpty(saveTypes)) {
             throw new RuntimeException("insert sql saveTypes empty");
         }
-        List<Integer> types = new ArrayList<Integer>();
+        List<Integer> types = new ArrayList<Integer>(256);
         types.addAll(saveTypes);
         return SqlInjectUtils.listArray(types);
     }

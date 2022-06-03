@@ -88,7 +88,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
             throw new RuntimeException("update sql condition group args isEmpty");
         }
 
-        List<Object> allArgs = new ArrayList<Object>();
+        List<Object> allArgs = new ArrayList<Object>(256);
         allArgs.addAll(saveValues);
         List<Object> args = condition.getGroup().args();
         allArgs.addAll(args);

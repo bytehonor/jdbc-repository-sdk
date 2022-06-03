@@ -35,7 +35,7 @@ public class SqlInjectUtils {
         }
         return StringCreator.create().append(TA).append(src).append(TA).toString();
     }
-    
+
     public static String column(String src) {
         if (StringObject.isEmpty(src)) {
             return src;
@@ -56,19 +56,19 @@ public class SqlInjectUtils {
         }
         return src;
     }
-    
+
     public static int[] listArray(List<Integer> list) {
-    	if (CollectionUtils.isEmpty(list)) {
-    		return new int[0];
-    	}
-    	int size = list.size();
-    	int arr[] = new int[size];
-    	for (int i=0;i<size;i++) {
-    		arr[i] = list.get(i);
-    	}
-    	return arr;
+        if (CollectionUtils.isEmpty(list)) {
+            return new int[0];
+        }
+        int size = list.size();
+        int arr[] = new int[size];
+        for (int i = 0; i < size; i++) {
+            arr[i] = list.get(i);
+        }
+        return arr;
     }
-    
+
 //    public static void main(String[] args) {
 //        List<Object> args1 = new ArrayList<Object>();
 //        List<Integer> argTypes = new ArrayList<Integer>();
