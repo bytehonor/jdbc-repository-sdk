@@ -1,5 +1,7 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
+import java.util.List;
+
 import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
@@ -30,10 +32,11 @@ public class DeletePrepareStatement extends MysqlPrepareStatement {
         if (condition.getGroup() == null) {
             throw new RuntimeException("delete sql condition group null");
         }
-        if (condition.getGroup().getHolder().isEmpty()) {
-            throw new RuntimeException("delete sql condition group holder isEmpty");
+        List<Object> args = condition.getGroup().args();
+        if (CollectionUtils.isEmpty(args) && condition.getGroup().getHolder().isEmpty()) {
+            throw new RuntimeException("delete sql condition group args isEmpty");
         }
-        return condition.getGroup().args().toArray();
+        return args.toArray();
     }
 
     @Override

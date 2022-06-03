@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
+import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
@@ -94,14 +94,16 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         if (condition.getGroup() == null) {
             throw new RuntimeException("update sql condition group null");
         }
-        if (condition.getGroup().getHolder().isEmpty()) {
-            throw new RuntimeException("update sql condition group holder isEmpty");
+        List<Object> args = condition.getGroup().args();
+        if (CollectionUtils.isEmpty(args) && condition.getGroup().getHolder().isEmpty()) {
+            throw new RuntimeException("update sql condition group args isEmpty");
         }
-        List<Object> args = new ArrayList<Object>();
-        args.addAll(updateArgs);
-        args.addAll(condition.getGroup().args());
 
-        return args.toArray();
+        List<Object> params = new ArrayList<Object>();
+        params.addAll(updateArgs);
+        params.addAll(args);
+
+        return params.toArray();
     }
 
     @Override

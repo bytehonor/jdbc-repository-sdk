@@ -64,7 +64,7 @@ public class JdbcProxyDao {
 
         log(clazz, sql, args);
 
-        return jdbcTemplate.update(statement.sql(), statement.args());
+        return jdbcTemplate.update(statement.sql(), statement.args(), statement.types());
     }
 
     public int deleteById(Class<?> clazz, Long id) {
@@ -77,7 +77,7 @@ public class JdbcProxyDao {
 
         log(clazz, sql, args);
 
-        return jdbcTemplate.update(statement.sql(), statement.args());
+        return jdbcTemplate.update(statement.sql(), statement.args(), statement.types());
     }
 
     public int count(Class<?> clazz, QueryCondition condition) {
