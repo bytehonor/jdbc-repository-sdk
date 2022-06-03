@@ -12,7 +12,6 @@ import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelSavePrepareResult;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
@@ -39,10 +38,12 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         Objects.requireNonNull(group, "group");
 
         List<ModelColumnValue> items = group.spread(model);
-        ModelSavePrepareResult result = SqlColumnUtils.prepare(getTable(), items, null);
+        List<ModelColumnValue> result = SqlColumnUtils.prepareInsert(getTable(), items);
 
-        saveColumns.addAll(result.getColumns());
-        saveValues.addAll(result.getValues());
+        for (ModelColumnValue val : result) {
+            saveColumns.add(val.getColumn());
+            saveValues.add(val.getValue());
+        }
 
         // 检查参数数目
         int keySize = getTable().getKeySet().size();
@@ -54,7 +55,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         if (LOG.isDebugEnabled()) {
             LOG.debug("prepare saveColumns:{}, saveValues:{}", saveColumns.size(), valueSize);
         }
-        return items;
+        return result;
     }
 
     @Override

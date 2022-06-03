@@ -38,7 +38,8 @@ public class SqlCondition {
             // 仅非null判断
             return false;
         }
-        SqlColumnUtils.accept(condition.getKey());
+        SqlColumnUtils.acceptChar(condition.getKey());
+
         condition.format();
         return true;
     }

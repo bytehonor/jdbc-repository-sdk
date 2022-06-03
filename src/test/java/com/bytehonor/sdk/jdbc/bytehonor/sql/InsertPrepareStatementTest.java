@@ -107,4 +107,28 @@ public class InsertPrepareStatementTest {
         assertTrue("testValueEmpty", target.equals(sql) && args.length == 4);
     }
 
+    @Test
+    public void testTimeNull() {
+
+        Student student = new Student();
+        student.setId(123L);
+        student.setAge(1);
+        student.setNickname("TimeNull");
+        student.setCreateAt(null);
+        student.setUpdateAt(null);
+
+        PrepareStatement statement = new InsertPrepareStatement(Student.class);
+        statement.prepare(student, MAPPER);
+
+        String sql = statement.sql();
+        Object[] args = statement.args();
+
+        LOG.info("testTimeNull sql:{}", sql);
+        for (Object arg : args) {
+            LOG.info("arg:{}", arg);
+        }
+
+        String target = "INSERT INTO tbl_student (age,nickname,update_at,create_at) VALUES (?,?,?,?)";
+        assertTrue("testTimeNull", target.equals(sql) && args.length == 4);
+    }
 }

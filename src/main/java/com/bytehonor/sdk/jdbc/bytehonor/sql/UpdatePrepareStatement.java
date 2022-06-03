@@ -1,10 +1,8 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +12,6 @@ import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
-import com.bytehonor.sdk.jdbc.bytehonor.model.ModelSavePrepareResult;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.query.SqlConditionGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
@@ -43,18 +40,19 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         Objects.requireNonNull(group, "group");
 
         // confilc check
-        Set<String> filterColumns = new HashSet<String>(condition.getGroup().getHolder().getColumns());
-
+        List<String> filterColumns = condition.getGroup().getHolder().getColumns();
         List<ModelColumnValue> items = group.spread(model);
-        ModelSavePrepareResult result = SqlColumnUtils.prepare(getTable(), items, filterColumns);
+        List<ModelColumnValue> result = SqlColumnUtils.prepareUpdate(getTable(), items, filterColumns);
 
-        saveColumns.addAll(result.getColumns());
-        saveValues.addAll(result.getValues());
+        for (ModelColumnValue val : result) {
+            saveColumns.add(val.getColumn());
+            saveValues.add(val.getValue());
+        }
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("prepare saveColumns:{}, saveValues:{}", saveColumns.size(), saveValues.size());
         }
-        return items;
+        return result;
     }
 
     @Override

@@ -150,4 +150,62 @@ public class UpdatePrepareStatementTest {
         String target = "UPDATE tbl_student SET age = ?,update_at = ? WHERE nickname = ?";
         assertTrue("testSetValueConflict", target.equals(sql) && args.length == 3);
     }
+
+    @Test
+    public void testUpdateById() {
+        QueryCondition condition = QueryCondition.id(1L);
+
+        long now = System.currentTimeMillis();
+        Student student = new Student();
+        student.setId(123L);
+        student.setAge(1);
+        student.setNickname("boy");
+        student.setCreateAt(now);
+        student.setUpdateAt(now);
+
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
+        statement.prepare(student, MAPPER);
+
+        String sql = statement.sql();
+        Object[] args = statement.args();
+
+        LOG.info("testUpdateById sql:{}", sql);
+        for (Object arg : args) {
+            LOG.info("arg:{}", arg);
+        }
+
+        String target = "UPDATE tbl_student SET age = ?,nickname = ?,update_at = ? WHERE id = ?";
+        assertTrue("testUpdateById", target.equals(sql) && args.length == 4);
+    }
+
+    @Test
+    public void testUpdateAtConflict() {
+
+        QueryCondition condition = QueryCondition.create();
+        condition.gt("updateAt", System.currentTimeMillis());
+        condition.descBy("age");
+
+        long now = System.currentTimeMillis();
+        Student student = new Student();
+        student.setId(123L);
+        student.setAge(1);
+        student.setNickname("boy");
+        student.setCreateAt(now);
+        student.setUpdateAt(now);
+
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
+        statement.prepare(student, MAPPER);
+
+        String sql = statement.sql();
+        Object[] args = statement.args();
+
+        LOG.info("testUpdateAtConflict sql:{}", sql);
+        for (Object arg : args) {
+            LOG.info("arg:{}", arg);
+        }
+
+        // TODO 问题
+        String target = "UPDATE tbl_student SET age = ?,nickname = ?,update_at = ? WHERE update_at > ?";
+        assertTrue("test", target.equals(sql) && args.length == 4);
+    }
 }
