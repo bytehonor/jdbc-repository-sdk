@@ -31,10 +31,8 @@ public class SelectPrepareStatementTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        LOG.info("test sql:{}", sql);
+        statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? ORDER BY age DESC LIMIT 0,20";
         assertTrue("test", target.equals(sql) && args.length == 2);
@@ -48,12 +46,10 @@ public class SelectPrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("testNoCondition sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("testNoCondition arg:{}", arg);
-        }
+        statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student LIMIT 0,20";
-        assertTrue("testNoCondition", target.equals(sql));
+        assertTrue("testNoCondition", target.equals(sql) && args.length == 0);
     }
 
     @Test
@@ -85,9 +81,7 @@ public class SelectPrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("testEqEmpty sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname = ? LIMIT 0,20";
         assertTrue("testEqEmpty", target.equals(sql) && args.length == 1);

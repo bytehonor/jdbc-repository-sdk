@@ -32,9 +32,7 @@ public class DeletePrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         String target = "DELETE FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ?";
         assertTrue("test", target.equals(sql) && args.length == 2);
