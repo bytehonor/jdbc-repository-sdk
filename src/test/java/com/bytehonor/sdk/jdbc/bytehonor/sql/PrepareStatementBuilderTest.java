@@ -28,33 +28,23 @@ public class PrepareStatementBuilderTest {
 
         PrepareStatement select = PrepareStatementBuilder.select(Student.class, condition);
         LOG.info("select sql:{}", select.sql());
-        for (Object arg : select.args()) {
-            LOG.info("select arg:{}", arg);
-        }
+        select.check();
 
-        select = PrepareStatementBuilder.selectById(Student.class, 1L);
-        LOG.info("selectById sql:{}", select.sql());
-        for (Object arg : select.args()) {
-            LOG.info("selectById arg:{}", arg);
-        }
+        PrepareStatement selectById = PrepareStatementBuilder.selectById(Student.class, 1L);
+        LOG.info("selectById sql:{}", selectById.sql());
+        selectById.check();
 
         PrepareStatement count = PrepareStatementBuilder.count(Student.class, condition);
         LOG.info("count sql:{}", count.sql());
-        for (Object arg : count.args()) {
-            LOG.info("count arg:{}", arg);
-        }
+        count.check();
 
         PrepareStatement delete = PrepareStatementBuilder.delete(Student.class, condition);
         LOG.info("delete sql:{}", delete.sql());
-        for (Object arg : delete.args()) {
-            LOG.info("delete arg:{}", arg);
-        }
+        delete.check();
 
-        delete = PrepareStatementBuilder.deleteById(Student.class, 1L);
-        LOG.info("deleteById sql:{}", delete.sql());
-        for (Object arg : delete.args()) {
-            LOG.info("deleteById arg:{}", arg);
-        }
+        PrepareStatement deleteById = PrepareStatementBuilder.deleteById(Student.class, 1L);
+        LOG.info("deleteById sql:{}", deleteById.sql());
+        deleteById.check();
     }
 
 }
