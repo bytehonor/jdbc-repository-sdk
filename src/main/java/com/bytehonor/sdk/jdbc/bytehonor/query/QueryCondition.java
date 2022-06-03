@@ -29,6 +29,8 @@ public final class QueryCondition {
     }
 
     public static QueryCondition id(Long id) {
+        Objects.requireNonNull(id, "id");
+
         return and(0, 1).eq("id", id);
     }
 
