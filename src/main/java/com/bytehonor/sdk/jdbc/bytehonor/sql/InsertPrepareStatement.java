@@ -39,7 +39,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         Objects.requireNonNull(group, "group");
 
         List<ModelColumnValue> items = group.spread(model);
-        ModelSavePrepareResult result = SqlColumnUtils.prepare(getTable(), items, true);
+        ModelSavePrepareResult result = SqlColumnUtils.prepare(getTable(), items, null);
 
         saveColumns.addAll(result.getColumns());
         saveValues.addAll(result.getValues());

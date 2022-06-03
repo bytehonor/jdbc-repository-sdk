@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.define.bytehonor.util.StringObject;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlConstants;
@@ -24,7 +26,8 @@ public class SqlColumnUtils {
 
     private static final Map<String, String> UNDERLINE_COLUMNS = new ConcurrentHashMap<String, String>();
 
-    public static ModelSavePrepareResult prepare(MetaTable metaTable, List<ModelColumnValue> items, boolean insert) {
+    public static ModelSavePrepareResult prepare(MetaTable metaTable, List<ModelColumnValue> items,
+            Set<String> filterColumns) {
         Objects.requireNonNull(metaTable, "metaTable");
 
         ModelSavePrepareResult result = new ModelSavePrepareResult();
@@ -32,10 +35,15 @@ public class SqlColumnUtils {
         List<String> columns = new ArrayList<String>();
         List<Object> values = new ArrayList<Object>();
 
+        boolean filter = CollectionUtils.isEmpty(filterColumns) == false;
         String primary = metaTable.getPrimaryKey();
         for (ModelColumnValue item : items) {
             if (SqlColumnUtils.isSaveIgnore(primary, item.getColumn())) {
                 LOG.debug("prepare ({}) pass", item.getColumn());
+                continue;
+            }
+            if (filter && filterColumns.contains(item.getColumn())) {
+                LOG.debug("prepare ({}) filter", item.getColumn());
                 continue;
             }
             LOG.info("column:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
@@ -48,7 +56,7 @@ public class SqlColumnUtils {
             columns.add(SqlConstants.UPDATE_AT_COLUMN);
             values.add(now);
         }
-        if (insert && enabledCreateAt(metaTable)) {
+        if (!filter && enabledCreateAt(metaTable)) {
             columns.add(SqlConstants.CREATE_AT_COLUMN);
             values.add(now);
         }

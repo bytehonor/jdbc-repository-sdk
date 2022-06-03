@@ -1,8 +1,10 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,13 +42,14 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         ModelGetterGroup<T> group = mapper.create();
         Objects.requireNonNull(group, "group");
 
+        // confilc check
+        Set<String> filterColumns = new HashSet<String>(condition.getGroup().getHolder().getColumns());
+
         List<ModelColumnValue> items = group.spread(model);
-        ModelSavePrepareResult result = SqlColumnUtils.prepare(getTable(), items, false);
+        ModelSavePrepareResult result = SqlColumnUtils.prepare(getTable(), items, filterColumns);
 
         saveColumns.addAll(result.getColumns());
         saveValues.addAll(result.getValues());
-
-        // confilc check
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("prepare saveColumns:{}, saveValues:{}", saveColumns.size(), saveValues.size());

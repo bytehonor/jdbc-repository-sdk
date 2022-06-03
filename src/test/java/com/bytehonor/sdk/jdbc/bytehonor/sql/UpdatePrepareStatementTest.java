@@ -34,12 +34,7 @@ public class UpdatePrepareStatementTest {
     @Test
     public void test() {
 
-        Set<Integer> set = new HashSet<Integer>();
-        set.add(1);
-        set.add(2);
-        set.add(3);
         QueryCondition condition = QueryCondition.create();
-        condition.inInt("age", set);
         condition.gt("createAt", System.currentTimeMillis());
         condition.descBy("age");
 
@@ -62,7 +57,7 @@ public class UpdatePrepareStatementTest {
             LOG.info("arg:{}", arg);
         }
 
-        String target = "UPDATE tbl_student SET age = ?,nickname = ?,update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
+        String target = "UPDATE tbl_student SET age = ?,nickname = ?,update_at = ? WHERE create_at > ?";
         assertTrue("test", target.equals(sql) && args.length == 4);
     }
 
@@ -74,13 +69,13 @@ public class UpdatePrepareStatementTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.create();
-        condition.inInt("age", set);
+        condition.inInt("age", set); // conflict 不会被更新
         condition.gt("createAt", System.currentTimeMillis());
 
         long now = System.currentTimeMillis();
         Student student = new Student();
         student.setId(123L);
-        student.setAge(1);
+        student.setAge(1); // conflict 不会被更新
         student.setNickname(""); // empty 也会被更新
         student.setCreateAt(now);
         student.setUpdateAt(now);
@@ -96,8 +91,8 @@ public class UpdatePrepareStatementTest {
             LOG.info("arg:{}", arg);
         }
 
-        String target = "UPDATE tbl_student SET age = ?,nickname = ?,update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
-        assertTrue("testSetValueEmpty", target.equals(sql) && args.length == 4);
+        String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
+        assertTrue("testSetValueEmpty", target.equals(sql) && args.length == 3);
     }
 
     @Test
@@ -126,5 +121,33 @@ public class UpdatePrepareStatementTest {
 
         String target = "UPDATE tbl_student SET age = ?,update_at = ? WHERE create_at > ?";
         assertTrue("testSetValueNull", target.equals(sql) && args.length == 3);
+    }
+
+    @Test
+    public void testSetValueConflict() {
+        QueryCondition condition = QueryCondition.create();
+        condition.eq("nickname", "boy");
+
+        long now = System.currentTimeMillis();
+        Student student = new Student();
+        student.setId(123L);
+        student.setAge(1);
+        student.setNickname("boy"); // conflict 不会被更新
+        student.setCreateAt(now);
+        student.setUpdateAt(now);
+
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
+        statement.prepare(student, MAPPER);
+
+        String sql = statement.sql();
+        Object[] args = statement.args();
+
+        LOG.info("testSetValueConflict sql:{}", sql);
+        for (Object arg : args) {
+            LOG.info("arg:{}", arg);
+        }
+
+        String target = "UPDATE tbl_student SET age = ?,update_at = ? WHERE nickname = ?";
+        assertTrue("testSetValueConflict", target.equals(sql) && args.length == 3);
     }
 }
