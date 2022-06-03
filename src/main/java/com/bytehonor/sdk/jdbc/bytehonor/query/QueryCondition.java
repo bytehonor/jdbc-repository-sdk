@@ -178,6 +178,14 @@ public final class QueryCondition {
         return this;
     }
 
+    public void setOffset(int offset) {
+        this.page.setOffset(offset);
+    }
+
+    public void setLimit(int limit) {
+        this.page.setLimit(limit);
+    }
+
     public SqlPage getPage() {
         return page;
     }
