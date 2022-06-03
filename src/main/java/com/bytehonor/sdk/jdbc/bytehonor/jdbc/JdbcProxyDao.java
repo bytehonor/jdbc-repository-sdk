@@ -99,7 +99,7 @@ public class JdbcProxyDao {
         }
         LOG.debug("clazz:{}, sql:{}", clazz.getSimpleName(), sql);
         for (Object arg : args) {
-            LOG.debug("arg:{}", arg);
+            LOG.debug("arg:({})", arg);
         }
     }
 
