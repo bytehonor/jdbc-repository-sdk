@@ -39,11 +39,10 @@ public class JdbcProxyDao {
 
         PrepareStatement statement = PrepareStatementBuilder.select(clazz, condition);
         String sql = statement.sql();
-        Object[] args = statement.args();
 
-        log(clazz, sql, args);
+        log(clazz, sql);
 
-        return jdbcTemplate.query(sql, args, statement.types(), mapper);
+        return jdbcTemplate.query(sql, statement.args(), statement.types(), mapper);
     }
 
     public <T> T queryById(Class<T> clazz, Long id, RowMapper<T> mapper) {
@@ -60,9 +59,8 @@ public class JdbcProxyDao {
 
         PrepareStatement statement = PrepareStatementBuilder.delete(clazz, condition);
         String sql = statement.sql();
-        Object[] args = statement.args();
 
-        log(clazz, sql, args);
+        log(clazz, sql);
 
         return jdbcTemplate.update(statement.sql(), statement.args(), statement.types());
     }
@@ -73,11 +71,10 @@ public class JdbcProxyDao {
 
         PrepareStatement statement = PrepareStatementBuilder.deleteById(clazz, id);
         String sql = statement.sql();
-        Object[] args = statement.args();
 
-        log(clazz, sql, args);
+        log(clazz, sql);
 
-        return jdbcTemplate.update(statement.sql(), statement.args(), statement.types());
+        return jdbcTemplate.update(sql, statement.args(), statement.types());
     }
 
     public int count(Class<?> clazz, QueryCondition condition) {
@@ -86,21 +83,17 @@ public class JdbcProxyDao {
 
         PrepareStatement statement = PrepareStatementBuilder.count(clazz, condition);
         String sql = statement.sql();
-        Object[] args = statement.args();
 
-        log(clazz, sql, args);
+        log(clazz, sql);
 
-        return jdbcTemplate.queryForObject(sql, args, statement.types(), Integer.class);
+        return jdbcTemplate.queryForObject(sql, statement.args(), statement.types(), Integer.class);
     }
 
-    private void log(Class<?> clazz, String sql, Object[] args) {
+    private void log(Class<?> clazz, String sql) {
         if (LOG.isDebugEnabled() == false) {
             return;
         }
         LOG.debug("clazz:{}, sql:{}", clazz.getSimpleName(), sql);
-        for (Object arg : args) {
-            LOG.debug("arg:({})", arg);
-        }
     }
 
     public <T> int update(T model, QueryCondition condition, ModelConvertMapper<T> mapper) {
@@ -113,10 +106,9 @@ public class JdbcProxyDao {
         statement.prepare(model, mapper);
 
         String sql = statement.sql();
-        Object[] args = statement.args();
-        log(clazz, sql, args);
+        log(clazz, sql);
 
-        return jdbcTemplate.update(sql, args);
+        return jdbcTemplate.update(sql, statement.args(), statement.types());
     }
 
     public <T> long insert(T model, ModelConvertMapper<T> mapper) {
@@ -128,8 +120,7 @@ public class JdbcProxyDao {
         final List<ModelColumnValue> items = statement.prepare(model, mapper);
 
         String sql = statement.sql();
-        Object[] args = statement.args();
-        log(clazz, sql, args);
+        log(clazz, sql);
 
         KeyHolder holder = new GeneratedKeyHolder();
 
@@ -154,9 +145,8 @@ public class JdbcProxyDao {
         statement.prepare(model, mapper);
 
         String sql = statement.sql();
-        Object[] args = statement.args();
-        log(clazz, sql, args);
+        log(clazz, sql);
 
-        return jdbcTemplate.update(sql, args);
+        return jdbcTemplate.update(sql, statement.args(), statement.types());
     }
 }
