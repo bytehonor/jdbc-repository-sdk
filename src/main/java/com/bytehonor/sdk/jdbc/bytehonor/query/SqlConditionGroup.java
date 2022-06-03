@@ -37,7 +37,7 @@ public class SqlConditionGroup {
         Objects.requireNonNull(condition.getOperator(), "operator");
 
         if (SqlCondition.accept(condition) == false) {
-            LOG.warn("put error condition, key:{}, value:{}", condition.getKey(), condition.getValue());
+            LOG.debug("put condition ignore, key:{}, value:{}", condition.getKey(), condition.getValue());
             return this;
         }
         this.conditions.add(condition);
