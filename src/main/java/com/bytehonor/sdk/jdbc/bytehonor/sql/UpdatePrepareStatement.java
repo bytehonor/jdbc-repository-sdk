@@ -14,6 +14,7 @@ import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelSavePrepareResult;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.query.SqlConditionGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
@@ -45,6 +46,8 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         saveColumns.addAll(result.getColumns());
         saveValues.addAll(result.getValues());
 
+        // confilc check
+
         if (LOG.isDebugEnabled()) {
             LOG.debug("prepare saveColumns:{}, saveValues:{}", saveColumns.size(), saveValues.size());
         }
@@ -73,16 +76,16 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (condition.getGroup() == null) {
-            throw new RuntimeException("update sql condition group null");
+        if (CollectionUtils.isEmpty(saveValues)) {
+            throw new RuntimeException("update sql saveArgs empty");
         }
-        List<Object> args = condition.getGroup().args();
-        if (CollectionUtils.isEmpty(args) && condition.getGroup().getHolder().isEmpty()) {
+        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
             throw new RuntimeException("update sql condition group args isEmpty");
         }
 
         List<Object> allArgs = new ArrayList<Object>();
         allArgs.addAll(saveValues);
+        List<Object> args = condition.getGroup().args();
         allArgs.addAll(args);
 
         return allArgs.toArray();

@@ -1,10 +1,7 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
-import java.util.List;
-
-import org.springframework.util.CollectionUtils;
-
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.query.SqlConditionGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
@@ -29,19 +26,16 @@ public class DeletePrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (condition.getGroup() == null) {
-            throw new RuntimeException("delete sql condition group null");
-        }
-        List<Object> args = condition.getGroup().args();
-        if (CollectionUtils.isEmpty(args) && condition.getGroup().getHolder().isEmpty()) {
+        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
             throw new RuntimeException("delete sql condition group args isEmpty");
         }
-        return args.toArray();
+
+        return condition.getGroup().args().toArray();
     }
 
     @Override
     public int[] types() {
-        if (condition.getGroup() == null || CollectionUtils.isEmpty(condition.getGroup().types())) {
+        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
             return new int[0];
         }
         return SqlInjectUtils.listArray(condition.getGroup().types());

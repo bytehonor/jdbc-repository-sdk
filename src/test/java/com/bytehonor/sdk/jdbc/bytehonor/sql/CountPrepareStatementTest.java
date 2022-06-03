@@ -36,7 +36,22 @@ public class CountPrepareStatementTest {
             LOG.info("arg:{}", arg);
         }
 
-        assertTrue("test", args.length == 2);
+        String target = "SELECT COUNT(id) FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ?";
+        assertTrue("test", target.equals(sql) && args.length == 2);
     }
 
+    @Test
+    public void testNoCondition() {
+        QueryCondition condition = QueryCondition.create();
+        PrepareStatement statement = new CountPrepareStatement(Student.class, condition);
+        String sql = statement.sql();
+        Object[] args = statement.args();
+
+        LOG.info("testNoCondition:{}", sql);
+        for (Object arg : args) {
+            LOG.info("arg:{}", arg);
+        }
+
+        assertTrue("testNoCondition", "SELECT COUNT(id) FROM tbl_student".equals(sql) && args.length == 0);
+    }
 }

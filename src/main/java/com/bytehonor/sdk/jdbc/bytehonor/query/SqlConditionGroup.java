@@ -45,6 +45,12 @@ public class SqlConditionGroup {
         return this;
     }
 
+    public static boolean isArgsEmpty(SqlConditionGroup group) {
+        Objects.requireNonNull(group, "group");
+
+        return group.getHolder().isEmpty();
+    }
+
     public String toSql() {
         if (CollectionUtils.isEmpty(conditions)) {
             return "";

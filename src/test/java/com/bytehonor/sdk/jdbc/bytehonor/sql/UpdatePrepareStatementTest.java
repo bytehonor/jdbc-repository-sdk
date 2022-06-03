@@ -18,20 +18,21 @@ public class UpdatePrepareStatementTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdatePrepareStatementTest.class);
 
+    private static final ModelConvertMapper<Student> MAPPER = new ModelConvertMapper<Student>() {
+
+        @Override
+        public ModelGetterGroup<Student> create() {
+            ModelGetterGroup<Student> group = ModelGetterGroup.create(Student.class);
+            group.add("age", Student::getAge);
+            group.add("nickname", Student::getNickname);
+            group.add("createAt", Student::getCreateAt);
+            return group;
+        }
+
+    };
+
     @Test
     public void test() {
-        ModelConvertMapper<Student> mapper = new ModelConvertMapper<Student>() {
-
-            @Override
-            public ModelGetterGroup<Student> create() {
-                ModelGetterGroup<Student> group = ModelGetterGroup.create(Student.class);
-                group.add("age", Student::getAge);
-                group.add("nickname", Student::getNickname);
-                group.add("createAt", Student::getCreateAt);
-                return group;
-            }
-
-        };
 
         Set<Integer> set = new HashSet<Integer>();
         set.add(1);
@@ -40,19 +41,19 @@ public class UpdatePrepareStatementTest {
         QueryCondition condition = QueryCondition.create();
         condition.inInt("age", set);
         condition.gt("createAt", System.currentTimeMillis());
-//        condition.like("nickname", "boy");
+        // condition.like("nickname", "boy");
         condition.descBy("age");
 
         long now = System.currentTimeMillis();
         Student student = new Student();
         student.setId(123L);
-//        student.setAge(1);
+        student.setAge(1);
         student.setNickname("boy");
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
         PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
-        statement.prepare(student, mapper);
+        statement.prepare(student, MAPPER);
 
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -62,7 +63,8 @@ public class UpdatePrepareStatementTest {
             LOG.info("arg:{}", arg);
         }
 
-        assertTrue("test", args.length > 2);
+        String target = "UPDATE tbl_student SET nickname = ? , update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
+        assertTrue("test", target.equals(sql) && args.length == 4);
     }
 
 }

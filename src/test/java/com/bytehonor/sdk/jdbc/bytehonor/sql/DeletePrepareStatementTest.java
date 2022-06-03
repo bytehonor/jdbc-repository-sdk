@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.define.bytehonor.util.StringObject;
 import com.bytehonor.sdk.jdbc.bytehonor.Student;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 
@@ -24,7 +23,7 @@ public class DeletePrepareStatementTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.create();
-//        condition.inInt("age", set);
+        condition.inInt("age", set);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.descBy("age");
@@ -37,7 +36,25 @@ public class DeletePrepareStatementTest {
             LOG.info("arg:{}", arg);
         }
 
-        assertTrue("test", args.length == 2 || StringObject.isEmpty(sql) == false);
+        String target = "DELETE FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ?";
+        assertTrue("test", target.equals(sql) && args.length == 2);
     }
 
+    @Test
+    public void testNoCondition() {
+        QueryCondition condition = QueryCondition.create();
+        PrepareStatement statement = new DeletePrepareStatement(Student.class, condition);
+        String sql = statement.sql();
+
+        LOG.info("testNoCondition sql:{}", sql);
+        boolean hasError = false;
+        try {
+            statement.args();
+        } catch (Exception e) {
+            hasError = true;
+            LOG.error("error {}", e.getMessage());
+        }
+        String target = "DELETE FROM tbl_student";
+        assertTrue("test", target.equals(sql) && hasError);
+    }
 }

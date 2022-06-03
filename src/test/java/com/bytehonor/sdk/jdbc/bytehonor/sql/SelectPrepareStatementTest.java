@@ -35,8 +35,44 @@ public class SelectPrepareStatementTest {
         for (Object arg : args) {
             LOG.info("arg:{}", arg);
         }
-        
-        assertTrue("test", args.length == 2);
+
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? ORDER BY age DESC LIMIT 0,20";
+        assertTrue("test", target.equals(sql) && args.length == 2);
     }
 
+    @Test
+    public void testNoCondition() {
+        QueryCondition condition = QueryCondition.create();
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        String sql = statement.sql();
+        Object[] args = statement.args();
+
+        LOG.info("testNoCondition sql:{}", sql);
+        for (Object arg : args) {
+            LOG.info("testNoCondition arg:{}", arg);
+        }
+
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student LIMIT 0,20";
+        assertTrue("test", target.equals(sql));
+    }
+
+    @Test
+    public void testNoConditionNoPage() {
+        QueryCondition condition = QueryCondition.create();
+        condition.setPage(null);
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        String sql = statement.sql();
+        boolean hasError = false;
+        try {
+            statement.args();
+        } catch (Exception e) {
+            hasError = true;
+            LOG.error("error {}", e.getMessage());
+        }
+
+        LOG.info("testNoConditionNoPage sql:{}", sql);
+
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student";
+        assertTrue("test", target.equals(sql) && hasError);
+    }
 }

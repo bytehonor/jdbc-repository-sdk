@@ -18,21 +18,24 @@ public class SqlArgHolder {
 
     private final StringBuilder sql;
 
+    private final List<String> columns;
+
     private final List<Object> values;
 
     private final List<Integer> sqlTypes;
 
     private final List<String> javaTypes;
 
-    private int size;
+    private int argSize;
 
     private SqlArgHolder(SqlLogic logic) {
         this.logic = logic != null ? logic : SqlLogic.AND;
         this.sql = new StringBuilder();
+        this.columns = new ArrayList<String>();
         this.values = new ArrayList<Object>();
         this.sqlTypes = new ArrayList<Integer>();
         this.javaTypes = new ArrayList<String>();
-        this.size = 0;
+        this.argSize = 0;
     }
 
     public static SqlArgHolder create(SqlLogic logic) {
@@ -57,10 +60,12 @@ public class SqlArgHolder {
             return this;
         }
 
-        if (size > 0) {
+        this.columns.add(column);
+
+        if (argSize > 0) {
             this.sql.append(BLANK).append(logic.getKey()).append(BLANK);
         }
-        size++;
+        argSize++;
 
         if (SqlOperator.IN.getKey().equals(condition.getOperator().getKey())) {
             this.sql.append(column).append(BLANK).append(condition.getOperator().getOpt()).append(BLANK)
@@ -81,7 +86,7 @@ public class SqlArgHolder {
     }
 
     public boolean isEmpty() {
-        return size < 1;
+        return argSize < 1;
     }
 
     public String toSql() {
@@ -92,8 +97,16 @@ public class SqlArgHolder {
         return logic;
     }
 
-    public StringBuilder getSql() {
-        return sql;
+    public int getArgSize() {
+        return argSize;
+    }
+
+    public List<String> getColumns() {
+        return columns;
+    }
+
+    public List<String> getJavaTypes() {
+        return javaTypes;
     }
 
     public List<Object> getValues() {

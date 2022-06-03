@@ -1,8 +1,7 @@
 package com.bytehonor.sdk.jdbc.bytehonor.sql;
 
-import org.springframework.util.CollectionUtils;
-
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.query.SqlConditionGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
 
@@ -25,10 +24,11 @@ public class SelectPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (condition.getGroup() == null) {
-            return new Object[0];
-        }
-        if (condition.getGroup() == null || CollectionUtils.isEmpty(condition.getGroup().args())) {
+        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
+            if (condition.getPage() == null) {
+                // 禁全表无分页查询
+                throw new RuntimeException("select sql condition group args isEmpty");
+            }
             return new Object[0];
         }
         return condition.getGroup().args().toArray();
@@ -36,7 +36,7 @@ public class SelectPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public int[] types() {
-        if (condition.getGroup() == null || CollectionUtils.isEmpty(condition.getGroup().types())) {
+        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
             return new int[0];
         }
         return SqlInjectUtils.listArray(condition.getGroup().types());
