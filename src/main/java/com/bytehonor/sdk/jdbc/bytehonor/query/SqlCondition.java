@@ -1,11 +1,11 @@
 package com.bytehonor.sdk.jdbc.bytehonor.query;
 
-import java.sql.Types;
 import java.util.List;
 import java.util.Set;
 
 import com.bytehonor.sdk.define.bytehonor.util.StringObject;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlOperator;
+import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlValueTypes;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.lang.bytehonor.string.StringCreator;
 import com.bytehonor.sdk.lang.bytehonor.util.ListJoinUtils;
@@ -49,35 +49,36 @@ public class SqlCondition {
     }
 
     public static SqlCondition eq(String key, String value) {
-        return new SqlCondition(key, value, Types.VARCHAR, SqlOperator.EQ);
+        return new SqlCondition(key, value, SqlValueTypes.STRING, SqlOperator.EQ);
     }
 
     public static SqlCondition eq(String key, Long value) {
-        return new SqlCondition(key, value, Types.BIGINT, SqlOperator.EQ);
+        return new SqlCondition(key, value, SqlValueTypes.LONG, SqlOperator.EQ);
     }
 
     public static SqlCondition eq(String key, Integer value) {
-        return new SqlCondition(key, value, Types.INTEGER, SqlOperator.EQ);
+
+        return new SqlCondition(key, value, SqlValueTypes.INTEGER, SqlOperator.EQ);
     }
 
     public static SqlCondition eq(String key, Boolean value) {
-        return new SqlCondition(key, value, Types.BOOLEAN, SqlOperator.EQ);
+        return new SqlCondition(key, value, SqlValueTypes.BOOLEAN, SqlOperator.EQ);
     }
 
     public static SqlCondition neq(String key, String value) {
-        return new SqlCondition(key, value, Types.VARCHAR, SqlOperator.NEQ);
+        return new SqlCondition(key, value, SqlValueTypes.STRING, SqlOperator.NEQ);
     }
 
     public static SqlCondition neq(String key, Long value) {
-        return new SqlCondition(key, value, Types.BIGINT, SqlOperator.NEQ);
+        return new SqlCondition(key, value, SqlValueTypes.LONG, SqlOperator.NEQ);
     }
 
     public static SqlCondition neq(String key, Integer value) {
-        return new SqlCondition(key, value, Types.INTEGER, SqlOperator.NEQ);
+        return new SqlCondition(key, value, SqlValueTypes.INTEGER, SqlOperator.NEQ);
     }
 
     public static SqlCondition neq(String key, Boolean value) {
-        return new SqlCondition(key, value, Types.BOOLEAN, SqlOperator.NEQ);
+        return new SqlCondition(key, value, SqlValueTypes.BOOLEAN, SqlOperator.NEQ);
     }
 
     /**
@@ -90,7 +91,7 @@ public class SqlCondition {
      * @return
      */
     public static SqlCondition gt(String key, Long value) {
-        return new SqlCondition(key, value, Types.BIGINT, SqlOperator.GT);
+        return new SqlCondition(key, value, SqlValueTypes.LONG, SqlOperator.GT);
     }
 
     /**
@@ -103,7 +104,7 @@ public class SqlCondition {
      * @return
      */
     public static SqlCondition gt(String key, Integer value) {
-        return new SqlCondition(key, value, Types.INTEGER, SqlOperator.GT);
+        return new SqlCondition(key, value, SqlValueTypes.INTEGER, SqlOperator.GT);
     }
 
     /**
@@ -116,7 +117,7 @@ public class SqlCondition {
      * @return
      */
     public static SqlCondition egt(String key, Long value) {
-        return new SqlCondition(key, value, Types.BIGINT, SqlOperator.EGT);
+        return new SqlCondition(key, value, SqlValueTypes.LONG, SqlOperator.EGT);
     }
 
     /**
@@ -129,7 +130,7 @@ public class SqlCondition {
      * @return
      */
     public static SqlCondition egt(String key, Integer value) {
-        return new SqlCondition(key, value, Types.INTEGER, SqlOperator.EGT);
+        return new SqlCondition(key, value, SqlValueTypes.INTEGER, SqlOperator.EGT);
     }
 
     /**
@@ -142,7 +143,7 @@ public class SqlCondition {
      * @return
      */
     public static SqlCondition lt(String key, String value) {
-        return new SqlCondition(key, value, Types.VARCHAR, SqlOperator.LT);
+        return new SqlCondition(key, value, SqlValueTypes.STRING, SqlOperator.LT);
     }
 
     /**
@@ -155,7 +156,7 @@ public class SqlCondition {
      * @return
      */
     public static SqlCondition lt(String key, Long value) {
-        return new SqlCondition(key, value, Types.BIGINT, SqlOperator.LT);
+        return new SqlCondition(key, value, SqlValueTypes.LONG, SqlOperator.LT);
     }
 
     /**
@@ -168,7 +169,7 @@ public class SqlCondition {
      * @return
      */
     public static SqlCondition lt(String key, Integer value) {
-        return new SqlCondition(key, value, Types.INTEGER, SqlOperator.LT);
+        return new SqlCondition(key, value, SqlValueTypes.INTEGER, SqlOperator.LT);
     }
 
     /**
@@ -181,7 +182,7 @@ public class SqlCondition {
      * @return
      */
     public static SqlCondition elt(String key, Long value) {
-        return new SqlCondition(key, value, Types.BIGINT, SqlOperator.ELT);
+        return new SqlCondition(key, value, SqlValueTypes.LONG, SqlOperator.ELT);
     }
 
     /**
@@ -194,11 +195,11 @@ public class SqlCondition {
      * @return
      */
     public static SqlCondition elt(String key, Integer value) {
-        return new SqlCondition(key, value, Types.INTEGER, SqlOperator.ELT);
+        return new SqlCondition(key, value, SqlValueTypes.INTEGER, SqlOperator.ELT);
     }
 
     public static SqlCondition like(String key, String value) {
-        return new SqlCondition(key, value, Types.VARCHAR, SqlOperator.LIKE);
+        return new SqlCondition(key, value, SqlValueTypes.STRING, SqlOperator.LIKE);
     }
 
     public static SqlCondition in(String key, List<String> value) {
@@ -206,7 +207,7 @@ public class SqlCondition {
         if (value != null && value.isEmpty() == false) {
             src = StringCreator.create().append("(").append(ListJoinUtils.joinStringSafe(value)).append(")").toString();
         }
-        return new SqlCondition(key, src, Types.VARCHAR, SqlOperator.IN);
+        return new SqlCondition(key, src, SqlValueTypes.STRING, SqlOperator.IN);
     }
 
     public static SqlCondition in(String key, Set<String> value) {
@@ -214,7 +215,7 @@ public class SqlCondition {
         if (value != null && value.isEmpty() == false) {
             src = StringCreator.create().append("(").append(SetJoinUtils.joinStringSafe(value)).append(")").toString();
         }
-        return new SqlCondition(key, src, Types.VARCHAR, SqlOperator.IN);
+        return new SqlCondition(key, src, SqlValueTypes.STRING, SqlOperator.IN);
     }
 
     public static SqlCondition inLong(String key, List<Long> value) {
@@ -222,7 +223,7 @@ public class SqlCondition {
         if (value != null && value.isEmpty() == false) {
             src = StringCreator.create().append("(").append(ListJoinUtils.joinLong(value)).append(")").toString();
         }
-        return new SqlCondition(key, src, Types.BIGINT, SqlOperator.IN);
+        return new SqlCondition(key, src, SqlValueTypes.LONG, SqlOperator.IN);
     }
 
     public static SqlCondition inLong(String key, Set<Long> value) {
@@ -230,7 +231,7 @@ public class SqlCondition {
         if (value != null && value.isEmpty() == false) {
             src = StringCreator.create().append("(").append(SetJoinUtils.joinLong(value)).append(")").toString();
         }
-        return new SqlCondition(key, src, Types.BIGINT, SqlOperator.IN);
+        return new SqlCondition(key, src, SqlValueTypes.LONG, SqlOperator.IN);
     }
 
     public static SqlCondition inInt(String key, List<Integer> value) {
@@ -238,7 +239,7 @@ public class SqlCondition {
         if (value != null && value.isEmpty() == false) {
             src = StringCreator.create().append("(").append(ListJoinUtils.joinInteger(value)).append(")").toString();
         }
-        return new SqlCondition(key, src, Types.INTEGER, SqlOperator.IN);
+        return new SqlCondition(key, src, SqlValueTypes.INTEGER, SqlOperator.IN);
     }
 
     public static SqlCondition inInt(String key, Set<Integer> value) {
@@ -246,7 +247,7 @@ public class SqlCondition {
         if (value != null && value.isEmpty() == false) {
             src = StringCreator.create().append("(").append(SetJoinUtils.joinInteger(value)).append(")").toString();
         }
-        return new SqlCondition(key, src, Types.INTEGER, SqlOperator.IN);
+        return new SqlCondition(key, src, SqlValueTypes.INTEGER, SqlOperator.IN);
     }
 
     private SqlCondition(String key, Object value, int type, SqlOperator operator) {

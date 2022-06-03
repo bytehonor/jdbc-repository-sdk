@@ -14,6 +14,7 @@ import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
 import com.bytehonor.sdk.jdbc.bytehonor.query.SqlConditionGroup;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlAdaptUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlStringUtils;
@@ -24,11 +25,13 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
 
     private final List<String> saveColumns;
     private final List<Object> saveValues;
+    private final List<Integer> saveTypes;
 
     public UpdatePrepareStatement(Class<?> clazz, QueryCondition condition) {
         super(clazz, condition);
         this.saveColumns = new ArrayList<String>();
         this.saveValues = new ArrayList<Object>();
+        this.saveTypes = new ArrayList<Integer>();
     }
 
     @Override
@@ -47,6 +50,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         for (ModelColumnValue val : result) {
             saveColumns.add(val.getColumn());
             saveValues.add(val.getValue());
+            saveTypes.add(SqlAdaptUtils.toSqlType(val.getType())); // 转换
         }
 
         if (LOG.isDebugEnabled()) {
@@ -78,7 +82,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
     @Override
     public Object[] args() {
         if (CollectionUtils.isEmpty(saveValues)) {
-            throw new RuntimeException("update sql saveArgs empty");
+            throw new RuntimeException("update sql saveValues empty");
         }
         if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
             throw new RuntimeException("update sql condition group args isEmpty");
@@ -94,10 +98,19 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public int[] types() {
-        if (condition.getGroup() == null || CollectionUtils.isEmpty(condition.getGroup().types())) {
-            return new int[0];
+        if (CollectionUtils.isEmpty(saveTypes)) {
+            throw new RuntimeException("update sql saveTypes empty");
         }
-        return SqlInjectUtils.listArray(condition.getGroup().types());
+        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
+            throw new RuntimeException("update sql condition group args isEmpty");
+        }
+
+        List<Integer> allTypes = new ArrayList<Integer>();
+        allTypes.addAll(saveTypes);
+        List<Integer> types = condition.getGroup().types();
+        allTypes.addAll(types);
+
+        return SqlInjectUtils.listArray(allTypes);
     }
 
 }

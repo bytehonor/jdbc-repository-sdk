@@ -38,7 +38,7 @@ public class SqlColumnUtils {
                 LOG.debug("prepare ({}) pass", item.getColumn());
                 continue;
             }
-            LOG.info("column:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
+            LOG.debug("column:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
             result.add(item);
         }
 
@@ -77,7 +77,7 @@ public class SqlColumnUtils {
                 LOG.debug("prepare ({}) filter", item.getColumn());
                 continue;
             }
-            LOG.info("column:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
+            LOG.debug("column:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
             result.add(item);
         }
 

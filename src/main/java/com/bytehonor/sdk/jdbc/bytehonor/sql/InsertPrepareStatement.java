@@ -13,6 +13,7 @@ import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelConvertMapper;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelGetterGroup;
 import com.bytehonor.sdk.jdbc.bytehonor.query.QueryCondition;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlAdaptUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 
@@ -22,11 +23,13 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
 
     private final List<String> saveColumns;
     private final List<Object> saveValues;
+    private final List<Integer> saveTypes;
 
     public InsertPrepareStatement(Class<?> clazz) {
         super(clazz, QueryCondition.and());
         this.saveColumns = new ArrayList<String>();
         this.saveValues = new ArrayList<Object>();
+        this.saveTypes = new ArrayList<Integer>();
     }
 
     @Override
@@ -43,6 +46,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         for (ModelColumnValue val : result) {
             saveColumns.add(val.getColumn());
             saveValues.add(val.getValue());
+            saveTypes.add(SqlAdaptUtils.toSqlType(val.getType())); // 转换
         }
 
         // 检查参数数目
@@ -86,7 +90,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
     @Override
     public Object[] args() {
         if (CollectionUtils.isEmpty(saveValues)) {
-            throw new RuntimeException("insert sql insertArgs empty");
+            throw new RuntimeException("insert sql saveValues empty");
         }
         List<Object> args = new ArrayList<Object>();
         args.addAll(saveValues);
@@ -95,10 +99,12 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public int[] types() {
-        if (condition.getGroup() == null || CollectionUtils.isEmpty(condition.getGroup().types())) {
-            return new int[0];
+        if (CollectionUtils.isEmpty(saveTypes)) {
+            throw new RuntimeException("insert sql saveTypes empty");
         }
-        return SqlInjectUtils.listArray(condition.getGroup().types());
+        List<Integer> types = new ArrayList<Integer>();
+        types.addAll(saveTypes);
+        return SqlInjectUtils.listArray(types);
     }
 
 }

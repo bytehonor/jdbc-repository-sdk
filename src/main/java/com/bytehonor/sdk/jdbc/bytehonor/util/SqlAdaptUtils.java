@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.jdbc.bytehonor.constant.JavaValueTypes;
+import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlValueTypes;
 import com.bytehonor.sdk.jdbc.bytehonor.model.ModelColumnValue;
 import com.bytehonor.sdk.jdbc.bytehonor.sql.PrepareStatement;
 import com.bytehonor.sdk.lang.bytehonor.getter.BooleanGetter;
@@ -54,6 +55,26 @@ public class SqlAdaptUtils {
             return;
         }
         LOG.error("not support type, set key:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
+        throw new RuntimeException("not support type");
+    }
+
+    public static int toSqlType(String type) {
+        if (JavaValueTypes.STRING.equals(type)) {
+            return SqlValueTypes.STRING;
+        }
+        if (JavaValueTypes.LONG.equals(type)) {
+            return SqlValueTypes.LONG;
+        }
+        if (JavaValueTypes.INTEGER.equals(type)) {
+            return SqlValueTypes.INTEGER;
+        }
+        if (JavaValueTypes.BOOLEAN.equals(type)) {
+            return SqlValueTypes.BOOLEAN;
+        }
+        if (JavaValueTypes.DOUBLE.equals(type)) {
+            return SqlValueTypes.DOUBLE;
+        }
+        LOG.error("not support type, type:{}", type);
         throw new RuntimeException("not support type");
     }
 }
