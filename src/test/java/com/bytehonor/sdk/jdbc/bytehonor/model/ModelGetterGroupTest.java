@@ -35,4 +35,29 @@ public class ModelGetterGroupTest {
         }
     }
 
+    @Test
+    public void test2() {
+        long now = System.currentTimeMillis();
+        Student student = new Student();
+        student.setId(123L);
+        student.setAge(1);
+        student.setNickname("boy");
+        student.setCreateAt(now);
+        student.setUpdateAt(now);
+
+        int times = 1000000;
+        for (int i = 0; i < times; i++) {
+            ModelGetterGroup<Student> group = ModelGetterGroup.create(Student.class);
+            group.add("id", Student::getId);
+            group.add("age", Student::getAge);
+            group.add("nickname", Student::getNickname);
+            group.add("updateAt", Student::getNickname);
+            group.add("createAt", Student::getNickname);
+
+            group.spread(student); // 几乎不花时间
+        }
+
+        long millis = (System.currentTimeMillis() - now);
+        LOG.info("times:{} cost millis:{}", times, millis);
+    }
 }
