@@ -53,7 +53,7 @@ public class SelectPrepareStatementTest {
         }
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student LIMIT 0,20";
-        assertTrue("test", target.equals(sql));
+        assertTrue("testNoCondition", target.equals(sql));
     }
 
     @Test
@@ -73,6 +73,23 @@ public class SelectPrepareStatementTest {
         LOG.info("testNoConditionNoPage sql:{}", sql);
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student";
-        assertTrue("test", target.equals(sql) && hasError);
+        assertTrue("testNoConditionNoPage", target.equals(sql) && hasError);
+    }
+
+    @Test
+    public void testEqEmpty() {
+        QueryCondition condition = QueryCondition.create();
+        condition.eq("nickname", "");
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        String sql = statement.sql();
+        Object[] args = statement.args();
+
+        LOG.info("testEqEmpty sql:{}", sql);
+        for (Object arg : args) {
+            LOG.info("arg:{}", arg);
+        }
+
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname = ? LIMIT 0,20";
+        assertTrue("testEqEmpty", target.equals(sql) && args.length == 1);
     }
 }

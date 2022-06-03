@@ -17,14 +17,28 @@ public class SqlCondition {
 
     private Object value;
 
+    /**
+     * sql type
+     */
     private int type;
 
     private SqlOperator operator;
 
+    /**
+     * 允许空字符串值做参数
+     * 
+     * @param condition
+     * @return
+     */
     public static boolean accept(SqlCondition condition) {
-        if (StringObject.isEmpty(condition.getKey()) || condition.getValue() == null) {
+        if (StringObject.isEmpty(condition.getKey())) {
             return false;
         }
+        if (condition.getValue() == null) {
+            // 仅非null判断
+            return false;
+        }
+        SqlColumnUtils.accept(condition.getKey());
         condition.format();
         return true;
     }
