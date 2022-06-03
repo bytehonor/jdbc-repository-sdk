@@ -47,9 +47,7 @@ public class InsertPrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         String target = "INSERT INTO tbl_student (age,nickname,update_at,create_at) VALUES (?,?,?,?)";
         assertTrue("test", target.equals(sql) && args.length == 4);
@@ -73,9 +71,7 @@ public class InsertPrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("testValueNull sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         String target = "INSERT INTO tbl_student (age,update_at,create_at) VALUES (?,?,?)";
         assertTrue("testValueNull", target.equals(sql) && args.length == 3);
@@ -99,9 +95,7 @@ public class InsertPrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("testValueEmpty sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         String target = "INSERT INTO tbl_student (age,nickname,update_at,create_at) VALUES (?,?,?,?)";
         assertTrue("testValueEmpty", target.equals(sql) && args.length == 4);
@@ -124,9 +118,7 @@ public class InsertPrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("testTimeNull sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         String target = "INSERT INTO tbl_student (age,nickname,update_at,create_at) VALUES (?,?,?,?)";
         assertTrue("testTimeNull", target.equals(sql) && args.length == 4);

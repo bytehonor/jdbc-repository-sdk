@@ -77,4 +77,24 @@ public class SqlAdaptUtils {
         LOG.error("not support type, type:{}", type);
         throw new RuntimeException("not support type");
     }
+
+    public static String toJavaType(int type) {
+        if (SqlValueTypes.STRING == type) {
+            return JavaValueTypes.STRING;
+        }
+        if (SqlValueTypes.LONG == type) {
+            return JavaValueTypes.LONG;
+        }
+        if (SqlValueTypes.INTEGER == type) {
+            return JavaValueTypes.INTEGER;
+        }
+        if (SqlValueTypes.BOOLEAN == type) {
+            return JavaValueTypes.BOOLEAN;
+        }
+        if (SqlValueTypes.DOUBLE == type) {
+            return JavaValueTypes.DOUBLE;
+        }
+        LOG.error("not support type, type:{}", type);
+        throw new RuntimeException("not support type");
+    }
 }

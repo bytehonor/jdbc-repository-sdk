@@ -53,9 +53,7 @@ public class UpdatePrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         String target = "UPDATE tbl_student SET age = ?,nickname = ?,update_at = ? WHERE create_at > ?";
         assertTrue("test", target.equals(sql) && args.length == 4);
@@ -87,9 +85,7 @@ public class UpdatePrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("testSetValueEmpty sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
         assertTrue("testSetValueEmpty", target.equals(sql) && args.length == 3);
@@ -115,9 +111,7 @@ public class UpdatePrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("testSetValueNull sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         String target = "UPDATE tbl_student SET age = ?,update_at = ? WHERE create_at > ?";
         assertTrue("testSetValueNull", target.equals(sql) && args.length == 3);
@@ -143,9 +137,7 @@ public class UpdatePrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("testSetValueConflict sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         String target = "UPDATE tbl_student SET age = ?,update_at = ? WHERE nickname = ?";
         assertTrue("testSetValueConflict", target.equals(sql) && args.length == 3);
@@ -170,9 +162,7 @@ public class UpdatePrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("testUpdateById sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         String target = "UPDATE tbl_student SET age = ?,nickname = ?,update_at = ? WHERE id = ?";
         assertTrue("testUpdateById", target.equals(sql) && args.length == 4);
@@ -200,9 +190,7 @@ public class UpdatePrepareStatementTest {
         Object[] args = statement.args();
 
         LOG.info("testUpdateAtConflict sql:{}", sql);
-        for (Object arg : args) {
-            LOG.info("arg:{}", arg);
-        }
+        statement.check();
 
         // TODO 问题
         String target = "UPDATE tbl_student SET age = ?,nickname = ?,update_at = ? WHERE update_at > ?";

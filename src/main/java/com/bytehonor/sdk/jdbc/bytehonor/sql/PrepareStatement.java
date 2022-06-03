@@ -14,4 +14,6 @@ public interface PrepareStatement {
     public Object[] args();
 
     public int[] types();
+    
+    public void check();
 }
