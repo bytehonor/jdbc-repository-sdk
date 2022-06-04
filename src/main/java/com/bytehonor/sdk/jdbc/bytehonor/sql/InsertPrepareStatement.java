@@ -19,7 +19,7 @@ import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 
 public class InsertPrepareStatement extends MysqlPrepareStatement {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UpdatePrepareStatement.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InsertPrepareStatement.class);
 
     private final List<String> saveColumns;
     private final List<Object> saveValues;
@@ -42,7 +42,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
 
         int keySize = getTable().getKeySet().size();
         if (keySize - group.size() > 2) {
-            LOG.warn("WARN miss getter! keySize:{}, group.size:{}", keySize, group.size());
+            LOG.warn("WARN miss getter! {}, keys:{}, groups:{}", getTable().getModelClazz(), keySize, group.size());
         }
 
         List<ModelColumnValue> items = group.spread(model);
@@ -55,10 +55,9 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         }
 
         // 检查参数数目
-
         int valueSize = saveValues.size();
         if (keySize != valueSize) {
-            LOG.warn("WARN miss value! {}, keySize:{} != valueSize:{}", getTable().getModelClazz(), keySize, valueSize);
+            LOG.debug("NOTICE miss value! {}, keys:{} != values:{}", getTable().getModelClazz(), keySize, valueSize);
         }
 
         if (LOG.isDebugEnabled()) {
