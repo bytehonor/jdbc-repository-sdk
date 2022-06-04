@@ -47,4 +47,8 @@ public class ModelGetterGroup<T> {
         }
         return result;
     }
+    
+    public int size() {
+        return this.list.size();
+    }
 }

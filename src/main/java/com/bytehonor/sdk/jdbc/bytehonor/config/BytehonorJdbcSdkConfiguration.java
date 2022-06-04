@@ -3,7 +3,7 @@ package com.bytehonor.sdk.jdbc.bytehonor.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -17,7 +17,7 @@ import com.bytehonor.sdk.jdbc.bytehonor.jdbc.JdbcProxyDao;
 
 @Configuration
 @ConditionalOnClass({ DataSourceProperties.class, JdbcTemplate.class })
-@AutoConfigureBefore(DataSourceAutoConfiguration.class)
+@AutoConfigureAfter(DataSourceAutoConfiguration.class)
 public class BytehonorJdbcSdkConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(BytehonorJdbcSdkConfiguration.class);
@@ -29,7 +29,7 @@ public class BytehonorJdbcSdkConfiguration {
     @ConditionalOnProperty(prefix = "spring.datasource", name = "driver-class-name", matchIfMissing = false)
     @ConditionalOnMissingBean(value = JdbcProxyDao.class)
     public JdbcProxyDao jdbcProxyDao() {
-        LOG.info("JdbcProxyDao instance new");
+        LOG.info("[Bytehonor] JdbcProxyDao instance new");
         return new JdbcProxyDao(jdbcTemplate);
     }
 }

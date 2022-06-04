@@ -123,4 +123,38 @@ public class InsertPrepareStatementTest {
         String target = "INSERT INTO tbl_student (age,nickname,update_at,create_at) VALUES (?,?,?,?)";
         assertTrue("testTimeNull", target.equals(sql) && args.length == 4);
     }
+
+    @Test
+    public void testGetterLess() {
+
+        ModelConvertMapper<Student> less = new ModelConvertMapper<Student>() {
+
+            @Override
+            public ModelGetterGroup<Student> create() {
+                ModelGetterGroup<Student> group = ModelGetterGroup.create(Student.class);
+                group.add("nickname", Student::getNickname);
+                return group;
+            }
+
+        };
+
+        Student student = new Student();
+        student.setId(123L);
+        student.setAge(1);
+        student.setNickname("TimeNull");
+        student.setCreateAt(null);
+        student.setUpdateAt(null);
+
+        PrepareStatement statement = new InsertPrepareStatement(Student.class);
+        statement.prepare(student, less);
+
+        String sql = statement.sql();
+        Object[] args = statement.args();
+
+        LOG.info("testGetterLess sql:{}", sql);
+        statement.check();
+
+        String target = "INSERT INTO tbl_student (nickname,update_at,create_at) VALUES (?,?,?)";
+        assertTrue("testGetterLess", target.equals(sql) && args.length == 3);
+    }
 }

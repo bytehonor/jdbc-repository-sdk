@@ -40,6 +40,11 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         ModelGetterGroup<T> group = mapper.create();
         Objects.requireNonNull(group, "group");
 
+        int keySize = getTable().getKeySet().size();
+        if (keySize - group.size() > 2) {
+            LOG.warn("WARN miss getter! keySize:{}, group.size:{}", keySize, group.size());
+        }
+
         List<ModelColumnValue> items = group.spread(model);
         List<ModelColumnValue> result = SqlColumnUtils.prepareInsert(getTable(), items);
 
@@ -50,10 +55,10 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         }
 
         // 检查参数数目
-        int keySize = getTable().getKeySet().size();
+
         int valueSize = saveValues.size();
         if (keySize != valueSize) {
-            LOG.warn("miss key! {}, keySize:{} != valueSize:{}", getTable().getModelClazz(), keySize, valueSize);
+            LOG.warn("WARN miss value! {}, keySize:{} != valueSize:{}", getTable().getModelClazz(), keySize, valueSize);
         }
 
         if (LOG.isDebugEnabled()) {
