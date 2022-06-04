@@ -62,7 +62,7 @@ public class JdbcProxyDao {
 
         log(clazz, sql);
 
-        return jdbcTemplate.update(statement.sql(), statement.args(), statement.types());
+        return jdbcTemplate.update(sql, statement.args(), statement.types());
     }
 
     public int deleteById(Class<?> clazz, Long id) {
