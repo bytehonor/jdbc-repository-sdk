@@ -119,7 +119,7 @@ public class JdbcProxyDao {
         final PrepareStatement statement = PrepareStatementBuilder.insert(clazz);
         final List<ModelColumnValue> items = statement.prepare(model, mapper);
 
-        String sql = statement.sql();
+        final String sql = statement.sql();
         log(clazz, sql);
 
         KeyHolder holder = new GeneratedKeyHolder();
@@ -129,7 +129,7 @@ public class JdbcProxyDao {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 
-                return SqlAdaptUtils.convert(statement, items, connection);
+                return SqlAdaptUtils.convert(sql, items, connection);
             }
         }, holder);
 
