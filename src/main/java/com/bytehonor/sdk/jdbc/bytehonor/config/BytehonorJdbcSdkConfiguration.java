@@ -29,7 +29,7 @@ public class BytehonorJdbcSdkConfiguration {
     @ConditionalOnProperty(prefix = "spring.datasource", name = "driver-class-name", matchIfMissing = false)
     @ConditionalOnMissingBean(value = JdbcProxyDao.class)
     public JdbcProxyDao jdbcProxyDao() {
-        LOG.info("[Bytehonor] JdbcProxyDao instance new");
+        LOG.info("[Bytehonor] JdbcProxyDao");
         return new JdbcProxyDao(jdbcTemplate);
     }
 }
