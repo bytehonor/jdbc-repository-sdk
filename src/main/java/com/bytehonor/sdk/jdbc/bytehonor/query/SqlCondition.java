@@ -7,6 +7,7 @@ import com.bytehonor.sdk.define.bytehonor.util.StringObject;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlOperator;
 import com.bytehonor.sdk.jdbc.bytehonor.constant.SqlValueTypes;
 import com.bytehonor.sdk.jdbc.bytehonor.util.SqlColumnUtils;
+import com.bytehonor.sdk.jdbc.bytehonor.util.SqlInjectUtils;
 import com.bytehonor.sdk.lang.bytehonor.string.StringCreator;
 import com.bytehonor.sdk.lang.bytehonor.util.ListJoinUtils;
 import com.bytehonor.sdk.lang.bytehonor.util.SetJoinUtils;
@@ -36,6 +37,10 @@ public class SqlCondition {
         }
         if (condition.getValue() == null) {
             // 仅非null判断
+            return false;
+        }
+
+        if (SqlOperator.LIKE.equals(condition.getOperator()) && StringObject.isEmpty(condition.getValue().toString())) {
             return false;
         }
         SqlColumnUtils.acceptChar(condition.getKey());
@@ -142,19 +147,6 @@ public class SqlCondition {
      * @param value
      * @return
      */
-    public static SqlCondition lt(String key, String value) {
-        return new SqlCondition(key, value, SqlValueTypes.STRING, SqlOperator.LT);
-    }
-
-    /**
-     * <pre>
-     * <
-     * </pre>
-     * 
-     * @param key
-     * @param value
-     * @return
-     */
     public static SqlCondition lt(String key, Long value) {
         return new SqlCondition(key, value, SqlValueTypes.LONG, SqlOperator.LT);
     }
@@ -199,7 +191,15 @@ public class SqlCondition {
     }
 
     public static SqlCondition like(String key, String value) {
-        return new SqlCondition(key, value, SqlValueTypes.STRING, SqlOperator.LIKE);
+        return new SqlCondition(key, SqlInjectUtils.like(value, true, true), SqlValueTypes.STRING, SqlOperator.LIKE);
+    }
+
+    public static SqlCondition likeLeft(String key, String value) {
+        return new SqlCondition(key, SqlInjectUtils.like(value, true, false), SqlValueTypes.STRING, SqlOperator.LIKE);
+    }
+
+    public static SqlCondition likeRight(String key, String value) {
+        return new SqlCondition(key, SqlInjectUtils.like(value, false, true), SqlValueTypes.STRING, SqlOperator.LIKE);
     }
 
     public static SqlCondition in(String key, List<String> value) {

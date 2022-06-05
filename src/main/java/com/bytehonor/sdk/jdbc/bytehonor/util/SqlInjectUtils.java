@@ -11,6 +11,27 @@ public class SqlInjectUtils {
 
     private static final char TA = '\'';
 
+    private static final char LK = '%';
+
+    public static String like(String src, boolean left, boolean right) {
+        if (src == null) {
+            return "";
+        }
+        String raw = src.trim();
+        if (StringObject.isEmpty(raw)) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        if (left && LK != raw.charAt(0)) {
+            sb.append(LK);
+        }
+        sb.append(raw);
+        if (right && LK != raw.charAt(raw.length() - 1)) {
+            sb.append(LK);
+        }
+        return sb.toString();
+    }
+
     public static String escape(String src) {
         if (StringObject.isEmpty(src)) {
             return src;

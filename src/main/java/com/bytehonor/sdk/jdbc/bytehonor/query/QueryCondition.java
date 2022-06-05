@@ -252,6 +252,14 @@ public final class QueryCondition {
         return this.doAdd(SqlCondition.like(key, value));
     }
 
+    public QueryCondition likeLeft(String key, String value) {
+        return this.doAdd(SqlCondition.likeLeft(key, value));
+    }
+
+    public QueryCondition likeRight(String key, String value) {
+        return this.doAdd(SqlCondition.likeRight(key, value));
+    }
+
     public QueryCondition in(String key, List<String> value) {
         return this.doAdd(SqlCondition.in(key, value));
     }
