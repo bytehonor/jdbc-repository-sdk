@@ -53,6 +53,25 @@ public class DeletePrepareStatementTest {
             LOG.error("error {}", e.getMessage());
         }
         String target = "DELETE FROM tbl_student";
-        assertTrue("test", target.equals(sql) && hasError);
+        assertTrue("testNoCondition", target.equals(sql) && hasError);
+    }
+    
+    @Test
+    public void testValueNull() {
+        String uuid = null;
+        QueryCondition condition = QueryCondition.create().eq("uuid", uuid);
+        PrepareStatement statement = new DeletePrepareStatement(Student.class, condition);
+        String sql = statement.sql();
+
+        LOG.info("testValueNull sql:{}", sql);
+        boolean hasError = false;
+        try {
+            statement.args();
+        } catch (Exception e) {
+            hasError = true;
+            LOG.error("error {}", e.getMessage());
+        }
+        String target = "DELETE FROM tbl_student";
+        assertTrue("testValueNull", target.equals(sql) && hasError);
     }
 }
