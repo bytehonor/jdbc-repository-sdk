@@ -72,70 +72,178 @@ public final class QueryCondition {
         return this;
     }
 
+    /**
+     * 等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition eq(String key, String value) {
         return this.doAdd(SqlCondition.eq(key, value));
     }
 
+    /**
+     * 等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition eq(String key, Long value) {
         return this.doAdd(SqlCondition.eq(key, value));
     }
 
+    /**
+     * 等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition eq(String key, Integer value) {
         return this.doAdd(SqlCondition.eq(key, value));
     }
 
+    /**
+     * 等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition eq(String key, Boolean value) {
         return this.doAdd(SqlCondition.eq(key, value));
     }
 
+    /**
+     * 不等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition neq(String key, String value) {
         return this.doAdd(SqlCondition.eq(key, value));
     }
 
+    /**
+     * 不等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition neq(String key, Long value) {
         return this.doAdd(SqlCondition.neq(key, value));
     }
 
+    /**
+     * 不等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition neq(String key, Integer value) {
         return this.doAdd(SqlCondition.neq(key, value));
     }
 
+    /**
+     * 不等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition neq(String key, Boolean value) {
         return this.doAdd(SqlCondition.neq(key, value));
     }
 
+    /**
+     * 大于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition gt(String key, Long value) {
         return this.doAdd(SqlCondition.gt(key, value));
     }
 
+    /**
+     * 大于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition gt(String key, Integer value) {
         return this.doAdd(SqlCondition.gt(key, value));
     }
 
+    /**
+     * 大于等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition egt(String key, Long value) {
         return this.doAdd(SqlCondition.egt(key, value));
     }
 
+    /**
+     * 大于等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition egt(String key, Integer value) {
         return this.doAdd(SqlCondition.egt(key, value));
     }
 
-    public QueryCondition lt(String key, String value) {
-        return this.doAdd(SqlCondition.lt(key, value));
-    }
-
+    /**
+     * 小于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition lt(String key, Long value) {
         return this.doAdd(SqlCondition.lt(key, value));
     }
 
+    /**
+     * 小于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition lt(String key, Integer value) {
         return this.doAdd(SqlCondition.lt(key, value));
     }
 
+    /**
+     * 小于等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition elt(String key, Long value) {
         return this.doAdd(SqlCondition.elt(key, value));
     }
 
+    /**
+     * 小于等于
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public QueryCondition elt(String key, Integer value) {
         return this.doAdd(SqlCondition.elt(key, value));
     }
