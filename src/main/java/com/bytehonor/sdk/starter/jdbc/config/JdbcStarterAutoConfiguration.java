@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -27,7 +26,6 @@ public class JdbcStarterAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "spring.datasource", name = "driver-class-name", matchIfMissing = false)
-    @ConditionalOnMissingBean(value = JdbcProxyDao.class)
     public JdbcProxyDao jdbcProxyDao() {
         LOG.info("[Bytehonor] JdbcProxyDao");
         return new JdbcProxyDao(jdbcTemplate);
