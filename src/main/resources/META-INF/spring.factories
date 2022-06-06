@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.bytehonor.sdk.starter.jdbc.config.JdbcStarterAutoConfiguration
