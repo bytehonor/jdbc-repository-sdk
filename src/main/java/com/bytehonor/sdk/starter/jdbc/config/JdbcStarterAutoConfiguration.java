@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.jdbc.JdbcProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -28,9 +29,16 @@ public class JdbcStarterAutoConfiguration {
     @ConditionalOnMissingBean
     @Bean
     @Primary
-    JdbcTemplate jdbcTemplate(DataSource dataSource, JdbcProperties properties) {
+    public DataSource dataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @ConditionalOnMissingBean
+    @Bean
+    @Primary
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        JdbcProperties.Template template = properties.getTemplate();
+        JdbcProperties.Template template = new JdbcProperties.Template();
         jdbcTemplate.setFetchSize(template.getFetchSize());
         jdbcTemplate.setMaxRows(template.getMaxRows());
         if (template.getQueryTimeout() != null) {
