@@ -2,7 +2,6 @@ package com.bytehonor.sdk.starter.jdbc.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -21,12 +20,9 @@ public class JdbcStarterAutoConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(JdbcStarterAutoConfiguration.class);
 
-    @Autowired(required = false)
-    private JdbcTemplate jdbcTemplate;
-
     @Bean
     @ConditionalOnProperty(prefix = "spring.datasource", name = "driver-class-name", matchIfMissing = false)
-    public JdbcProxyDao jdbcProxyDao() {
+    public JdbcProxyDao jdbcProxyDao(JdbcTemplate jdbcTemplate) {
         LOG.info("[Bytehonor] JdbcProxyDao");
         return new JdbcProxyDao(jdbcTemplate);
     }
