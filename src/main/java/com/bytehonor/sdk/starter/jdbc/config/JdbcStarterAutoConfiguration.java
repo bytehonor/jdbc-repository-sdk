@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import com.bytehonor.sdk.starter.jdbc.dao.JdbcProxyDao;
 
 @Configuration
 @ConditionalOnClass({ DataSourceProperties.class, JdbcTemplate.class })
-@AutoConfigureAfter(DataSourceAutoConfiguration.class)
+@AutoConfigureAfter(JdbcRepositoriesAutoConfiguration.class)
 public class JdbcStarterAutoConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(JdbcStarterAutoConfiguration.class);
