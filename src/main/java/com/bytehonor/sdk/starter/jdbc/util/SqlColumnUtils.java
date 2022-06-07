@@ -27,6 +27,8 @@ public class SqlColumnUtils {
 
     private static final Map<String, String> UNDERLINE_COLUMNS = new ConcurrentHashMap<String, String>();
 
+    private static final Map<String, Boolean> TIME_AT_ENABLED = new ConcurrentHashMap<String, Boolean>();
+
     public static List<ModelColumnValue> prepareInsert(MetaTable metaTable, List<ModelColumnValue> items) {
         Objects.requireNonNull(metaTable, "metaTable");
 
@@ -34,7 +36,7 @@ public class SqlColumnUtils {
 
         String primary = metaTable.getPrimaryKey();
         for (ModelColumnValue item : items) {
-            if (SqlColumnUtils.isSaveIgnore(primary, item.getColumn())) {
+            if (isSaveIgnore(primary, item.getColumn())) {
                 LOG.debug("prepare ({}) pass", item.getColumn());
                 continue;
             }
@@ -44,10 +46,10 @@ public class SqlColumnUtils {
 
         // 自动补充更新时间和创建时间
         long now = System.currentTimeMillis();
-        if (enabledUpdateAt(metaTable)) {
+        if (enabledUpdateAtIfCache(metaTable)) {
             result.add(ModelColumnValue.of(SqlConstants.UPDATE_AT_COLUMN, now, JavaValueTypes.LONG));
         }
-        if (enabledCreateAt(metaTable)) {
+        if (enabledCreateAtIfCache(metaTable)) {
             result.add(ModelColumnValue.of(SqlConstants.CREATE_AT_COLUMN, now, JavaValueTypes.LONG));
         }
         return result;
@@ -69,7 +71,7 @@ public class SqlColumnUtils {
         }
         boolean filter = CollectionUtils.isEmpty(filters) == false;
         for (ModelColumnValue item : items) {
-            if (SqlColumnUtils.isSaveIgnore(primary, item.getColumn())) {
+            if (isSaveIgnore(primary, item.getColumn())) {
                 LOG.debug("prepare ({}) pass", item.getColumn());
                 continue;
             }
@@ -83,10 +85,21 @@ public class SqlColumnUtils {
 
         // 自动补充更新时间和创建时间
         long now = System.currentTimeMillis();
-        if (enabledUpdateAt(metaTable)) {
+        if (enabledUpdateAtIfCache(metaTable)) {
             result.add(ModelColumnValue.of(SqlConstants.UPDATE_AT_COLUMN, now, JavaValueTypes.LONG));
         }
         return result;
+    }
+
+    public static boolean enabledUpdateAtIfCache(MetaTable metaTable) {
+        String key = metaTable.getModelClazz() + ":update";
+        Boolean enabled = TIME_AT_ENABLED.get(key);
+        if (enabled != null) {
+            return enabled;
+        }
+        enabled = enabledUpdateAt(metaTable);
+        TIME_AT_ENABLED.put(key, enabled);
+        return enabled;
     }
 
     public static boolean enabledUpdateAt(MetaTable metaTable) {
@@ -97,6 +110,17 @@ public class SqlColumnUtils {
             return true;
         }
         return false;
+    }
+
+    public static boolean enabledCreateAtIfCache(MetaTable metaTable) {
+        String key = metaTable.getModelClazz() + ":create";
+        Boolean enabled = TIME_AT_ENABLED.get(key);
+        if (enabled != null) {
+            return enabled;
+        }
+        enabled = enabledCreateAt(metaTable);
+        TIME_AT_ENABLED.put(key, enabled);
+        return enabled;
     }
 
     public static boolean enabledCreateAt(MetaTable metaTable) {
