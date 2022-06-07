@@ -32,7 +32,7 @@ public class JdbcProxyDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public <T> List<T> query(Class<?> clazz, QueryCondition condition, RowMapper<T> mapper) {
+    public <T> List<T> query(Class<T> clazz, QueryCondition condition, RowMapper<T> mapper) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");

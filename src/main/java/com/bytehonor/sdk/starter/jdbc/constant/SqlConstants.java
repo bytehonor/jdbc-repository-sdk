@@ -18,14 +18,6 @@ public class SqlConstants {
 
     public static final String CON = ",";
 
-    public static final String UPDATE = "UPDATE ";
-
-    public static final String SELECT = "SELECT ";
-
-    public static final String DELETE = "DELETE ";
-
-    public static final String FROM = " FROM ";
-
     public static final String CREATE_AT_KEY = "createAt";
 
     public static final String CREATE_AT_COLUMN = "create_at";
