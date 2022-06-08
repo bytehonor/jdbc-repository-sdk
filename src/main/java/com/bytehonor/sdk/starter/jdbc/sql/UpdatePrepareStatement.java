@@ -47,6 +47,10 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         List<ModelColumnValue> items = group.spread(model);
         List<ModelColumnValue> result = SqlColumnUtils.prepareUpdate(getTable(), items, filterColumns);
 
+        if (CollectionUtils.isEmpty(result)) {
+            throw new RuntimeException("update sql ModelColumnValue empty");
+        }
+
         for (ModelColumnValue val : result) {
             saveColumns.add(val.getColumn());
             saveValues.add(val.getValue());
