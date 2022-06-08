@@ -44,6 +44,10 @@ public class SqlColumnUtils {
             result.add(item);
         }
 
+        if (CollectionUtils.isEmpty(result)) {
+            throw new RuntimeException("prepareInsert ModelColumnValue empty");
+        }
+
         // 自动补充更新时间和创建时间
         long now = System.currentTimeMillis();
         if (enabledUpdateAtIfCache(metaTable)) {
