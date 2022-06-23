@@ -21,7 +21,7 @@ public class PrepareStatementBuilderTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.create();
-        condition.inInt("age", set);
+        condition.integers("age", set);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.descBy("age");

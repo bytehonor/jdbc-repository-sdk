@@ -23,7 +23,7 @@ public class CountPrepareStatementTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.create();
-        condition.inInt("age", set);
+        condition.integers("age", set);
         condition.gt("createAt", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.descBy("age");

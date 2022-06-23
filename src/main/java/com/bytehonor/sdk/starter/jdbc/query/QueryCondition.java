@@ -261,27 +261,27 @@ public final class QueryCondition {
     }
 
     public QueryCondition in(String key, List<String> value) {
-        return this.doAdd(SqlCondition.in(key, value));
+        return this.doAdd(SqlCondition.strings(key, value));
     }
 
     public QueryCondition in(String key, Set<String> value) {
-        return this.doAdd(SqlCondition.in(key, value));
+        return this.doAdd(SqlCondition.strings(key, value));
     }
 
-    public QueryCondition inLong(String key, List<Long> value) {
-        return this.doAdd(SqlCondition.inLong(key, value));
+    public QueryCondition longs(String key, List<Long> value) {
+        return this.doAdd(SqlCondition.longs(key, value));
     }
 
-    public QueryCondition inLong(String key, Set<Long> value) {
-        return this.doAdd(SqlCondition.inLong(key, value));
+    public QueryCondition longs(String key, Set<Long> value) {
+        return this.doAdd(SqlCondition.longs(key, value));
     }
 
-    public QueryCondition inInt(String key, List<Integer> value) {
-        return this.doAdd(SqlCondition.inInt(key, value));
+    public QueryCondition integers(String key, List<Integer> value) {
+        return this.doAdd(SqlCondition.integers(key, value));
     }
 
-    public QueryCondition inInt(String key, Set<Integer> value) {
-        return this.doAdd(SqlCondition.inInt(key, value));
+    public QueryCondition integers(String key, Set<Integer> value) {
+        return this.doAdd(SqlCondition.integers(key, value));
     }
 
     public QueryCondition descBy(String key) {

@@ -1,12 +1,10 @@
 package com.bytehonor.sdk.starter.jdbc.query;
 
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
 import com.bytehonor.sdk.define.spring.lang.StringCreator;
+import com.bytehonor.sdk.define.spring.util.JoinUtils;
 import com.bytehonor.sdk.define.spring.util.StringObject;
-import com.bytehonor.sdk.lang.spring.util.ListJoinUtils;
-import com.bytehonor.sdk.lang.spring.util.SetJoinUtils;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlOperator;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
@@ -202,50 +200,26 @@ public class SqlCondition {
         return new SqlCondition(key, SqlInjectUtils.like(value, false, true), SqlValueTypes.STRING, SqlOperator.LIKE);
     }
 
-    public static SqlCondition in(String key, List<String> value) {
+    public static SqlCondition strings(String key, Collection<String> value) {
         String src = null;
         if (value != null && value.isEmpty() == false) {
-            src = StringCreator.create().append("(").append(ListJoinUtils.joinStringSafe(value)).append(")").toString();
+            src = StringCreator.create().append("(").append(JoinUtils.stringsSafe(value)).append(")").toString();
         }
         return new SqlCondition(key, src, SqlValueTypes.STRING, SqlOperator.IN);
     }
 
-    public static SqlCondition in(String key, Set<String> value) {
+    public static SqlCondition longs(String key, Collection<Long> value) {
         String src = null;
         if (value != null && value.isEmpty() == false) {
-            src = StringCreator.create().append("(").append(SetJoinUtils.joinStringSafe(value)).append(")").toString();
-        }
-        return new SqlCondition(key, src, SqlValueTypes.STRING, SqlOperator.IN);
-    }
-
-    public static SqlCondition inLong(String key, List<Long> value) {
-        String src = null;
-        if (value != null && value.isEmpty() == false) {
-            src = StringCreator.create().append("(").append(ListJoinUtils.joinLong(value)).append(")").toString();
+            src = StringCreator.create().append("(").append(JoinUtils.longs(value)).append(")").toString();
         }
         return new SqlCondition(key, src, SqlValueTypes.LONG, SqlOperator.IN);
     }
 
-    public static SqlCondition inLong(String key, Set<Long> value) {
+    public static SqlCondition integers(String key, Collection<Integer> value) {
         String src = null;
         if (value != null && value.isEmpty() == false) {
-            src = StringCreator.create().append("(").append(SetJoinUtils.joinLong(value)).append(")").toString();
-        }
-        return new SqlCondition(key, src, SqlValueTypes.LONG, SqlOperator.IN);
-    }
-
-    public static SqlCondition inInt(String key, List<Integer> value) {
-        String src = null;
-        if (value != null && value.isEmpty() == false) {
-            src = StringCreator.create().append("(").append(ListJoinUtils.joinInteger(value)).append(")").toString();
-        }
-        return new SqlCondition(key, src, SqlValueTypes.INTEGER, SqlOperator.IN);
-    }
-
-    public static SqlCondition inInt(String key, Set<Integer> value) {
-        String src = null;
-        if (value != null && value.isEmpty() == false) {
-            src = StringCreator.create().append("(").append(SetJoinUtils.joinInteger(value)).append(")").toString();
+            src = StringCreator.create().append("(").append(JoinUtils.integers(value)).append(")").toString();
         }
         return new SqlCondition(key, src, SqlValueTypes.INTEGER, SqlOperator.IN);
     }

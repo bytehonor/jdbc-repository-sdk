@@ -67,7 +67,7 @@ public class UpdatePrepareStatementTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.create();
-        condition.inInt("age", set); // conflict 不会被更新
+        condition.integers("age", set); // conflict 不会被更新
         condition.gt("createAt", System.currentTimeMillis());
 
         long now = System.currentTimeMillis();
