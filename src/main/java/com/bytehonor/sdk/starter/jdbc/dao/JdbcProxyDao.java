@@ -15,9 +15,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
-import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.sql.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.sql.PrepareStatementBuilder;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
@@ -37,7 +37,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
 
-        PrepareStatement statement = PrepareStatementBuilder.select(clazz, condition);
+        PrepareStatement statement = PrepareStatementBuilder.select(clazz, SqlAdaptUtils.from(condition));
         String sql = statement.sql();
 
         log(clazz, sql);
@@ -57,7 +57,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
-        PrepareStatement statement = PrepareStatementBuilder.delete(clazz, condition);
+        PrepareStatement statement = PrepareStatementBuilder.delete(clazz, SqlAdaptUtils.from(condition));
         String sql = statement.sql();
 
         log(clazz, sql);
@@ -81,7 +81,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
-        PrepareStatement statement = PrepareStatementBuilder.count(clazz, condition);
+        PrepareStatement statement = PrepareStatementBuilder.count(clazz, SqlAdaptUtils.from(condition));
         String sql = statement.sql();
 
         log(clazz, sql);
@@ -102,7 +102,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(mapper, "mapper");
 
         Class<? extends Object> clazz = model.getClass();
-        PrepareStatement statement = PrepareStatementBuilder.update(clazz, condition);
+        PrepareStatement statement = PrepareStatementBuilder.update(clazz, SqlAdaptUtils.from(condition));
         statement.prepare(model, mapper);
 
         String sql = statement.sql();

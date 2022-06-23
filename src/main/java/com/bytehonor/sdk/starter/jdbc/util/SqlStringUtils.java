@@ -1,12 +1,12 @@
 package com.bytehonor.sdk.starter.jdbc.util;
 
-import com.bytehonor.sdk.starter.jdbc.query.SqlArgGroup;
+import com.bytehonor.sdk.starter.jdbc.query.SqlArgCondition;
 import com.bytehonor.sdk.starter.jdbc.query.SqlOrder;
 import com.bytehonor.sdk.starter.jdbc.query.SqlPage;
 
 public class SqlStringUtils {
 
-    public static String toWhereSql(SqlArgGroup group) {
+    public static String toWhereSql(SqlArgCondition group) {
         if (group == null) {
             return "";
         }

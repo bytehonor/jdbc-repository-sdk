@@ -9,10 +9,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterGroup;
-import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
+import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 
 public class UpdatePrepareStatementTest {
 
@@ -46,7 +47,7 @@ public class UpdatePrepareStatementTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         statement.prepare(student, MAPPER);
 
         String sql = statement.sql();
@@ -78,7 +79,7 @@ public class UpdatePrepareStatementTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         statement.prepare(student, MAPPER);
 
         String sql = statement.sql();
@@ -104,7 +105,7 @@ public class UpdatePrepareStatementTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         statement.prepare(student, MAPPER);
 
         String sql = statement.sql();
@@ -130,7 +131,7 @@ public class UpdatePrepareStatementTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         statement.prepare(student, MAPPER);
 
         String sql = statement.sql();
@@ -155,7 +156,7 @@ public class UpdatePrepareStatementTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         statement.prepare(student, MAPPER);
 
         String sql = statement.sql();
@@ -183,7 +184,7 @@ public class UpdatePrepareStatementTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         statement.prepare(student, MAPPER);
 
         String sql = statement.sql();

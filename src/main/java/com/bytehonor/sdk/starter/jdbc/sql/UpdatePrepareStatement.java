@@ -12,8 +12,7 @@ import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterGroup;
-import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
-import com.bytehonor.sdk.starter.jdbc.query.SqlArgGroup;
+import com.bytehonor.sdk.starter.jdbc.query.SqlArgCondition;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
@@ -27,7 +26,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
     private final List<Object> saveValues;
     private final List<Integer> saveTypes;
 
-    public UpdatePrepareStatement(Class<?> clazz, QueryCondition condition) {
+    public UpdatePrepareStatement(Class<?> clazz, SqlArgCondition condition) {
         super(clazz, condition);
         this.saveColumns = new ArrayList<String>();
         this.saveValues = new ArrayList<Object>();
@@ -43,7 +42,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         Objects.requireNonNull(group, "group");
 
         // confilc check
-        List<String> filterColumns = condition.getGroup().getHolder().getColumns();
+        List<String> filterColumns = condition.getHolder().getColumns();
         List<ModelColumnValue> items = group.spread(model);
         List<ModelColumnValue> result = SqlColumnUtils.prepareUpdate(getTable(), items, filterColumns);
 
@@ -75,7 +74,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
             sql.append(column).append(" = ").append(SqlConstants.PARAM);
         }
 
-        sql.append(SqlStringUtils.toWhereSql(condition.getGroup()));
+        sql.append(SqlStringUtils.toWhereSql(condition));
         return sql.toString();
     }
 
@@ -84,13 +83,13 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         if (CollectionUtils.isEmpty(saveValues)) {
             throw new RuntimeException("update sql saveValues empty");
         }
-        if (SqlArgGroup.isArgsEmpty(condition.getGroup())) {
-            throw new RuntimeException("update sql condition group args isEmpty");
+        if (SqlArgCondition.isArgsEmpty(condition)) {
+            throw new RuntimeException("update sql condition args isEmpty");
         }
 
         List<Object> allArgs = new ArrayList<Object>(256);
         allArgs.addAll(saveValues);
-        List<Object> args = condition.getGroup().args();
+        List<Object> args = condition.args();
         allArgs.addAll(args);
 
         return allArgs.toArray();
@@ -101,13 +100,13 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         if (CollectionUtils.isEmpty(saveTypes)) {
             throw new RuntimeException("update sql saveTypes empty");
         }
-        if (SqlArgGroup.isArgsEmpty(condition.getGroup())) {
-            throw new RuntimeException("update sql condition group args isEmpty");
+        if (SqlArgCondition.isArgsEmpty(condition)) {
+            throw new RuntimeException("update sql condition args isEmpty");
         }
 
         List<Integer> allTypes = new ArrayList<Integer>(256);
         allTypes.addAll(saveTypes);
-        List<Integer> types = condition.getGroup().types();
+        List<Integer> types = condition.types();
         allTypes.addAll(types);
 
         return SqlInjectUtils.listArray(allTypes);

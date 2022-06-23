@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
-import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
+import com.bytehonor.sdk.starter.jdbc.query.SqlArgCondition;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlMetaUtils;
 
@@ -20,9 +20,9 @@ public abstract class MysqlPrepareStatement implements PrepareStatement {
 
     protected final MetaTable table;
 
-    protected final QueryCondition condition;
+    protected final SqlArgCondition condition;
 
-    public MysqlPrepareStatement(Class<?> clazz, QueryCondition condition) {
+    public MysqlPrepareStatement(Class<?> clazz, SqlArgCondition condition) {
         this.clazz = clazz;
         this.table = SqlMetaUtils.parse(clazz);
         this.condition = condition;
@@ -62,7 +62,7 @@ public abstract class MysqlPrepareStatement implements PrepareStatement {
         return table;
     }
 
-    public QueryCondition getCondition() {
+    public SqlArgCondition getCondition() {
         return condition;
     }
 

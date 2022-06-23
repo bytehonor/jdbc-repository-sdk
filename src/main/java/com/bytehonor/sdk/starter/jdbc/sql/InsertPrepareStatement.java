@@ -12,7 +12,6 @@ import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterGroup;
-import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
@@ -26,7 +25,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
     private final List<Integer> saveTypes;
 
     public InsertPrepareStatement(Class<?> clazz) {
-        super(clazz, QueryCondition.and());
+        super(clazz, null);
         this.saveColumns = new ArrayList<String>();
         this.saveValues = new ArrayList<Object>();
         this.saveTypes = new ArrayList<Integer>();

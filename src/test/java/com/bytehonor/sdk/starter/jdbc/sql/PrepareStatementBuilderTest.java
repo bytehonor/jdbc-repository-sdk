@@ -7,8 +7,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
+import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 
 public class PrepareStatementBuilderTest {
 
@@ -26,7 +27,7 @@ public class PrepareStatementBuilderTest {
         condition.like("nickname", "boy");
         condition.descBy("age");
 
-        PrepareStatement select = PrepareStatementBuilder.select(Student.class, condition);
+        PrepareStatement select = PrepareStatementBuilder.select(Student.class, SqlAdaptUtils.from(condition));
         LOG.info("select sql:{}", select.sql());
         select.check();
 
@@ -34,11 +35,11 @@ public class PrepareStatementBuilderTest {
         LOG.info("selectById sql:{}", selectById.sql());
         selectById.check();
 
-        PrepareStatement count = PrepareStatementBuilder.count(Student.class, condition);
+        PrepareStatement count = PrepareStatementBuilder.count(Student.class, SqlAdaptUtils.from(condition));
         LOG.info("count sql:{}", count.sql());
         count.check();
 
-        PrepareStatement delete = PrepareStatementBuilder.delete(Student.class, condition);
+        PrepareStatement delete = PrepareStatementBuilder.delete(Student.class, SqlAdaptUtils.from(condition));
         LOG.info("delete sql:{}", delete.sql());
         delete.check();
 

@@ -14,8 +14,6 @@ public class SqlArgCondition {
 
     private static final Logger LOG = LoggerFactory.getLogger(SqlArgCondition.class);
 
-    private final QueryLogic logic;
-
     private final SqlOrder order;
 
     private final SqlPage page;
@@ -25,7 +23,6 @@ public class SqlArgCondition {
     private final SqlArgHolder holder;
 
     private SqlArgCondition(QueryLogic logic, SqlOrder order, SqlPage page) {
-        this.logic = logic;
         this.order = order;
         this.page = page;
         this.columns = new ArrayList<SqlColumn>();
@@ -52,10 +49,10 @@ public class SqlArgCondition {
         return this;
     }
 
-    public static boolean isArgsEmpty(SqlArgCondition group) {
-        Objects.requireNonNull(group, "group");
+    public static boolean isArgsEmpty(SqlArgCondition condition) {
+        Objects.requireNonNull(condition, "condition");
 
-        return group.getHolder().isEmpty();
+        return condition.getHolder().isEmpty();
     }
 
     public String toSql() {
@@ -86,10 +83,6 @@ public class SqlArgCondition {
         return toSql();
     }
 
-    public QueryLogic getLogic() {
-        return logic;
-    }
-
     public SqlOrder getOrder() {
         return order;
     }
@@ -104,6 +97,11 @@ public class SqlArgCondition {
 
     public SqlArgHolder getHolder() {
         return holder;
+    }
+
+    public static SqlArgCondition id(Long id) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

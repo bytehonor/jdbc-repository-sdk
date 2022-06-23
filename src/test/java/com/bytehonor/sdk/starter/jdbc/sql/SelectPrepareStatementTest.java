@@ -9,8 +9,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
+import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 
 public class SelectPrepareStatementTest {
 
@@ -27,7 +28,7 @@ public class SelectPrepareStatementTest {
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.descBy("age");
-        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 
@@ -41,7 +42,7 @@ public class SelectPrepareStatementTest {
     @Test
     public void testNoCondition() {
         QueryCondition condition = QueryCondition.create();
-        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 
@@ -56,7 +57,7 @@ public class SelectPrepareStatementTest {
     public void testNoConditionNoPage() {
         QueryCondition condition = QueryCondition.create();
         condition.setPage(null);
-        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         String sql = statement.sql();
         boolean hasError = false;
         try {
@@ -76,7 +77,7 @@ public class SelectPrepareStatementTest {
     public void testEqEmpty() {
         QueryCondition condition = QueryCondition.create();
         condition.eq("nickname", "");
-        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 

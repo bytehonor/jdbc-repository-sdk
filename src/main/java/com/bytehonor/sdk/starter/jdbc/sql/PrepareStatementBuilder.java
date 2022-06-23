@@ -2,11 +2,11 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 
 import java.util.Objects;
 
-import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
+import com.bytehonor.sdk.starter.jdbc.query.SqlArgCondition;
 
 public final class PrepareStatementBuilder {
 
-    public static PrepareStatement select(Class<?> clazz, QueryCondition condition) {
+    public static PrepareStatement select(Class<?> clazz, SqlArgCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -17,10 +17,10 @@ public final class PrepareStatementBuilder {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
 
-        return select(clazz, QueryCondition.id(id));
+        return select(clazz, SqlArgCondition.id(id));
     }
 
-    public static PrepareStatement count(Class<?> clazz, QueryCondition condition) {
+    public static PrepareStatement count(Class<?> clazz, SqlArgCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -33,14 +33,14 @@ public final class PrepareStatementBuilder {
         return new InsertPrepareStatement(clazz);
     }
 
-    public static PrepareStatement update(Class<?> clazz, QueryCondition condition) {
+    public static PrepareStatement update(Class<?> clazz, SqlArgCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
         return new UpdatePrepareStatement(clazz, condition);
     }
 
-    public static PrepareStatement delete(Class<?> clazz, QueryCondition condition) {
+    public static PrepareStatement delete(Class<?> clazz, SqlArgCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -51,6 +51,6 @@ public final class PrepareStatementBuilder {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
 
-        return delete(clazz, QueryCondition.id(id));
+        return delete(clazz, SqlArgCondition.id(id));
     }
 }

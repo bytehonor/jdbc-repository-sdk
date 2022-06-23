@@ -1,13 +1,12 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
-import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
-import com.bytehonor.sdk.starter.jdbc.query.SqlArgGroup;
+import com.bytehonor.sdk.starter.jdbc.query.SqlArgCondition;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 
 public class DeletePrepareStatement extends MysqlPrepareStatement {
 
-    public DeletePrepareStatement(Class<?> clazz, QueryCondition condition) {
+    public DeletePrepareStatement(Class<?> clazz, SqlArgCondition condition) {
         super(clazz, condition);
     }
 
@@ -16,29 +15,29 @@ public class DeletePrepareStatement extends MysqlPrepareStatement {
         StringBuilder sql = new StringBuilder();
         sql.append("DELETE FROM ").append(table.getTableName());
 
-        if (condition.getGroup() == null) {
-            throw new RuntimeException("delete sql condition group null");
+        if (condition == null) {
+            throw new RuntimeException("delete sql condition null");
         }
 
-        sql.append(SqlStringUtils.toWhereSql(condition.getGroup()));
+        sql.append(SqlStringUtils.toWhereSql(condition));
         return sql.toString();
     }
 
     @Override
     public Object[] args() {
-        if (SqlArgGroup.isArgsEmpty(condition.getGroup())) {
-            throw new RuntimeException("delete sql condition group args isEmpty");
+        if (SqlArgCondition.isArgsEmpty(condition)) {
+            throw new RuntimeException("delete sql condition args isEmpty");
         }
 
-        return condition.getGroup().args().toArray();
+        return condition.args().toArray();
     }
 
     @Override
     public int[] types() {
-        if (SqlArgGroup.isArgsEmpty(condition.getGroup())) {
-            throw new RuntimeException("delete sql condition group args isEmpty");
+        if (SqlArgCondition.isArgsEmpty(condition)) {
+            throw new RuntimeException("delete sql condition args isEmpty");
         }
-        return SqlInjectUtils.listArray(condition.getGroup().types());
+        return SqlInjectUtils.listArray(condition.types());
     }
 
 }

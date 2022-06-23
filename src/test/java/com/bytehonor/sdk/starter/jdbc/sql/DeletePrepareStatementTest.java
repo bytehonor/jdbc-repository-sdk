@@ -9,8 +9,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
+import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 
 public class DeletePrepareStatementTest {
 
@@ -27,7 +28,7 @@ public class DeletePrepareStatementTest {
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.descBy("age");
-        PrepareStatement statement = new DeletePrepareStatement(Student.class, condition);
+        PrepareStatement statement = new DeletePrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 
@@ -41,7 +42,7 @@ public class DeletePrepareStatementTest {
     @Test
     public void testNoCondition() {
         QueryCondition condition = QueryCondition.create();
-        PrepareStatement statement = new DeletePrepareStatement(Student.class, condition);
+        PrepareStatement statement = new DeletePrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         String sql = statement.sql();
 
         LOG.info("testNoCondition sql:{}", sql);
@@ -60,7 +61,7 @@ public class DeletePrepareStatementTest {
     public void testValueNull() {
         String uuid = null;
         QueryCondition condition = QueryCondition.create().eq("uuid", uuid);
-        PrepareStatement statement = new DeletePrepareStatement(Student.class, condition);
+        PrepareStatement statement = new DeletePrepareStatement(Student.class, SqlAdaptUtils.from(condition));
         String sql = statement.sql();
 
         LOG.info("testValueNull sql:{}", sql);
