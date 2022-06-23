@@ -47,7 +47,7 @@ public class SqlArgHolder {
      * @param condition
      * @return
      */
-    public SqlArgHolder add(SqlCondition condition) {
+    public SqlArgHolder add(SqlColumn condition) {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(condition.getOperator(), "operator");
 

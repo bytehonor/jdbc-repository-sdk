@@ -10,49 +10,56 @@ import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.define.spring.constant.QueryLogic;
 
-public class SqlArgGroup {
+public class SqlArgCondition {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SqlArgGroup.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SqlArgCondition.class);
 
     private final QueryLogic logic;
 
-    private final List<SqlColumn> conditions;
+    private final SqlOrder order;
+
+    private final SqlPage page;
+
+    private final List<SqlColumn> columns; // 不要了
 
     private final SqlArgHolder holder;
 
-    private SqlArgGroup(QueryLogic logic) {
+    private SqlArgCondition(QueryLogic logic, SqlOrder order, SqlPage page) {
         this.logic = logic;
-        this.conditions = new ArrayList<SqlColumn>();
+        this.order = order;
+        this.page = page;
+        this.columns = new ArrayList<SqlColumn>();
         this.holder = SqlArgHolder.create(logic);
     }
 
-    public static SqlArgGroup create(QueryLogic logic) {
+    // convert
+    public static SqlArgCondition create(QueryLogic logic, SqlOrder order, SqlPage page) {
         Objects.requireNonNull(logic, "logic");
 
-        return new SqlArgGroup(logic);
+        return new SqlArgCondition(logic, order, page);
     }
 
-    public SqlArgGroup add(SqlColumn condition) {
-        Objects.requireNonNull(condition, "condition");
-        Objects.requireNonNull(condition.getOperator(), "operator");
+    public SqlArgCondition add(SqlColumn column) {
+        Objects.requireNonNull(column, "column");
+        Objects.requireNonNull(column.getOperator(), "operator");
 
-        if (SqlColumn.accept(condition) == false) {
-            LOG.debug("put condition ignore, key:{}, value:{}", condition.getKey(), condition.getValue());
+        if (SqlColumn.accept(column) == false) {
+            LOG.debug("put column ignore, key:{}, value:{}", column.getKey(), column.getValue());
             return this;
         }
-        this.conditions.add(condition);
-        this.holder.add(condition);
+        this.columns.add(column);
+        this.holder.add(column);
         return this;
     }
 
-    public static boolean isArgsEmpty(SqlArgGroup group) {
+    public static boolean isArgsEmpty(SqlArgCondition group) {
         Objects.requireNonNull(group, "group");
 
         return group.getHolder().isEmpty();
     }
 
     public String toSql() {
-        if (CollectionUtils.isEmpty(conditions)) {
+        if (CollectionUtils.isEmpty(columns)) {
             return "";
         }
         StringBuilder sb = new StringBuilder();
@@ -83,8 +90,16 @@ public class SqlArgGroup {
         return logic;
     }
 
-    public List<SqlColumn> getConditions() {
-        return conditions;
+    public SqlOrder getOrder() {
+        return order;
+    }
+
+    public SqlPage getPage() {
+        return page;
+    }
+
+    public List<SqlColumn> getColumns() {
+        return columns;
     }
 
     public SqlArgHolder getHolder() {
