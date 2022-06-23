@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.bytehonor.sdk.define.spring.constant.QueryLogic;
+import com.bytehonor.sdk.define.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.util.StringObject;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
-import com.bytehonor.sdk.starter.jdbc.constant.SqlLogic;
-import com.bytehonor.sdk.starter.jdbc.constant.SqlOperator;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 
 public class SqlArgHolder {
 
     private static final String BLANK = SqlConstants.BLANK;
 
-    private final SqlLogic logic;
+    private final QueryLogic logic;
 
     private final StringBuilder sql;
 
@@ -28,8 +28,8 @@ public class SqlArgHolder {
 
     private int argSize;
 
-    private SqlArgHolder(SqlLogic logic) {
-        this.logic = logic != null ? logic : SqlLogic.AND;
+    private SqlArgHolder(QueryLogic logic) {
+        this.logic = logic != null ? logic : QueryLogic.AND;
         this.sql = new StringBuilder();
         this.columns = new ArrayList<String>();
         this.values = new ArrayList<Object>();
@@ -38,7 +38,7 @@ public class SqlArgHolder {
         this.argSize = 0;
     }
 
-    public static SqlArgHolder create(SqlLogic logic) {
+    public static SqlArgHolder create(QueryLogic logic) {
         return new SqlArgHolder(logic);
     }
 
@@ -93,7 +93,7 @@ public class SqlArgHolder {
         return sql.toString();
     }
 
-    public SqlLogic getLogic() {
+    public QueryLogic getLogic() {
         return logic;
     }
 

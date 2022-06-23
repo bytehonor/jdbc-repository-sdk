@@ -1,7 +1,7 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
 import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
-import com.bytehonor.sdk.starter.jdbc.query.SqlConditionGroup;
+import com.bytehonor.sdk.starter.jdbc.query.SqlArgGroup;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 
@@ -24,7 +24,7 @@ public class SelectPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
+        if (SqlArgGroup.isArgsEmpty(condition.getGroup())) {
             if (condition.getPage() == null) {
                 // 禁全表无分页查询
                 throw new RuntimeException("select sql condition group args isEmpty");
@@ -36,7 +36,7 @@ public class SelectPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public int[] types() {
-        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
+        if (SqlArgGroup.isArgsEmpty(condition.getGroup())) {
             return new int[0];
         }
         return SqlInjectUtils.listArray(condition.getGroup().types());

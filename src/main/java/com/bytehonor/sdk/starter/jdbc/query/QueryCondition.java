@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.bytehonor.sdk.define.spring.constant.HttpConstants;
-import com.bytehonor.sdk.starter.jdbc.constant.SqlLogic;
+import com.bytehonor.sdk.define.spring.constant.QueryLogic;
 
 /**
  * 
@@ -20,12 +20,12 @@ public final class QueryCondition {
 
     private SqlOrder order;
 
-    private final SqlConditionGroup group;
+    private final SqlArgGroup group;
 
-    private QueryCondition(SqlLogic logic) {
+    private QueryCondition(QueryLogic logic) {
         this.page = SqlPage.create();
         this.order = null;
-        this.group = SqlConditionGroup.create(logic);
+        this.group = SqlArgGroup.create(logic);
     }
 
     public static QueryCondition id(Long id) {
@@ -47,7 +47,7 @@ public final class QueryCondition {
     }
 
     public static QueryCondition and(int offset, int limit) {
-        return create(SqlLogic.AND, SqlPage.of(offset, limit));
+        return create(QueryLogic.AND, SqlPage.of(offset, limit));
     }
 
     public static QueryCondition or() {
@@ -55,10 +55,10 @@ public final class QueryCondition {
     }
 
     public static QueryCondition or(int offset, int limit) {
-        return create(SqlLogic.OR, SqlPage.of(offset, limit));
+        return create(QueryLogic.OR, SqlPage.of(offset, limit));
     }
 
-    public static QueryCondition create(SqlLogic logic, SqlPage page) {
+    public static QueryCondition create(QueryLogic logic, SqlPage page) {
         Objects.requireNonNull(logic, "logic");
         Objects.requireNonNull(page, "page");
 
@@ -318,7 +318,7 @@ public final class QueryCondition {
         this.order = order;
     }
 
-    public SqlConditionGroup getGroup() {
+    public SqlArgGroup getGroup() {
         return group;
     }
 

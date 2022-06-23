@@ -1,7 +1,7 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
 import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
-import com.bytehonor.sdk.starter.jdbc.query.SqlConditionGroup;
+import com.bytehonor.sdk.starter.jdbc.query.SqlArgGroup;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 
@@ -22,7 +22,7 @@ public class CountPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
+        if (SqlArgGroup.isArgsEmpty(condition.getGroup())) {
             return new Object[0];
         }
         return condition.getGroup().args().toArray();
@@ -30,7 +30,7 @@ public class CountPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public int[] types() {
-        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
+        if (SqlArgGroup.isArgsEmpty(condition.getGroup())) {
             return new int[0];
         }
         return SqlInjectUtils.listArray(condition.getGroup().types());

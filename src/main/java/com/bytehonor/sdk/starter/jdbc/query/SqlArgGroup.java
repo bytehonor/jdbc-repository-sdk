@@ -8,31 +8,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.starter.jdbc.constant.SqlLogic;
+import com.bytehonor.sdk.define.spring.constant.QueryLogic;
 
-public class SqlConditionGroup {
+public class SqlArgGroup {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SqlConditionGroup.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SqlArgGroup.class);
 
-    private final SqlLogic logic;
+    private final QueryLogic logic;
 
     private final List<SqlCondition> conditions;
 
     private final SqlArgHolder holder;
 
-    private SqlConditionGroup(SqlLogic logic) {
+    private SqlArgGroup(QueryLogic logic) {
         this.logic = logic;
         this.conditions = new ArrayList<SqlCondition>();
         this.holder = SqlArgHolder.create(logic);
     }
 
-    public static SqlConditionGroup create(SqlLogic logic) {
+    public static SqlArgGroup create(QueryLogic logic) {
         Objects.requireNonNull(logic, "logic");
 
-        return new SqlConditionGroup(logic);
+        return new SqlArgGroup(logic);
     }
 
-    public SqlConditionGroup add(SqlCondition condition) {
+    public SqlArgGroup add(SqlCondition condition) {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(condition.getOperator(), "operator");
 
@@ -45,7 +45,7 @@ public class SqlConditionGroup {
         return this;
     }
 
-    public static boolean isArgsEmpty(SqlConditionGroup group) {
+    public static boolean isArgsEmpty(SqlArgGroup group) {
         Objects.requireNonNull(group, "group");
 
         return group.getHolder().isEmpty();
@@ -79,7 +79,7 @@ public class SqlConditionGroup {
         return toSql();
     }
 
-    public SqlLogic getLogic() {
+    public QueryLogic getLogic() {
         return logic;
     }
 

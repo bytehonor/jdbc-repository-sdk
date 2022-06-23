@@ -13,7 +13,7 @@ import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterGroup;
 import com.bytehonor.sdk.starter.jdbc.query.QueryCondition;
-import com.bytehonor.sdk.starter.jdbc.query.SqlConditionGroup;
+import com.bytehonor.sdk.starter.jdbc.query.SqlArgGroup;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
@@ -84,7 +84,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         if (CollectionUtils.isEmpty(saveValues)) {
             throw new RuntimeException("update sql saveValues empty");
         }
-        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
+        if (SqlArgGroup.isArgsEmpty(condition.getGroup())) {
             throw new RuntimeException("update sql condition group args isEmpty");
         }
 
@@ -101,7 +101,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         if (CollectionUtils.isEmpty(saveTypes)) {
             throw new RuntimeException("update sql saveTypes empty");
         }
-        if (SqlConditionGroup.isArgsEmpty(condition.getGroup())) {
+        if (SqlArgGroup.isArgsEmpty(condition.getGroup())) {
             throw new RuntimeException("update sql condition group args isEmpty");
         }
 
