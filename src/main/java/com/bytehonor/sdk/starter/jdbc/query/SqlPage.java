@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.starter.jdbc.query;
 
-import com.bytehonor.sdk.define.bytehonor.constant.HttpConstants;
+import com.bytehonor.sdk.define.spring.constant.HttpConstants;
 
 public class SqlPage {
 
@@ -21,7 +21,7 @@ public class SqlPage {
 
     public static SqlPage of(int offset, int limit) {
         SqlPage page = new SqlPage();
-        page.setOffset(offset > -1 ? offset : HttpConstants.OFFSET_DEFAULT);
+        page.setOffset(offset > -1 ? offset : HttpConstants.OFFSET_DEF);
         page.setLimit(limit);
         return page;
     }

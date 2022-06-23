@@ -9,10 +9,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.beautify.lang.getter.BooleanGetter;
-import com.bytehonor.sdk.beautify.lang.getter.DoubleGetter;
-import com.bytehonor.sdk.beautify.lang.getter.IntegerGetter;
-import com.bytehonor.sdk.beautify.lang.getter.LongGetter;
+import com.bytehonor.sdk.define.spring.getter.BooleanGetter;
+import com.bytehonor.sdk.define.spring.getter.DoubleGetter;
+import com.bytehonor.sdk.define.spring.getter.IntegerGetter;
+import com.bytehonor.sdk.define.spring.getter.LongGetter;
 import com.bytehonor.sdk.starter.jdbc.constant.JavaValueTypes;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;

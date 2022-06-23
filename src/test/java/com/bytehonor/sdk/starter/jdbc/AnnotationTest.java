@@ -13,11 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import com.bytehonor.sdk.define.spring.function.ClassGetter;
+import com.bytehonor.sdk.define.spring.function.ObjectGetter;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlColumn;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlTable;
-import com.bytehonor.sdk.starter.jdbc.function.ClassGetter;
 import com.bytehonor.sdk.starter.jdbc.function.IConvert;
-import com.bytehonor.sdk.starter.jdbc.function.ObjectGetter;
 
 public class AnnotationTest {
 

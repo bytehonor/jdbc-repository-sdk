@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import com.bytehonor.sdk.define.bytehonor.constant.HttpConstants;
+import com.bytehonor.sdk.define.spring.constant.HttpConstants;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlLogic;
 
 /**

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.bytehonor.sdk.define.bytehonor.util.StringObject;
+import com.bytehonor.sdk.define.spring.util.StringObject;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlLogic;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlOperator;

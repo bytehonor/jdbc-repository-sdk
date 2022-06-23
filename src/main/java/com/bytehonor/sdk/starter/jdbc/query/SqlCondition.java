@@ -3,10 +3,10 @@ package com.bytehonor.sdk.starter.jdbc.query;
 import java.util.List;
 import java.util.Set;
 
-import com.bytehonor.sdk.beautify.lang.string.StringCreator;
-import com.bytehonor.sdk.beautify.lang.util.ListJoinUtils;
-import com.bytehonor.sdk.beautify.lang.util.SetJoinUtils;
-import com.bytehonor.sdk.define.bytehonor.util.StringObject;
+import com.bytehonor.sdk.define.spring.lang.StringCreator;
+import com.bytehonor.sdk.define.spring.util.StringObject;
+import com.bytehonor.sdk.lang.spring.util.ListJoinUtils;
+import com.bytehonor.sdk.lang.spring.util.SetJoinUtils;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlOperator;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
