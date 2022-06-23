@@ -21,15 +21,15 @@ public class CountPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (SqlArgCondition.isArgsEmpty(condition)) {
+        if (SqlArgCondition.isArgEmpty(condition)) {
             return new Object[0];
         }
-        return condition.args().toArray();
+        return condition.values().toArray();
     }
 
     @Override
     public int[] types() {
-        if (SqlArgCondition.isArgsEmpty(condition)) {
+        if (SqlArgCondition.isArgEmpty(condition)) {
             return new int[0];
         }
         return SqlInjectUtils.listArray(condition.types());

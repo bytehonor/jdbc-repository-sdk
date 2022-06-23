@@ -42,7 +42,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         Objects.requireNonNull(group, "group");
 
         // confilc check
-        List<String> filterColumns = condition.getHolder().getColumns();
+        List<String> filterColumns = condition.getHolder().getKeys();
         List<ModelColumnValue> items = group.spread(model);
         List<ModelColumnValue> result = SqlColumnUtils.prepareUpdate(getTable(), items, filterColumns);
 
@@ -83,13 +83,13 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         if (CollectionUtils.isEmpty(saveValues)) {
             throw new RuntimeException("update sql saveValues empty");
         }
-        if (SqlArgCondition.isArgsEmpty(condition)) {
+        if (SqlArgCondition.isArgEmpty(condition)) {
             throw new RuntimeException("update sql condition args isEmpty");
         }
 
         List<Object> allArgs = new ArrayList<Object>(256);
         allArgs.addAll(saveValues);
-        List<Object> args = condition.args();
+        List<Object> args = condition.values();
         allArgs.addAll(args);
 
         return allArgs.toArray();
@@ -100,7 +100,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         if (CollectionUtils.isEmpty(saveTypes)) {
             throw new RuntimeException("update sql saveTypes empty");
         }
-        if (SqlArgCondition.isArgsEmpty(condition)) {
+        if (SqlArgCondition.isArgEmpty(condition)) {
             throw new RuntimeException("update sql condition args isEmpty");
         }
 

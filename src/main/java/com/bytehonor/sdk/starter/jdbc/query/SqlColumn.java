@@ -26,24 +26,24 @@ public class SqlColumn {
     /**
      * 允许空字符串值做参数
      * 
-     * @param condition
+     * @param arg
      * @return
      */
-    public static boolean accept(SqlColumn condition) {
-        if (StringObject.isEmpty(condition.getKey())) {
+    public static boolean accept(SqlColumn arg) {
+        if (StringObject.isEmpty(arg.getKey())) {
             return false;
         }
-        if (condition.getValue() == null) {
+        if (arg.getValue() == null) {
             // 仅非null判断
             return false;
         }
 
-        if (SqlOperator.LIKE.equals(condition.getOperator()) && StringObject.isEmpty(condition.getValue().toString())) {
+        if (SqlOperator.LIKE.equals(arg.getOperator()) && StringObject.isEmpty(arg.getValue().toString())) {
             return false;
         }
-        SqlColumnUtils.acceptChar(condition.getKey());
+        SqlColumnUtils.acceptChar(arg.getKey());
 
-        condition.format();
+        arg.format();
         return true;
     }
 

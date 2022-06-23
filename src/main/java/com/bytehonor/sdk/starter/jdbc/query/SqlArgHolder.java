@@ -18,7 +18,7 @@ public class SqlArgHolder {
 
     private final StringBuilder sql;
 
-    private final List<String> columns;
+    private final List<String> keys;
 
     private final List<Object> values;
 
@@ -31,7 +31,7 @@ public class SqlArgHolder {
     private SqlArgHolder(QueryLogic logic) {
         this.logic = logic != null ? logic : QueryLogic.AND;
         this.sql = new StringBuilder();
-        this.columns = new ArrayList<String>();
+        this.keys = new ArrayList<String>();
         this.values = new ArrayList<Object>();
         this.sqlTypes = new ArrayList<Integer>();
         this.javaTypes = new ArrayList<String>();
@@ -44,39 +44,39 @@ public class SqlArgHolder {
 
     /**
      * 
-     * @param condition
+     * @param column
      * @return
      */
-    public SqlArgHolder add(SqlColumn condition) {
-        Objects.requireNonNull(condition, "condition");
-        Objects.requireNonNull(condition.getOperator(), "operator");
+    public SqlArgHolder add(SqlColumn column) {
+        Objects.requireNonNull(column, "column");
+        Objects.requireNonNull(column.getOperator(), "operator");
 
-        if (condition.getValue() == null) {
+        if (column.getValue() == null) {
             return this;
         }
 
-        String column = SqlColumnUtils.camelToUnderline(condition.getKey());
-        if (StringObject.isEmpty(column)) {
+        String key = SqlColumnUtils.camelToUnderline(column.getKey());
+        if (StringObject.isEmpty(key)) {
             return this;
         }
 
-        this.columns.add(column);
+        this.keys.add(key);
 
         if (argSize > 0) {
             this.sql.append(BLANK).append(logic.getKey()).append(BLANK);
         }
         argSize++;
 
-        if (SqlOperator.IN.getKey().equals(condition.getOperator().getKey())) {
-            this.sql.append(column).append(BLANK).append(condition.getOperator().getOpt()).append(BLANK)
-                    .append(condition.getValue());
+        if (SqlOperator.IN.getKey().equals(column.getOperator().getKey())) {
+            this.sql.append(key).append(BLANK).append(column.getOperator().getOpt()).append(BLANK)
+                    .append(column.getValue());
             return this;
         }
-        this.sql.append(column).append(BLANK).append(condition.getOperator().getOpt()).append(BLANK)
+        this.sql.append(key).append(BLANK).append(column.getOperator().getOpt()).append(BLANK)
                 .append(SqlConstants.PARAM);
-        this.values.add(condition.getValue());
-        this.sqlTypes.add(condition.getType());
-        this.javaTypes.add(condition.getValue().getClass().getName());
+        this.values.add(column.getValue());
+        this.sqlTypes.add(column.getType());
+        this.javaTypes.add(column.getValue().getClass().getName());
         return this;
     }
 
@@ -101,8 +101,8 @@ public class SqlArgHolder {
         return argSize;
     }
 
-    public List<String> getColumns() {
-        return columns;
+    public List<String> getKeys() {
+        return keys;
     }
 
     public List<String> getJavaTypes() {

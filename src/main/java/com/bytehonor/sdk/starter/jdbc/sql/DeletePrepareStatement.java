@@ -25,16 +25,16 @@ public class DeletePrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (SqlArgCondition.isArgsEmpty(condition)) {
+        if (SqlArgCondition.isArgEmpty(condition)) {
             throw new RuntimeException("delete sql condition args isEmpty");
         }
 
-        return condition.args().toArray();
+        return condition.values().toArray();
     }
 
     @Override
     public int[] types() {
-        if (SqlArgCondition.isArgsEmpty(condition)) {
+        if (SqlArgCondition.isArgEmpty(condition)) {
             throw new RuntimeException("delete sql condition args isEmpty");
         }
         return SqlInjectUtils.listArray(condition.types());

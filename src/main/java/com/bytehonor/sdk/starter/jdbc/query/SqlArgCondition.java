@@ -41,7 +41,7 @@ public class SqlArgCondition {
         Objects.requireNonNull(column.getOperator(), "operator");
 
         if (SqlColumn.accept(column) == false) {
-            LOG.debug("put column ignore, key:{}, value:{}", column.getKey(), column.getValue());
+            LOG.debug("put SqlColumn ignore, key:{}, value:{}", column.getKey(), column.getValue());
             return this;
         }
         this.columns.add(column);
@@ -49,7 +49,7 @@ public class SqlArgCondition {
         return this;
     }
 
-    public static boolean isArgsEmpty(SqlArgCondition condition) {
+    public static boolean isArgEmpty(SqlArgCondition condition) {
         Objects.requireNonNull(condition, "condition");
 
         return condition.getHolder().isEmpty();
@@ -64,7 +64,7 @@ public class SqlArgCondition {
         return sb.toString();
     }
 
-    public List<Object> args() {
+    public List<Object> values() {
         if (holder == null) {
             return new ArrayList<Object>();
         }
@@ -91,7 +91,7 @@ public class SqlArgCondition {
         return page;
     }
 
-    public List<SqlColumn> getColumns() {
+    public List<SqlColumn> getArgs() {
         return columns;
     }
 
