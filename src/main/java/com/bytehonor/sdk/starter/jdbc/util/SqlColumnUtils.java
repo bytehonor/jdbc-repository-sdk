@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.define.spring.regex.PatternUtils;
-import com.bytehonor.sdk.define.spring.util.StringObject;
+import com.bytehonor.sdk.lang.spring.regex.PatternUtils;
+import com.bytehonor.sdk.lang.spring.util.StringObject;
 import com.bytehonor.sdk.starter.jdbc.constant.JavaValueTypes;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;

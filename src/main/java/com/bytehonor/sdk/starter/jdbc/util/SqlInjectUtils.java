@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.define.spring.lang.StringCreator;
-import com.bytehonor.sdk.define.spring.util.StringObject;
+import com.bytehonor.sdk.lang.spring.creator.StringCreator;
+import com.bytehonor.sdk.lang.spring.util.StringObject;
 
 public class SqlInjectUtils {
 

@@ -2,9 +2,9 @@ package com.bytehonor.sdk.starter.jdbc.query;
 
 import java.util.Collection;
 
-import com.bytehonor.sdk.define.spring.lang.StringCreator;
-import com.bytehonor.sdk.define.spring.util.JoinUtils;
-import com.bytehonor.sdk.define.spring.util.StringObject;
+import com.bytehonor.sdk.lang.spring.creator.StringCreator;
+import com.bytehonor.sdk.lang.spring.util.JoinUtils;
+import com.bytehonor.sdk.lang.spring.util.StringObject;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlOperator;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;

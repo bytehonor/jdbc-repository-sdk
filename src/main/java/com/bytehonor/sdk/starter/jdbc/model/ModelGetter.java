@@ -2,7 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.model;
 
 import java.util.Objects;
 
-import com.bytehonor.sdk.define.spring.function.ClassGetter;
+import com.bytehonor.sdk.lang.spring.function.ClassGetter;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 
 public class ModelGetter<T> {

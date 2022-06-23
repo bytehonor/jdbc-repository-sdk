@@ -3,7 +3,7 @@ package com.bytehonor.sdk.starter.jdbc.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bytehonor.sdk.define.spring.function.ClassGetter;
+import com.bytehonor.sdk.lang.spring.function.ClassGetter;
 
 public class ModelGetterGroup<T> {
 
