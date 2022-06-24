@@ -4,44 +4,47 @@ import java.util.Objects;
 
 import com.bytehonor.sdk.lang.spring.util.StringObject;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
-import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
+import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 
 public class SqlOrder {
 
-    private String column;
+    /**
+     * 忽略驼峰或下划线
+     */
+    private String key;
 
     private boolean desc;
 
-    public static SqlOrder descOf(String column) {
-        Objects.requireNonNull(column, "column");
-        return new SqlOrder(column, true);
+    public static SqlOrder descOf(String key) {
+        Objects.requireNonNull(key, "key");
+        return new SqlOrder(key, true);
     }
 
-    public static SqlOrder ascOf(String column) {
-        Objects.requireNonNull(column, "column");
-        return new SqlOrder(column, false);
+    public static SqlOrder ascOf(String key) {
+        Objects.requireNonNull(key, "key");
+        return new SqlOrder(key, false);
     }
 
-    public static SqlOrder of(String column, boolean desc) {
-        Objects.requireNonNull(column, "column");
-        return new SqlOrder(column, desc);
+    public static SqlOrder of(String key, boolean desc) {
+        Objects.requireNonNull(key, "key");
+        return new SqlOrder(key, desc);
     }
 
     public SqlOrder() {
         this("id", false);
     }
 
-    public SqlOrder(String column, boolean desc) {
-        this.column = column;
+    public SqlOrder(String key, boolean desc) {
+        this.key = key;
         this.desc = desc;
     }
 
-    public String getColumn() {
-        return column;
+    public String getKey() {
+        return key;
     }
 
-    public void setColumn(String column) {
-        this.column = column;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public boolean isDesc() {
@@ -53,16 +56,12 @@ public class SqlOrder {
     }
 
     public String toSql() {
-        if (StringObject.isEmpty(column)) {
+        if (StringObject.isEmpty(key)) {
             return "";
         }
-        StringBuilder sb = new StringBuilder(" ORDER BY ").append(SqlInjectUtils.column(column))
-                .append(SqlConstants.BLANK);
-        if (desc) {
-            sb.append(SqlConstants.DESC);
-        } else {
-            sb.append(SqlConstants.ASC);
-        }
+        String column = SqlColumnUtils.camelToUnderline(key);
+        StringBuilder sb = new StringBuilder(" ORDER BY ").append(column).append(SqlConstants.BLANK);
+        sb.append(desc ? SqlConstants.DESC : SqlConstants.ASC);
         return sb.toString();
     }
 

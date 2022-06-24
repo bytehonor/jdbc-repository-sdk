@@ -31,7 +31,7 @@ public class SqlAdapterTest {
 
         String sql = model.toSql().trim();
         String target = "WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ?";
-        LOG.info("sql:{}, descBy:{}", sql, model.getOrder().getColumn());
+        LOG.info("sql:{}, descBy:{}", sql, model.getOrder().getKey());
         assertTrue("test", target.equals(sql));
     }
 
