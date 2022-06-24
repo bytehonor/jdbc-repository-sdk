@@ -15,6 +15,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import com.bytehonor.sdk.lang.spring.util.StringObject;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlColumn;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlTable;
+import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTableColumn;
 
@@ -29,7 +30,7 @@ public class SqlMetaUtils {
 
         String clazzName = clazz.getName();
         if (clazz.isAnnotationPresent(SqlTable.class) == false) {
-            throw new RuntimeException("No SqlTable Annotation, clazz:" + clazzName);
+            throw new JdbcSdkException("No SqlTable Annotation, clazz:" + clazzName);
         }
 
         MetaTable metaTable = TABLES.get(clazzName);
@@ -43,7 +44,7 @@ public class SqlMetaUtils {
         SqlTable sqlTable = AnnotationUtils.getAnnotation(clazz, SqlTable.class);
         String primary = sqlTable.primary();
         if (StringObject.isEmpty(primary)) {
-            throw new RuntimeException("No SqlTable primary, clazz:" + clazzName);
+            throw new JdbcSdkException("No SqlTable primary, clazz:" + clazzName);
         }
 
         metaTable.setTableName(sqlTable.name());

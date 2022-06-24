@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
@@ -42,7 +43,7 @@ public abstract class MysqlPrepareStatement implements PrepareStatement {
         LOG.debug("argSize:{}, typeSize:{}", argLength, typeLength);
 
         if (argLength != typeLength) {
-            throw new RuntimeException("args not equals types");
+            throw new JdbcSdkException("args not equals types");
         }
 
         if (LOG.isDebugEnabled()) {

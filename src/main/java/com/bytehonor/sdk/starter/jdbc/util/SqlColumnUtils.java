@@ -16,6 +16,7 @@ import com.bytehonor.sdk.define.spring.constant.JavaValueTypes;
 import com.bytehonor.sdk.lang.spring.regex.PatternUtils;
 import com.bytehonor.sdk.lang.spring.util.StringObject;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
+import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
 
@@ -45,7 +46,7 @@ public class SqlColumnUtils {
         }
 
         if (CollectionUtils.isEmpty(result)) {
-            throw new RuntimeException("prepareInsert ModelColumnValue empty");
+            throw new JdbcSdkException("prepareInsert ModelColumnValue empty");
         }
 
         // 自动补充更新时间和创建时间
@@ -157,7 +158,7 @@ public class SqlColumnUtils {
 
         int len = column.length();
         if (len < 1) {
-            throw new RuntimeException("column cannt be empty, column:" + column);
+            throw new JdbcSdkException("column cannt be empty, column:" + column);
         }
         char ch = column.charAt(0);
         for (int i = 0; i < len; i++) {
@@ -171,7 +172,7 @@ public class SqlColumnUtils {
             if (PatternUtils.isNumberChar(ch)) {
                 continue;
             }
-            throw new RuntimeException("column only accept _ number letter, column:" + column);
+            throw new JdbcSdkException("column only accept _ number letter, column:" + column);
         }
     }
 

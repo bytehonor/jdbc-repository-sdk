@@ -10,6 +10,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
+import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterGroup;
@@ -61,7 +62,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
     @Override
     public String sql() {
         if (CollectionUtils.isEmpty(saveColumns)) {
-            throw new RuntimeException("update sql updateColumns empty");
+            throw new JdbcSdkException("update sql updateColumns empty");
         }
         StringBuilder sql = new StringBuilder();
         sql.append("UPDATE ").append(table.getTableName()).append(" SET ");
@@ -81,10 +82,10 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
     @Override
     public Object[] args() {
         if (CollectionUtils.isEmpty(saveValues)) {
-            throw new RuntimeException("update sql saveValues empty");
+            throw new JdbcSdkException("update sql saveValues empty");
         }
         if (SqlArgCondition.isArgEmpty(condition)) {
-            throw new RuntimeException("update sql condition args isEmpty");
+            throw new JdbcSdkException("update sql condition args isEmpty");
         }
 
         List<Object> allArgs = new ArrayList<Object>(256);
@@ -98,10 +99,10 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
     @Override
     public int[] types() {
         if (CollectionUtils.isEmpty(saveTypes)) {
-            throw new RuntimeException("update sql saveTypes empty");
+            throw new JdbcSdkException("update sql saveTypes empty");
         }
         if (SqlArgCondition.isArgEmpty(condition)) {
-            throw new RuntimeException("update sql condition args isEmpty");
+            throw new JdbcSdkException("update sql condition args isEmpty");
         }
 
         List<Integer> allTypes = new ArrayList<Integer>(256);

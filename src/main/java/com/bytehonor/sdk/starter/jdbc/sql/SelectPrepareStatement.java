@@ -1,6 +1,7 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
 import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 
@@ -26,7 +27,7 @@ public class SelectPrepareStatement extends MysqlPrepareStatement {
         if (SqlArgCondition.isArgEmpty(condition)) {
             if (condition.getPage() == null) {
                 // 禁全表无分页查询
-                throw new RuntimeException("select sql condition args isEmpty");
+                throw new JdbcSdkException("select sql condition args isEmpty");
             }
             return new Object[0];
         }

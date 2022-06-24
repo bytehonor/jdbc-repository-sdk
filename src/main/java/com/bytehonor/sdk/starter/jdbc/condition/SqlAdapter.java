@@ -35,7 +35,7 @@ public class SqlAdapter {
         Object copy = "";
         String javaType = column.getType();
         if (SqlOperator.IN.equals(column.getOperator())) {
-            copy = inValue(value, javaType);
+            copy = SqlColumn.appendIn(SqlAdaptUtils.joinCollection(javaType, value));
         } else if (SqlOperator.LIKE.equals(column.getOperator())) {
             copy = SqlInjectUtils.like(value.toString(), true, true);
         } else if (SqlOperator.LIKE_LEFT.equals(column.getOperator())) {
@@ -46,9 +46,5 @@ public class SqlAdapter {
             copy = value;
         }
         return SqlColumn.create(column.getKey(), copy, javaType, column.getOperator());
-    }
-
-    public static String inValue(Object value, String javaType) {
-        return SqlColumn.appendIn(SqlAdaptUtils.joinCollection(javaType, value));
     }
 }

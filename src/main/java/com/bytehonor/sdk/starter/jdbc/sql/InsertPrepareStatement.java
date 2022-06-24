@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
+import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterGroup;
@@ -68,7 +69,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
     @Override
     public String sql() {
         if (CollectionUtils.isEmpty(saveColumns)) {
-            throw new RuntimeException("insert sql insertColumns empty");
+            throw new JdbcSdkException("insert sql insertColumns empty");
         }
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO ").append(table.getTableName());
@@ -93,7 +94,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
     @Override
     public Object[] args() {
         if (CollectionUtils.isEmpty(saveValues)) {
-            throw new RuntimeException("insert sql saveValues empty");
+            throw new JdbcSdkException("insert sql saveValues empty");
         }
         List<Object> args = new ArrayList<Object>(256);
         args.addAll(saveValues);
@@ -103,7 +104,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
     @Override
     public int[] types() {
         if (CollectionUtils.isEmpty(saveTypes)) {
-            throw new RuntimeException("insert sql saveTypes empty");
+            throw new JdbcSdkException("insert sql saveTypes empty");
         }
         List<Integer> types = new ArrayList<Integer>(256);
         types.addAll(saveTypes);
