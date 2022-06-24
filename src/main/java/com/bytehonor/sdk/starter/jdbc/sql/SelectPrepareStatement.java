@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
-import com.bytehonor.sdk.starter.jdbc.query.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 

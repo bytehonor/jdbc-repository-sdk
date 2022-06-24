@@ -4,31 +4,27 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.define.spring.constant.JavaValueTypes;
-import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.lang.spring.getter.BooleanGetter;
 import com.bytehonor.sdk.lang.spring.getter.DoubleGetter;
 import com.bytehonor.sdk.lang.spring.getter.IntegerGetter;
 import com.bytehonor.sdk.lang.spring.getter.LongGetter;
+import com.bytehonor.sdk.lang.spring.util.JoinUtils;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
-import com.bytehonor.sdk.starter.jdbc.query.SqlArgCondition;
 
 public class SqlAdaptUtils {
 
     private static final Logger LOG = LoggerFactory.getLogger(SqlAdaptUtils.class);
 
-    public static SqlArgCondition from(QueryCondition confition) {
-
-        return null;
-    }
-
-    public static PreparedStatement convert(String sql, List<ModelColumnValue> items, Connection connection)
+    public static PreparedStatement make(String sql, List<ModelColumnValue> items, Connection connection)
             throws SQLException {
         PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         int idx = 1;
@@ -99,6 +95,33 @@ public class SqlAdaptUtils {
         }
         if (SqlValueTypes.DOUBLE == type) {
             return JavaValueTypes.DOUBLE;
+        }
+        LOG.error("not support type, type:{}", type);
+        throw new RuntimeException("not support type");
+    }
+
+    public static String joinCollection(String type, Object value) {
+        Objects.requireNonNull(type, "type");
+        Objects.requireNonNull(value, "value");
+
+        boolean enabled = value instanceof Collection;
+        if (enabled == false) {
+            throw new RuntimeException("no collection, class:" + value.getClass().getName());
+        }
+        if (JavaValueTypes.STRING.equals(type)) {
+            return JoinUtils.joinSafe((Collection<?>) value);
+        }
+        if (JavaValueTypes.LONG.equals(type)) {
+            return JoinUtils.join((Collection<?>) value);
+        }
+        if (JavaValueTypes.INTEGER.equals(type)) {
+            return JoinUtils.join((Collection<?>) value);
+        }
+        if (JavaValueTypes.BOOLEAN.equals(type)) {
+            return JoinUtils.join((Collection<?>) value);
+        }
+        if (JavaValueTypes.DOUBLE.equals(type)) {
+            return JoinUtils.join((Collection<?>) value);
         }
         LOG.error("not support type, type:{}", type);
         throw new RuntimeException("not support type");

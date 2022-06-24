@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.query;
+package com.bytehonor.sdk.starter.jdbc.condition;
 
 import com.bytehonor.sdk.define.spring.constant.HttpConstants;
 

@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.query;
+package com.bytehonor.sdk.starter.jdbc.condition;
 
 import static org.junit.Assert.assertTrue;
 
@@ -14,7 +14,8 @@ public class SqlColumnTest {
     public void test() {
         SqlColumn sc = SqlColumn.like("nickname", "");
         boolean accept = SqlColumn.accept(sc) == false;
-        LOG.info("test {}, {}, {}, {}", sc.getKey(), sc.getValue(), sc.getOperator(), sc.getType());
+        LOG.info("test {}, {}, {}, {}, {}", sc.getKey(), sc.getValue(), sc.getOperator(), sc.getSqlType(),
+                sc.getJavaType());
         assertTrue("test", accept);
     }
 
@@ -23,7 +24,8 @@ public class SqlColumnTest {
         SqlColumn sc = SqlColumn.like("nickname", "boy");
         boolean accept = SqlColumn.accept(sc);
 
-        LOG.info("test2 {}, {}, {}, {}", sc.getKey(), sc.getValue(), sc.getOperator(), sc.getType());
+        LOG.info("test2 {}, {}, {}, {}, {}", sc.getKey(), sc.getValue(), sc.getOperator(), sc.getSqlType(),
+                sc.getJavaType());
         assertTrue("test", accept);
     }
 }

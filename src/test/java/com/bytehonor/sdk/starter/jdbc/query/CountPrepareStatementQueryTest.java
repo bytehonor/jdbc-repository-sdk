@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.sql;
+package com.bytehonor.sdk.starter.jdbc.query;
 
 import static org.junit.Assert.assertTrue;
 
@@ -9,10 +9,14 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlAdapter;
+import com.bytehonor.sdk.starter.jdbc.sql.CountPrepareStatement;
+import com.bytehonor.sdk.starter.jdbc.sql.PrepareStatement;
+import com.bytehonor.sdk.starter.jdbc.sql.SelectPrepareStatementTest;
 
-public class CountPrepareStatementTest {
+public class CountPrepareStatementQueryTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(SelectPrepareStatementTest.class);
 
@@ -22,12 +26,12 @@ public class CountPrepareStatementTest {
         set.add(1);
         set.add(2);
         set.add(3);
-        SqlArgCondition condition = SqlArgCondition.create();
+        QueryCondition condition = QueryCondition.and();
         condition.integers("age", set);
         condition.gt("createAt", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.descBy("age");
-        PrepareStatement statement = new CountPrepareStatement(Student.class, condition);
+        PrepareStatement statement = new CountPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 
@@ -40,8 +44,8 @@ public class CountPrepareStatementTest {
 
     @Test
     public void testNoCondition() {
-        SqlArgCondition condition = SqlArgCondition.create();
-        PrepareStatement statement = new CountPrepareStatement(Student.class, condition);
+        QueryCondition condition = QueryCondition.and();
+        PrepareStatement statement = new CountPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 

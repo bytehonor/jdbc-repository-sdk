@@ -5,10 +5,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
-import com.bytehonor.sdk.starter.jdbc.query.SqlArgCondition;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlMetaUtils;
 
@@ -39,19 +39,18 @@ public abstract class MysqlPrepareStatement implements PrepareStatement {
         int[] types = types();
         int argLength = args.length;
         int typeLength = types.length;
-        LOG.debug("args:{}, types:{}", argLength, typeLength);
+        LOG.debug("argSize:{}, typeSize:{}", argLength, typeLength);
 
         if (argLength != typeLength) {
             throw new RuntimeException("args not equals types");
         }
 
-        if (LOG.isDebugEnabled() == false) {
-            return;
+        if (LOG.isDebugEnabled()) {
+            for (int i = 0; i < argLength; i++) {
+                LOG.debug("arg:({}), type:{}, {}", args[i], types[i], SqlAdaptUtils.toJavaType(types[i]));
+            }
         }
 
-        for (int i = 0; i < argLength; i++) {
-            LOG.debug("arg:{}, type:{}, {}", args[i], types[i], SqlAdaptUtils.toJavaType(types[i]));
-        }
     }
 
     public Class<?> getClazz() {

@@ -16,6 +16,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import com.bytehonor.sdk.define.spring.query.QueryCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlAdapter;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
 import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
 import com.bytehonor.sdk.starter.jdbc.sql.PrepareStatement;
@@ -37,7 +39,15 @@ public class JdbcProxyDao {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
 
-        PrepareStatement statement = PrepareStatementBuilder.select(clazz, SqlAdaptUtils.from(condition));
+        return query(clazz, SqlAdapter.convert(condition), mapper);
+    }
+
+    public <T> List<T> query(Class<T> clazz, SqlArgCondition condition, RowMapper<T> mapper) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(condition, "condition");
+        Objects.requireNonNull(mapper, "mapper");
+
+        PrepareStatement statement = PrepareStatementBuilder.select(clazz, condition);
         String sql = statement.sql();
 
         log(clazz, sql);
@@ -49,7 +59,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
 
-        List<T> result = query(clazz, QueryCondition.id(id), mapper);
+        List<T> result = query(clazz, SqlArgCondition.id(id), mapper);
         return DataAccessUtils.uniqueResult(result);
     }
 
@@ -57,7 +67,14 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
-        PrepareStatement statement = PrepareStatementBuilder.delete(clazz, SqlAdaptUtils.from(condition));
+        return delete(clazz, SqlAdapter.convert(condition));
+    }
+
+    public int delete(Class<?> clazz, SqlArgCondition condition) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(condition, "condition");
+
+        PrepareStatement statement = PrepareStatementBuilder.delete(clazz, condition);
         String sql = statement.sql();
 
         log(clazz, sql);
@@ -81,7 +98,14 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
-        PrepareStatement statement = PrepareStatementBuilder.count(clazz, SqlAdaptUtils.from(condition));
+        return count(clazz, SqlAdapter.convert(condition));
+    }
+
+    public int count(Class<?> clazz, SqlArgCondition condition) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(condition, "condition");
+
+        PrepareStatement statement = PrepareStatementBuilder.count(clazz, condition);
         String sql = statement.sql();
 
         log(clazz, sql);
@@ -101,8 +125,31 @@ public class JdbcProxyDao {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
 
+        return update(model, SqlAdapter.convert(condition), mapper);
+    }
+
+    public <T> int update(T model, SqlArgCondition condition, ModelConvertMapper<T> mapper) {
+        Objects.requireNonNull(model, "model");
+        Objects.requireNonNull(condition, "condition");
+        Objects.requireNonNull(mapper, "mapper");
+
         Class<? extends Object> clazz = model.getClass();
-        PrepareStatement statement = PrepareStatementBuilder.update(clazz, SqlAdaptUtils.from(condition));
+        PrepareStatement statement = PrepareStatementBuilder.update(clazz, condition);
+        statement.prepare(model, mapper);
+
+        String sql = statement.sql();
+        log(clazz, sql);
+
+        return jdbcTemplate.update(sql, statement.args(), statement.types());
+    }
+    
+    public <T> int updateById(T model, Long id, ModelConvertMapper<T> mapper) {
+        Objects.requireNonNull(model, "model");
+        Objects.requireNonNull(id, "id");
+        Objects.requireNonNull(mapper, "mapper");
+
+        Class<? extends Object> clazz = model.getClass();
+        PrepareStatement statement = PrepareStatementBuilder.updateById(clazz, id);
         statement.prepare(model, mapper);
 
         String sql = statement.sql();
@@ -129,7 +176,7 @@ public class JdbcProxyDao {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 
-                return SqlAdaptUtils.convert(sql, items, connection);
+                return SqlAdaptUtils.make(sql, items, connection);
             }
         }, holder);
 

@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.sql;
+package com.bytehonor.sdk.starter.jdbc.query;
 
 import static org.junit.Assert.assertTrue;
 
@@ -9,12 +9,15 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlAdapter;
+import com.bytehonor.sdk.starter.jdbc.sql.PrepareStatement;
+import com.bytehonor.sdk.starter.jdbc.sql.SelectPrepareStatement;
 
-public class SelectPrepareStatementTest {
+public class SelectPrepareStatementQueryTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SelectPrepareStatementTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SelectPrepareStatementQueryTest.class);
 
     @Test
     public void test() {
@@ -22,12 +25,12 @@ public class SelectPrepareStatementTest {
         set.add(1);
         set.add(2);
         set.add(3);
-        SqlArgCondition condition = SqlArgCondition.create();
+        QueryCondition condition = QueryCondition.and();
         condition.integers("age", set);
-        condition.gt("create_at", System.currentTimeMillis());
+        condition.gt("createAt", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.descBy("age");
-        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 
@@ -40,8 +43,8 @@ public class SelectPrepareStatementTest {
 
     @Test
     public void testNoCondition() {
-        SqlArgCondition condition = SqlArgCondition.create();
-        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        QueryCondition condition = QueryCondition.and();
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 
@@ -53,30 +56,10 @@ public class SelectPrepareStatementTest {
     }
 
     @Test
-    public void testNoConditionNoPage() {
-        SqlArgCondition condition = SqlArgCondition.create();
-        condition.setPage(null);
-        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
-        String sql = statement.sql();
-        boolean hasError = false;
-        try {
-            statement.args();
-        } catch (Exception e) {
-            hasError = true;
-            LOG.error("error {}", e.getMessage());
-        }
-
-        LOG.info("testNoConditionNoPage sql:{}", sql);
-
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student";
-        assertTrue("testNoConditionNoPage", target.equals(sql) && hasError);
-    }
-
-    @Test
     public void testEqEmpty() {
-        SqlArgCondition condition = SqlArgCondition.create();
+        QueryCondition condition = QueryCondition.and();
         condition.eq("nickname", "");
-        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 

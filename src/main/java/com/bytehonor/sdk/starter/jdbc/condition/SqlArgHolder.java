@@ -1,8 +1,10 @@
-package com.bytehonor.sdk.starter.jdbc.query;
+package com.bytehonor.sdk.starter.jdbc.condition;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.define.spring.constant.QueryLogic;
 import com.bytehonor.sdk.define.spring.constant.SqlOperator;
@@ -12,12 +14,17 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 
 public class SqlArgHolder {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SqlArgHolder.class);
+
     private static final String BLANK = SqlConstants.BLANK;
 
     private final QueryLogic logic;
 
     private final StringBuilder sql;
 
+    /**
+     * 下划线key
+     */
     private final List<String> keys;
 
     private final List<Object> values;
@@ -47,14 +54,13 @@ public class SqlArgHolder {
      * @param column
      * @return
      */
-    public SqlArgHolder add(SqlColumn column) {
-        Objects.requireNonNull(column, "column");
-        Objects.requireNonNull(column.getOperator(), "operator");
-
-        if (column.getValue() == null) {
+    public SqlArgHolder safeAdd(SqlColumn column) {
+        if (SqlColumn.accept(column) == false) {
+            LOG.warn("put SqlColumn ignore, key:{}, value:{}", column.getKey(), column.getValue());
             return this;
         }
 
+        // 转成下划线
         String key = SqlColumnUtils.camelToUnderline(column.getKey());
         if (StringObject.isEmpty(key)) {
             return this;
@@ -65,6 +71,7 @@ public class SqlArgHolder {
         if (argSize > 0) {
             this.sql.append(BLANK).append(logic.getKey()).append(BLANK);
         }
+
         argSize++;
 
         if (SqlOperator.IN.getKey().equals(column.getOperator().getKey())) {
@@ -75,8 +82,8 @@ public class SqlArgHolder {
         this.sql.append(key).append(BLANK).append(column.getOperator().getOpt()).append(BLANK)
                 .append(SqlConstants.PARAM);
         this.values.add(column.getValue());
-        this.sqlTypes.add(column.getType());
-        this.javaTypes.add(column.getValue().getClass().getName());
+        this.sqlTypes.add(column.getSqlType());
+        this.javaTypes.add(column.getJavaType());
         return this;
     }
 

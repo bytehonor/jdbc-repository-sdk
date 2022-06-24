@@ -2,7 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 
 import java.util.Objects;
 
-import com.bytehonor.sdk.starter.jdbc.query.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
 
 public final class PrepareStatementBuilder {
 
@@ -38,6 +38,13 @@ public final class PrepareStatementBuilder {
         Objects.requireNonNull(condition, "condition");
 
         return new UpdatePrepareStatement(clazz, condition);
+    }
+
+    public static PrepareStatement updateById(Class<?> clazz, Long id) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(id, "id");
+
+        return new UpdatePrepareStatement(clazz, SqlArgCondition.id(id));
     }
 
     public static PrepareStatement delete(Class<?> clazz, SqlArgCondition condition) {
