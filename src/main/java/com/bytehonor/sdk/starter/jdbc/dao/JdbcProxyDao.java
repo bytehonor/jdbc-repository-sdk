@@ -117,6 +117,15 @@ public class JdbcProxyDao {
         return jdbcTemplate.queryForObject(sql, statement.args(), statement.types(), Integer.class);
     }
 
+    public <T> List<T> distinct(Class<?> clazz, String column, QueryCondition condition, Class<T> elementType) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(column, "column");
+        Objects.requireNonNull(condition, "condition");
+        Objects.requireNonNull(elementType, "elementType");
+
+        return distinct(clazz, column, SqlAdapter.convert(condition), elementType);
+    }
+
     /**
      * @param <T>
      * @param clazz
