@@ -1,5 +1,9 @@
 package com.bytehonor.sdk.starter.jdbc.constant;
 
+/**
+ * @author lijianqiang
+ *
+ */
 public class SqlConstants {
 
     public static final String DESC = "DESC";

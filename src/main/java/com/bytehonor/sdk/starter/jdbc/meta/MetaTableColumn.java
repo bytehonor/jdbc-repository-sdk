@@ -1,5 +1,9 @@
 package com.bytehonor.sdk.starter.jdbc.meta;
 
+/**
+ * @author lijianqiang
+ *
+ */
 public class MetaTableColumn {
 
     private String key;

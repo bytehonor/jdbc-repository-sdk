@@ -7,6 +7,10 @@ import java.util.Set;
 
 import com.bytehonor.sdk.lang.spring.util.StringObject;
 
+/**
+ * @author lijianqiang
+ *
+ */
 public class MetaTable {
 
     private String modelClazz;

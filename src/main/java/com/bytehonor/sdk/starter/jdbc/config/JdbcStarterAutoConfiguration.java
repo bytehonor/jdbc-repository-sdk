@@ -14,6 +14,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.bytehonor.sdk.starter.jdbc.dao.JdbcProxyDao;
 
+/**
+ * @author lijianqiang
+ *
+ */
 @Configuration
 @ConditionalOnClass({ DataSourceProperties.class, JdbcTemplate.class, JdbcProperties.class })
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)

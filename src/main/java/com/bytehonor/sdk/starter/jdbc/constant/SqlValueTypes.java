@@ -2,6 +2,10 @@ package com.bytehonor.sdk.starter.jdbc.constant;
 
 import java.sql.Types;
 
+/**
+ * @author lijianqiang
+ *
+ */
 public class SqlValueTypes {
     
     public static final int STRING = Types.VARCHAR;

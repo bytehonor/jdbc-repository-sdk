@@ -8,6 +8,14 @@ import java.lang.annotation.Target;
 
 import org.springframework.core.annotation.AliasFor;
 
+/**
+ * <pre>
+ * 数据模型映射表
+ * </pre>
+ * 
+ * @author lijianqiang
+ *
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
