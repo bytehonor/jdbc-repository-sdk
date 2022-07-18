@@ -24,6 +24,10 @@ import com.bytehonor.sdk.starter.jdbc.sql.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.sql.PrepareStatementBuilder;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 
+/**
+ * @author lijianqiang
+ *
+ */
 public class JdbcProxyDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(JdbcProxyDao.class);
@@ -113,6 +117,28 @@ public class JdbcProxyDao {
         return jdbcTemplate.queryForObject(sql, statement.args(), statement.types(), Integer.class);
     }
 
+    /**
+     * @param <T>
+     * @param clazz
+     * @param column
+     * @param condition
+     * @param elementType For: String Long Integer
+     * @return
+     */
+    public <T> List<T> distinct(Class<?> clazz, String column, SqlArgCondition condition, Class<T> elementType) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(column, "column");
+        Objects.requireNonNull(condition, "condition");
+        Objects.requireNonNull(elementType, "elementType");
+
+        PrepareStatement statement = PrepareStatementBuilder.distinct(clazz, column, condition);
+        String sql = statement.sql();
+
+        log(clazz, sql);
+
+        return jdbcTemplate.queryForList(sql, statement.args(), statement.types(), elementType);
+    }
+
     private void log(Class<?> clazz, String sql) {
         if (LOG.isDebugEnabled() == false) {
             return;
@@ -142,7 +168,7 @@ public class JdbcProxyDao {
 
         return jdbcTemplate.update(sql, statement.args(), statement.types());
     }
-    
+
     public <T> int updateById(T model, Long id, ModelConvertMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(id, "id");

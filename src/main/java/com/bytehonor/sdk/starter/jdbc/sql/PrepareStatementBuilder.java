@@ -4,6 +4,10 @@ import java.util.Objects;
 
 import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
 
+/**
+ * @author lijianqiang
+ *
+ */
 public final class PrepareStatementBuilder {
 
     public static PrepareStatement select(Class<?> clazz, SqlArgCondition condition) {
@@ -25,6 +29,14 @@ public final class PrepareStatementBuilder {
         Objects.requireNonNull(condition, "condition");
 
         return new CountPrepareStatement(clazz, condition);
+    }
+
+    public static PrepareStatement distinct(Class<?> clazz, String column, SqlArgCondition condition) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(column, "column");
+        Objects.requireNonNull(condition, "condition");
+
+        return new DistinctPrepareStatement(clazz, column, condition);
     }
 
     public static PrepareStatement insert(Class<?> clazz) {

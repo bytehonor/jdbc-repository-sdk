@@ -1,25 +1,29 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
 import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 
 /**
- * SELECT COUNT(PrimaryKey) FROM TableName WHERE condition
+ * SELECT DISTINCT(column) FROM TableName WHERE condition
  * 
  * @author lijianqiang
  *
  */
-public class CountPrepareStatement extends MysqlPrepareStatement {
+public class DistinctPrepareStatement extends MysqlPrepareStatement {
 
-    public CountPrepareStatement(Class<?> clazz, SqlArgCondition condition) {
+    private final String column;
+
+    public DistinctPrepareStatement(Class<?> clazz, String column, SqlArgCondition condition) {
         super(clazz, condition);
+        this.column = SqlColumnUtils.camelToUnderline(column);
     }
 
     @Override
     public String sql() {
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT COUNT(").append(table.getPrimaryKey()).append(") FROM ").append(table.getTableName());
+        sql.append("SELECT DISTINCT(").append(column).append(") FROM ").append(table.getTableName());
 
         sql.append(SqlStringUtils.toWhereSql(condition));
         return sql.toString();

@@ -17,6 +17,12 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
+/**
+ * INSERT INTO TableName (columns) VALUE (values)
+ * 
+ * @author lijianqiang
+ *
+ */
 public class InsertPrepareStatement extends MysqlPrepareStatement {
 
     private static final Logger LOG = LoggerFactory.getLogger(InsertPrepareStatement.class);

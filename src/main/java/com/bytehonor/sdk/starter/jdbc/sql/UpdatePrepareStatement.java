@@ -19,6 +19,12 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 
+/**
+ * UPDATE TableName SET c1=?,c2=? WHERE condition
+ * 
+ * @author lijianqiang
+ *
+ */
 public class UpdatePrepareStatement extends MysqlPrepareStatement {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdatePrepareStatement.class);

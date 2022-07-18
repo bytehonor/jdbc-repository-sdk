@@ -5,6 +5,12 @@ import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 
+/**
+ * SELECT columns FROM TableName WHERE condition Order Page
+ * 
+ * @author lijianqiang
+ *
+ */
 public class SelectPrepareStatement extends MysqlPrepareStatement {
 
     public SelectPrepareStatement(Class<?> clazz, SqlArgCondition condition) {

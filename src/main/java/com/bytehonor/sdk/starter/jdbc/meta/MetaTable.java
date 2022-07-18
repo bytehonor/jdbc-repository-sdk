@@ -30,7 +30,8 @@ public class MetaTable {
     }
 
     public void finish() {
-        if (StringObject.isEmpty(fullColumns)) {
+        if (StringObject.isEmpty(fullColumns) == false) {
+            return;
         }
         keySet = new HashSet<String>();
         columnSet = new HashSet<String>();

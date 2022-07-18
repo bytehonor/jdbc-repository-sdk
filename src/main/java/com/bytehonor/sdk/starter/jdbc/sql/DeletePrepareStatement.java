@@ -5,6 +5,12 @@ import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 
+/**
+ * DELETE FROM TableName WHERE condition
+ * 
+ * @author lijianqiang
+ *
+ */
 public class DeletePrepareStatement extends MysqlPrepareStatement {
 
     public DeletePrepareStatement(Class<?> clazz, SqlArgCondition condition) {

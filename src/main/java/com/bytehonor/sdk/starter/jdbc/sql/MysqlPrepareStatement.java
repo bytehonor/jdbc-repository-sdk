@@ -13,6 +13,10 @@ import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlMetaUtils;
 
+/**
+ * @author lijianqiang
+ *
+ */
 public abstract class MysqlPrepareStatement implements PrepareStatement {
 
     private static final Logger LOG = LoggerFactory.getLogger(MysqlPrepareStatement.class);
