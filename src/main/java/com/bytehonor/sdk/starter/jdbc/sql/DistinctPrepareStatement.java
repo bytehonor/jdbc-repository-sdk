@@ -1,6 +1,8 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
+import com.bytehonor.sdk.lang.spring.util.StringObject;
 import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
@@ -22,6 +24,9 @@ public class DistinctPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public String sql() {
+        if (StringObject.isEmpty(column)) {
+            throw new JdbcSdkException("DISTINCT column isEmpty");
+        }
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT DISTINCT(").append(column).append(") FROM ").append(table.getTableName());
 

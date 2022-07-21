@@ -1,12 +1,23 @@
 package com.bytehonor.sdk.starter.jdbc.condition;
 
+import com.bytehonor.sdk.lang.spring.util.StringObject;
+import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
+
 public class SqlElement<T> {
 
     private String column;
 
     private Class<T> type;
+    
+    private static void required(String column) {
+        if (StringObject.isEmpty(column)) {
+            throw new JdbcSdkException("column cannt be empty");
+        }
+    }
 
     public static SqlElement<Long> longer(String column) {
+        required(column);
+
         SqlElement<Long> sd = new SqlElement<Long>();
         sd.setColumn(column);
         sd.setType(Long.class);
@@ -14,6 +25,8 @@ public class SqlElement<T> {
     }
 
     public static SqlElement<Integer> integer(String column) {
+        required(column);
+        
         SqlElement<Integer> sd = new SqlElement<Integer>();
         sd.setColumn(column);
         sd.setType(Integer.class);
@@ -21,6 +34,8 @@ public class SqlElement<T> {
     }
 
     public static SqlElement<String> stringer(String column) {
+        required(column);
+        
         SqlElement<String> sd = new SqlElement<String>();
         sd.setColumn(column);
         sd.setType(String.class);
