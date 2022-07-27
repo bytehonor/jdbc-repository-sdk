@@ -5,7 +5,7 @@ plugins {
 apply from: 'repository.gradle'
 
 group = 'com.bytehonor.sdk'
-version = '0.3.17'
+version = '0.3.18'
 sourceCompatibility = 1.8
 
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
@@ -22,11 +22,11 @@ repositories {
 }
 
 dependencies {
-    api('com.bytehonor.sdk:spring-lang-sdk:0.2.13')
-    api('org.springframework.data:spring-data-jdbc:2.4.0')
-    implementation('org.springframework.boot:spring-boot-starter-jdbc:2.6.8')
-    implementation('org.springframework.boot:spring-boot-autoconfigure:2.6.8')
-    annotationProcessor('org.springframework.boot:spring-boot-configuration-processor:2.6.8')
+    api('com.bytehonor.sdk:spring-lang-sdk:0.2.14')
+    api('org.springframework.data:spring-data-jdbc:2.4.2')
+    implementation('org.springframework.boot:spring-boot-starter-jdbc:2.7.2')
+    implementation('org.springframework.boot:spring-boot-autoconfigure:2.7.2')
+    annotationProcessor('org.springframework.boot:spring-boot-configuration-processor:2.7.2')
     implementation('org.slf4j:slf4j-api:1.7.36')
     implementation('ch.qos.logback:logback-classic:1.2.11')
     testImplementation('junit:junit:4.13.2')
