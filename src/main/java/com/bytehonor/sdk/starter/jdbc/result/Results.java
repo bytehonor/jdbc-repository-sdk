@@ -24,6 +24,10 @@ public class Results {
         return rs.getBoolean(columnLabel(column));
     }
 
+    public static double doubler(ResultSet rs, String column) throws SQLException {
+        return rs.getDouble(columnLabel(column));
+    }
+
     private static String columnLabel(String column) {
         Objects.requireNonNull(column, "column");
 
