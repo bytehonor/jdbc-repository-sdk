@@ -6,7 +6,6 @@ import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -15,6 +14,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 
 import com.bytehonor.sdk.lang.spring.function.ClassGetter;
 import com.bytehonor.sdk.lang.spring.function.ObjectGetter;
+import com.bytehonor.sdk.lang.spring.function.consumer.ConsumeString;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlColumn;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlTable;
 import com.bytehonor.sdk.starter.jdbc.function.IConvert;
@@ -35,9 +35,6 @@ public class AnnotationTest {
 
         ObjectGetter<String> getter = student::getNickname;
         LOG.info("getter:{} = {}", getter.toString(), getter.get());
-
-        IConvert<String, String> converter = student::repeat;
-        LOG.info("converter:{}", converter.convert("111"));
 
         ClassGetter<Student, ?> nn = Student::getNickname;
         Object nnApply = nn.apply(student);
@@ -92,11 +89,11 @@ public class AnnotationTest {
         list.forEach(x -> System.out.println(x));
         System.out.println("----------------");
         // 使用“::”方法引用
-        Consumer<? super String> action = Student::hello;
+        ConsumeString action = Student::hello;
         list.forEach(action);
 
-        IConvert<String, String> converter = Student::hello;
-        String converted = converter.convert("Java");
+        IConvert<String, String> converter = Student::hi;
+        String converted = converter.convert("IConvert");
         LOG.info("converted:{}", converted);
     }
 }

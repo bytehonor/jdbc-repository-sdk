@@ -31,6 +31,11 @@ public class Student {
         return "hello" + msg;
     }
     
+    public static String hi(String msg) {
+        LOG.info("hi {}", msg);
+        return "hi" + msg;
+    }
+    
     public String repeat(String msg) {
         return nickname + "repeat" + msg;
     }
