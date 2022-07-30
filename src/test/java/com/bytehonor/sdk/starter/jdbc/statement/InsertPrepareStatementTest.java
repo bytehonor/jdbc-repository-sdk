@@ -18,14 +18,14 @@ public class InsertPrepareStatementTest {
 
         @Override
         public ModelGetter<Student> create(Student model) {
-            ModelGetter<Student> getters = new ModelGetter<Student>(model);
+            ModelGetter<Student> getter = new ModelGetter<Student>(model);
 
-            getters.add(Student::getId);
-            getters.add(Student::getAge);
-            getters.add(Student::getNickname);
-            getters.add(Student::getUpdateAt);
-            getters.add(Student::getCreateAt);
-            return getters;
+            getter.add(Student::getId);
+            getter.add(Student::getAge);
+            getter.add(Student::getNickname);
+            getter.add(Student::getUpdateAt);
+            getter.add(Student::getCreateAt);
+            return getter;
         }
 
     };
