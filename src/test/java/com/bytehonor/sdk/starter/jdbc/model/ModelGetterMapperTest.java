@@ -12,22 +12,22 @@ public class ModelGetterMapperTest {
 
             @Override
             public ModelGetter<UserProfile> create(UserProfile model) {
-                ModelGetter<UserProfile> getters = new ModelGetter<UserProfile>(model);
+                ModelGetter<UserProfile> getter = new ModelGetter<UserProfile>(model);
 
-                getters.add(UserProfile::getId);
+                getter.add(UserProfile::getId);
 
-                getters.add(UserProfile::getUuid);
-                getters.add(UserProfile::getName);
-                getters.add(UserProfile::getAge);
-                getters.add(UserProfile::getGender);
-                getters.add(UserProfile::getIncome);
+                getter.add(UserProfile::getUuid);
+                getter.add(UserProfile::getName);
+                getter.add(UserProfile::getAge);
+                getter.add(UserProfile::getGender);
+                getter.add(UserProfile::getIncome);
 
-                getters.add(UserProfile::getPhone);
-                getters.add(UserProfile::getOccupation);
+                getter.add(UserProfile::getPhone);
+                getter.add(UserProfile::getOccupation);
 
-                getters.add(UserProfile::getUpdateAt);
-                getters.add(UserProfile::getCreateAt);
-                return getters;
+                getter.add(UserProfile::getUpdateAt);
+                getter.add(UserProfile::getCreateAt);
+                return getter;
             }
 
         };

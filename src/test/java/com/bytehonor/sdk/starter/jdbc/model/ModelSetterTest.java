@@ -16,22 +16,22 @@ public class ModelSetterTest {
 
             @Override
             public UserProfile mapRow(ResultSet rs, int rowNum) throws SQLException {
-                ModelSetter<UserProfile> setters = ModelSetter.create(UserProfile::new, rs);
-                setters.add(UserProfile::setId);
+                ModelSetter<UserProfile> setter = ModelSetter.create(UserProfile::new, rs);
+                setter.add(UserProfile::setId);
 
-                setters.add(UserProfile::setUuid);
-                setters.add(UserProfile::setName);
-                setters.add(UserProfile::setAge);
-                setters.add(UserProfile::setGender);
-                setters.add(UserProfile::setIncome);
+                setter.add(UserProfile::setUuid);
+                setter.add(UserProfile::setName);
+                setter.add(UserProfile::setAge);
+                setter.add(UserProfile::setGender);
+                setter.add(UserProfile::setIncome);
 
-                setters.add(UserProfile::setPhone);
-                setters.add(UserProfile::setOccupation);
+                setter.add(UserProfile::setPhone);
+                setter.add(UserProfile::setOccupation);
 
-                setters.add(UserProfile::setUpdateAt);
-                setters.add(UserProfile::setCreateAt);
+                setter.add(UserProfile::setUpdateAt);
+                setter.add(UserProfile::setCreateAt);
 
-                return setters.model();
+                return setter.model();
             }
         };
 
