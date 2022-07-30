@@ -18,6 +18,7 @@ import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
+import com.google.common.collect.Sets;
 
 public class SqlColumnUtils {
 
@@ -28,6 +29,9 @@ public class SqlColumnUtils {
     private static final Map<String, String> UNDERLINE_COLUMNS = new ConcurrentHashMap<String, String>();
 
     private static final Map<String, Boolean> TIME_AT_ENABLED = new ConcurrentHashMap<String, Boolean>();
+
+    private static final Set<String> IGNORES = Sets.newHashSet(SqlConstants.UPDATE_AT_KEY,
+            SqlConstants.UPDATE_AT_COLUMN, SqlConstants.CREATE_AT_KEY, SqlConstants.CREATE_AT_COLUMN);
 
     public static List<ModelKeyValue> prepareInsert(MetaTable metaTable, List<ModelKeyValue> items) {
         Objects.requireNonNull(metaTable, "metaTable");
@@ -179,13 +183,7 @@ public class SqlColumnUtils {
         if (StringObject.equals(primary, column)) {
             return true;
         }
-        if (SqlConstants.CREATE_AT_COLUMN.equals(column)) {
-            return true;
-        }
-        if (SqlConstants.UPDATE_AT_COLUMN.equals(column)) {
-            return true;
-        }
-        return false;
+        return IGNORES.contains(column);
     }
 
 }
