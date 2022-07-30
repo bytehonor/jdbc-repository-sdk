@@ -3,7 +3,7 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 import java.util.List;
 
 import com.bytehonor.sdk.define.spring.constant.SqlOperator;
-import com.bytehonor.sdk.define.spring.query.MatchColumn;
+import com.bytehonor.sdk.define.spring.query.KeyMatcher;
 import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.define.spring.query.QueryOrder;
 import com.bytehonor.sdk.define.spring.query.QueryPage;
@@ -15,9 +15,9 @@ public class SqlAdapter {
     public static SqlCondition convert(QueryCondition condition) {
         SqlCondition model = SqlCondition.create(condition.getLogic());
 
-        List<MatchColumn> columns = condition.getGroup().getColumns();
-        for (MatchColumn column : columns) {
-            model.safeAdd(from(column));
+        List<KeyMatcher> matchers = condition.getMatchers();
+        for (KeyMatcher matcher : matchers) {
+            model.safeAdd(from(matcher));
         }
         QueryOrder order = condition.getOrder();
         if (order != null) {
@@ -30,21 +30,21 @@ public class SqlAdapter {
         return model;
     }
 
-    public static SqlMatcher from(MatchColumn column) {
-        Object value = column.getValue();
+    public static SqlMatcher from(KeyMatcher matcher) {
+        Object value = matcher.getValue();
         Object copy = "";
-        String javaType = column.getType();
-        if (SqlOperator.IN.equals(column.getOperator())) {
+        String javaType = matcher.getType();
+        if (SqlOperator.IN.equals(matcher.getOperator())) {
             copy = SqlMatcher.appendIn(SqlAdaptUtils.joinCollection(javaType, value));
-        } else if (SqlOperator.LIKE.equals(column.getOperator())) {
+        } else if (SqlOperator.LIKE.equals(matcher.getOperator())) {
             copy = SqlInjectUtils.like(value.toString(), true, true);
-        } else if (SqlOperator.LIKE_LEFT.equals(column.getOperator())) {
+        } else if (SqlOperator.LIKE_LEFT.equals(matcher.getOperator())) {
             copy = SqlInjectUtils.like(value.toString(), true, false);
-        } else if (SqlOperator.LIKE_RIGHT.equals(column.getOperator())) {
+        } else if (SqlOperator.LIKE_RIGHT.equals(matcher.getOperator())) {
             copy = SqlInjectUtils.like(value.toString(), false, true);
         } else {
             copy = value;
         }
-        return SqlMatcher.create(column.getKey(), copy, javaType, column.getOperator());
+        return SqlMatcher.create(matcher.getKey(), copy, javaType, matcher.getOperator());
     }
 }
