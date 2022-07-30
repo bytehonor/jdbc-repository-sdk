@@ -86,4 +86,28 @@ public class SelectPrepareStatementTest {
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname = ? LIMIT 0,20";
         assertTrue("testEqEmpty", target.equals(sql) && args.length == 1);
     }
+
+    @Test
+    public void testTime() {
+        Set<Integer> set = new HashSet<Integer>();
+        set.add(1);
+        set.add(2);
+        set.add(3);
+        SqlCondition condition = SqlCondition.create();
+        condition.integers("age", set);
+        condition.gt("create_at", System.currentTimeMillis());
+        condition.like("nickname", "boy");
+        condition.descBy("age");
+
+        int size = 100000;
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < size; i++) {
+            PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+            statement.sql();
+            statement.args();
+        }
+
+        LOG.info("testTime cost:{}", System.currentTimeMillis() - start);
+
+    }
 }

@@ -159,4 +159,28 @@ public class InsertPrepareStatementTest {
         String target = "INSERT INTO tbl_student (nickname,update_at,create_at) VALUES (?,?,?)";
         assertTrue("testGetterLess", target.equals(sql) && args.length == 3);
     }
+
+    @Test
+    public void testCost() {
+
+        Student student = new Student();
+        student.setId(123L);
+        student.setAge(1);
+        student.setNickname("TimeNull");
+        student.setCreateAt(1L);
+        student.setUpdateAt(2L);
+
+        int size = 1;
+
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < size; i++) {
+            PrepareStatement statement = new InsertPrepareStatement(Student.class);
+            statement.prepare(student, MAPPER);
+
+            statement.sql();
+            statement.args();
+        }
+
+        LOG.info("testCost cost:{}", System.currentTimeMillis() - start);
+    }
 }
