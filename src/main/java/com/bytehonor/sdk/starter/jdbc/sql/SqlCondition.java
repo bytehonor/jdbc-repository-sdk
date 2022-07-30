@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.condition;
+package com.bytehonor.sdk.starter.jdbc.sql;
 
 import java.util.ArrayList;
 import java.util.Collection;

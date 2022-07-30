@@ -1,8 +1,8 @@
 package com.bytehonor.sdk.starter.jdbc.util;
 
-import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlOrder;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlPage;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlOrder;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlPage;
 
 public class SqlStringUtils {
 

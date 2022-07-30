@@ -1,7 +1,7 @@
-package com.bytehonor.sdk.starter.jdbc.sql;
+package com.bytehonor.sdk.starter.jdbc.statement;
 
-import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 

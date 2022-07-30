@@ -1,8 +1,8 @@
-package com.bytehonor.sdk.starter.jdbc.sql;
+package com.bytehonor.sdk.starter.jdbc.statement;
 
 import java.util.Objects;
 
-import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 
 /**
  * @author lijianqiang

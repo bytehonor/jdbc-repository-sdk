@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlAdapter;
-import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
-import com.bytehonor.sdk.starter.jdbc.sql.PrepareStatement;
-import com.bytehonor.sdk.starter.jdbc.sql.UpdatePrepareStatement;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
+import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
+import com.bytehonor.sdk.starter.jdbc.statement.UpdatePrepareStatement;
 
 public class UpdatePrepareStatementQueryTest {
 

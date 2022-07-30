@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.sql;
+package com.bytehonor.sdk.starter.jdbc.statement;
 
 import static org.junit.Assert.assertTrue;
 
@@ -10,9 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 
 public class UpdatePrepareStatementTest {
 

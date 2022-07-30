@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.condition;
+package com.bytehonor.sdk.starter.jdbc.sql;
 
 import static org.junit.Assert.assertTrue;
 

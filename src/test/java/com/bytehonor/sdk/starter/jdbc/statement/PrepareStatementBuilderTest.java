@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.sql;
+package com.bytehonor.sdk.starter.jdbc.statement;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 
 public class PrepareStatementBuilderTest {
 
