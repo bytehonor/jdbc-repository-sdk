@@ -10,10 +10,10 @@ public abstract class ModelSetterMapper<T> implements RowMapper<T> {
 
     @Override
     public final T mapRow(ResultSet rs, int rowNum) throws SQLException {
-        ModelSetter<T> setters = make(rs);
+        ModelSetter<T> setters = create(rs);
         Objects.requireNonNull(setters, "setters");
         return setters.model();
     }
 
-    public abstract ModelSetter<T> make(ResultSet rs) throws SQLException;
+    public abstract ModelSetter<T> create(ResultSet rs) throws SQLException;
 }
