@@ -10,23 +10,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
-import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
-import com.bytehonor.sdk.starter.jdbc.model.ModelGetterGroup;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
 
 public class UpdatePrepareStatementTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdatePrepareStatementTest.class);
 
-    private static final ModelConvertMapper<Student> MAPPER = new ModelConvertMapper<Student>() {
+    private static final ModelGetterMapper<Student> MAPPER = new ModelGetterMapper<Student>() {
 
         @Override
-        public ModelGetterGroup<Student> create() {
-            ModelGetterGroup<Student> group = ModelGetterGroup.create(Student.class);
-            group.add("age", Student::getAge);
-            group.add("nickname", Student::getNickname);
-            group.add("createAt", Student::getCreateAt);
-            return group;
+        public ModelGetter<Student> create(Student model) {
+            ModelGetter<Student> getters = new ModelGetter<Student>(model);
+
+            getters.add(Student::getId);
+            getters.add(Student::getAge);
+            getters.add(Student::getNickname);
+            getters.add(Student::getUpdateAt);
+            getters.add(Student::getCreateAt);
+            return getters;
         }
 
     };
@@ -34,7 +37,7 @@ public class UpdatePrepareStatementTest {
     @Test
     public void test() {
 
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         condition.gt("createAt", System.currentTimeMillis());
         condition.descBy("age");
 
@@ -66,7 +69,7 @@ public class UpdatePrepareStatementTest {
         set.add(1);
         set.add(2);
         set.add(3);
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         condition.integers("age", set); // conflict 不会被更新
         condition.gt("createAt", System.currentTimeMillis());
 
@@ -93,7 +96,7 @@ public class UpdatePrepareStatementTest {
 
     @Test
     public void testSetValueNull() {
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         condition.gt("createAt", System.currentTimeMillis());
 
         long now = System.currentTimeMillis();
@@ -119,7 +122,7 @@ public class UpdatePrepareStatementTest {
 
     @Test
     public void testSetValueConflict() {
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         condition.eq("nickname", "boy");
 
         long now = System.currentTimeMillis();
@@ -145,7 +148,7 @@ public class UpdatePrepareStatementTest {
 
     @Test
     public void testUpdateById() {
-        SqlArgCondition condition = SqlArgCondition.id(1L);
+        SqlCondition condition = SqlCondition.id(1L);
 
         long now = System.currentTimeMillis();
         Student student = new Student();
@@ -171,7 +174,7 @@ public class UpdatePrepareStatementTest {
     @Test
     public void testUpdateAtConflict() {
 
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         condition.gt("updateAt", System.currentTimeMillis());
         condition.descBy("age");
 

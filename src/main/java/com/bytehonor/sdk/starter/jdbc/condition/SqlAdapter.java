@@ -12,8 +12,8 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
 public class SqlAdapter {
 
-    public static SqlArgCondition convert(QueryCondition condition) {
-        SqlArgCondition model = SqlArgCondition.create(condition.getLogic());
+    public static SqlCondition convert(QueryCondition condition) {
+        SqlCondition model = SqlCondition.create(condition.getLogic());
 
         List<MatchColumn> columns = condition.getGroup().getColumns();
         for (MatchColumn column : columns) {
@@ -30,12 +30,12 @@ public class SqlAdapter {
         return model;
     }
 
-    public static SqlColumn from(MatchColumn column) {
+    public static SqlMatcher from(MatchColumn column) {
         Object value = column.getValue();
         Object copy = "";
         String javaType = column.getType();
         if (SqlOperator.IN.equals(column.getOperator())) {
-            copy = SqlColumn.appendIn(SqlAdaptUtils.joinCollection(javaType, value));
+            copy = SqlMatcher.appendIn(SqlAdaptUtils.joinCollection(javaType, value));
         } else if (SqlOperator.LIKE.equals(column.getOperator())) {
             copy = SqlInjectUtils.like(value.toString(), true, true);
         } else if (SqlOperator.LIKE_LEFT.equals(column.getOperator())) {
@@ -45,6 +45,6 @@ public class SqlAdapter {
         } else {
             copy = value;
         }
-        return SqlColumn.create(column.getKey(), copy, javaType, column.getOperator());
+        return SqlMatcher.create(column.getKey(), copy, javaType, column.getOperator());
     }
 }

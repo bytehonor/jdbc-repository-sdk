@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
 
 public class DeletePrepareStatementTest {
 
@@ -22,7 +22,7 @@ public class DeletePrepareStatementTest {
         set.add(1);
         set.add(2);
         set.add(3);
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         condition.integers("age", set);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
@@ -40,7 +40,7 @@ public class DeletePrepareStatementTest {
 
     @Test
     public void testNoCondition() {
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         PrepareStatement statement = new DeletePrepareStatement(Student.class, condition);
         String sql = statement.sql();
 
@@ -59,7 +59,7 @@ public class DeletePrepareStatementTest {
     @Test
     public void testValueNull() {
         String uuid = null;
-        SqlArgCondition condition = SqlArgCondition.create().eq("uuid", uuid);
+        SqlCondition condition = SqlCondition.create().eq("uuid", uuid);
         PrepareStatement statement = new DeletePrepareStatement(Student.class, condition);
         String sql = statement.sql();
 

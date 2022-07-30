@@ -11,16 +11,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.condition.SqlAdapter;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.condition.SqlElement;
-import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
-import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
+import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
+import com.bytehonor.sdk.starter.jdbc.model.ModelSetterMapper;
 import com.bytehonor.sdk.starter.jdbc.sql.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.sql.PrepareStatementBuilder;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
@@ -39,7 +39,7 @@ public class JdbcProxyDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public <T> List<T> query(Class<T> clazz, QueryCondition condition, RowMapper<T> mapper) {
+    public <T> List<T> query(Class<T> clazz, QueryCondition condition, ModelSetterMapper<T> mapper) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
@@ -47,7 +47,7 @@ public class JdbcProxyDao {
         return query(clazz, SqlAdapter.convert(condition), mapper);
     }
 
-    public <T> List<T> query(Class<T> clazz, SqlArgCondition condition, RowMapper<T> mapper) {
+    public <T> List<T> query(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
@@ -60,11 +60,11 @@ public class JdbcProxyDao {
         return jdbcTemplate.query(sql, statement.args(), statement.types(), mapper);
     }
 
-    public <T> T queryById(Class<T> clazz, Long id, RowMapper<T> mapper) {
+    public <T> T queryById(Class<T> clazz, Long id, ModelSetterMapper<T> mapper) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
 
-        List<T> result = query(clazz, SqlArgCondition.id(id), mapper);
+        List<T> result = query(clazz, SqlCondition.id(id), mapper);
         return DataAccessUtils.uniqueResult(result);
     }
 
@@ -75,7 +75,7 @@ public class JdbcProxyDao {
         return delete(clazz, SqlAdapter.convert(condition));
     }
 
-    public int delete(Class<?> clazz, SqlArgCondition condition) {
+    public int delete(Class<?> clazz, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -106,7 +106,7 @@ public class JdbcProxyDao {
         return count(clazz, SqlAdapter.convert(condition));
     }
 
-    public int count(Class<?> clazz, SqlArgCondition condition) {
+    public int count(Class<?> clazz, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -152,7 +152,7 @@ public class JdbcProxyDao {
      * @param condition
      * @return
      */
-    public <T> List<T> distinct(Class<?> clazz, SqlElement<T> element, SqlArgCondition condition) {
+    public <T> List<T> distinct(Class<?> clazz, SqlElement<T> element, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(element, "element");
         Objects.requireNonNull(condition, "condition");
@@ -172,7 +172,7 @@ public class JdbcProxyDao {
         LOG.debug("clazz:{}, sql:{}", clazz.getSimpleName(), sql);
     }
 
-    public <T> int update(T model, QueryCondition condition, ModelConvertMapper<T> mapper) {
+    public <T> int update(T model, QueryCondition condition, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
@@ -180,7 +180,7 @@ public class JdbcProxyDao {
         return update(model, SqlAdapter.convert(condition), mapper);
     }
 
-    public <T> int update(T model, SqlArgCondition condition, ModelConvertMapper<T> mapper) {
+    public <T> int update(T model, SqlCondition condition, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
@@ -195,7 +195,7 @@ public class JdbcProxyDao {
         return jdbcTemplate.update(sql, statement.args(), statement.types());
     }
 
-    public <T> int updateById(T model, Long id, ModelConvertMapper<T> mapper) {
+    public <T> int updateById(T model, Long id, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(id, "id");
         Objects.requireNonNull(mapper, "mapper");
@@ -210,13 +210,13 @@ public class JdbcProxyDao {
         return jdbcTemplate.update(sql, statement.args(), statement.types());
     }
 
-    public <T> long insert(T model, ModelConvertMapper<T> mapper) {
+    public <T> long insert(T model, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
         final Class<? extends Object> clazz = model.getClass();
         final PrepareStatement statement = PrepareStatementBuilder.insert(clazz);
-        final List<ModelColumnValue> items = statement.prepare(model, mapper);
+        final List<ModelKeyValue> items = statement.prepare(model, mapper);
 
         final String sql = statement.sql();
         log(clazz, sql);
@@ -235,7 +235,7 @@ public class JdbcProxyDao {
         return holder.getKey().longValue();
     }
 
-    public <T> int insertQuick(T model, ModelConvertMapper<T> mapper) {
+    public <T> int insertQuick(T model, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 

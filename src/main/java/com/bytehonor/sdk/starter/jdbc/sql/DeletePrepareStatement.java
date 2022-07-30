@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
@@ -13,7 +13,7 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
  */
 public class DeletePrepareStatement extends MysqlPrepareStatement {
 
-    public DeletePrepareStatement(Class<?> clazz, SqlArgCondition condition) {
+    public DeletePrepareStatement(Class<?> clazz, SqlCondition condition) {
         super(clazz, condition);
     }
 
@@ -32,7 +32,7 @@ public class DeletePrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (SqlArgCondition.isArgEmpty(condition)) {
+        if (SqlCondition.isArgEmpty(condition)) {
             throw new JdbcSdkException("delete sql condition args isEmpty");
         }
 
@@ -41,7 +41,7 @@ public class DeletePrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public int[] types() {
-        if (SqlArgCondition.isArgEmpty(condition)) {
+        if (SqlCondition.isArgEmpty(condition)) {
             throw new JdbcSdkException("delete sql condition args isEmpty");
         }
         return SqlInjectUtils.listArray(condition.types());

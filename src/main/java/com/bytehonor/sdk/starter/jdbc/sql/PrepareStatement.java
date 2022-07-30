@@ -2,8 +2,8 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 
 import java.util.List;
 
-import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
-import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
+import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 
 /**
  * @author lijianqiang
@@ -11,7 +11,7 @@ import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
  */
 public interface PrepareStatement {
 
-    public <T> List<ModelColumnValue> prepare(T model, ModelConvertMapper<T> mapper);
+    public <T> List<ModelKeyValue> prepare(T model, ModelGetterMapper<T> mapper);
 
     public String sql();
 

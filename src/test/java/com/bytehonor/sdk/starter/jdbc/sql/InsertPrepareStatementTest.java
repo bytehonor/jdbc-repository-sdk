@@ -7,24 +7,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
-import com.bytehonor.sdk.starter.jdbc.model.ModelGetterGroup;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
 
 public class InsertPrepareStatementTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(InsertPrepareStatementTest.class);
 
-    private static final ModelConvertMapper<Student> MAPPER = new ModelConvertMapper<Student>() {
+    private static final ModelGetterMapper<Student> MAPPER = new ModelGetterMapper<Student>() {
 
         @Override
-        public ModelGetterGroup<Student> create() {
-            ModelGetterGroup<Student> group = ModelGetterGroup.create(Student.class);
-            group.add("id", Student::getId);
-            group.add("age", Student::getAge);
-            group.add("nickname", Student::getNickname);
-            group.add("create_at", Student::getCreateAt);
-            group.add("updateAt", Student::getUpdateAt);
-            return group;
+        public ModelGetter<Student> create(Student model) {
+            ModelGetter<Student> getters = new ModelGetter<Student>(model);
+
+            getters.add(Student::getId);
+            getters.add(Student::getAge);
+            getters.add(Student::getNickname);
+            getters.add(Student::getUpdateAt);
+            getters.add(Student::getCreateAt);
+            return getters;
         }
 
     };
@@ -127,13 +128,14 @@ public class InsertPrepareStatementTest {
     @Test
     public void testGetterLess() {
 
-        ModelConvertMapper<Student> less = new ModelConvertMapper<Student>() {
+        ModelGetterMapper<Student> less = new ModelGetterMapper<Student>() {
 
             @Override
-            public ModelGetterGroup<Student> create() {
-                ModelGetterGroup<Student> group = ModelGetterGroup.create(Student.class);
-                group.add("nickname", Student::getNickname);
-                return group;
+            public ModelGetter<Student> create(Student model) {
+                ModelGetter<Student> getters = new ModelGetter<Student>(model);
+
+                getters.add(Student::getNickname);
+                return getters;
             }
 
         };

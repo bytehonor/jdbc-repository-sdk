@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
 
 public class DistinctPrepareStatementTest {
 
@@ -22,7 +22,7 @@ public class DistinctPrepareStatementTest {
         set.add(1);
         set.add(2);
         set.add(3);
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         condition.integers("age", set);
         condition.gt("createAt", System.currentTimeMillis());
         condition.like("nickname", "boy");
@@ -40,7 +40,7 @@ public class DistinctPrepareStatementTest {
 
     @Test
     public void testNoCondition() {
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         PrepareStatement statement = new DistinctPrepareStatement(Student.class, "age", condition);
         String sql = statement.sql();
         Object[] args = statement.args();

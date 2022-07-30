@@ -27,7 +27,7 @@ public class SqlAdapterTest {
         condition.like("nickname", "boy");
         condition.descBy("age");
 
-        SqlArgCondition model = SqlAdapter.convert(condition);
+        SqlCondition model = SqlAdapter.convert(condition);
 
         String sql = model.toSql().trim();
         String target = "WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ?";

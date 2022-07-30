@@ -51,17 +51,17 @@ public class SqlArgHolder {
 
     /**
      * 
-     * @param column
+     * @param matcher
      * @return
      */
-    public SqlArgHolder safeAdd(SqlColumn column) {
-        if (SqlColumn.accept(column) == false) {
-            LOG.warn("put SqlColumn ignore, key:{}, value:{}", column.getKey(), column.getValue());
+    public SqlArgHolder safeAdd(SqlMatcher matcher) {
+        if (SqlMatcher.accept(matcher) == false) {
+            LOG.warn("put SqlMatcher ignore, key:{}, value:{}", matcher.getKey(), matcher.getValue());
             return this;
         }
 
         // 转成下划线
-        String key = SqlColumnUtils.camelToUnderline(column.getKey());
+        String key = SqlColumnUtils.camelToUnderline(matcher.getKey());
         if (StringObject.isEmpty(key)) {
             return this;
         }
@@ -74,16 +74,16 @@ public class SqlArgHolder {
 
         argSize++;
 
-        if (SqlOperator.IN.getKey().equals(column.getOperator().getKey())) {
-            this.sql.append(key).append(BLANK).append(column.getOperator().getOpt()).append(BLANK)
-                    .append(column.getValue());
+        if (SqlOperator.IN.getKey().equals(matcher.getOperator().getKey())) {
+            this.sql.append(key).append(BLANK).append(matcher.getOperator().getOpt()).append(BLANK)
+                    .append(matcher.getValue());
             return this;
         }
-        this.sql.append(key).append(BLANK).append(column.getOperator().getOpt()).append(BLANK)
+        this.sql.append(key).append(BLANK).append(matcher.getOperator().getOpt()).append(BLANK)
                 .append(SqlConstants.PARAM);
-        this.values.add(column.getValue());
-        this.sqlTypes.add(column.getSqlType());
-        this.javaTypes.add(column.getJavaType());
+        this.values.add(matcher.getValue());
+        this.sqlTypes.add(matcher.getSqlType());
+        this.javaTypes.add(matcher.getJavaType());
         return this;
     }
 

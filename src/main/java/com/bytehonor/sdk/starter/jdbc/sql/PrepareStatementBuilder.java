@@ -2,7 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 
 import java.util.Objects;
 
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
 
 /**
  * @author lijianqiang
@@ -10,7 +10,7 @@ import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
  */
 public final class PrepareStatementBuilder {
 
-    public static PrepareStatement select(Class<?> clazz, SqlArgCondition condition) {
+    public static PrepareStatement select(Class<?> clazz, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -21,17 +21,17 @@ public final class PrepareStatementBuilder {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
 
-        return select(clazz, SqlArgCondition.id(id));
+        return select(clazz, SqlCondition.id(id));
     }
 
-    public static PrepareStatement count(Class<?> clazz, SqlArgCondition condition) {
+    public static PrepareStatement count(Class<?> clazz, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
         return new CountPrepareStatement(clazz, condition);
     }
 
-    public static PrepareStatement distinct(Class<?> clazz, String column, SqlArgCondition condition) {
+    public static PrepareStatement distinct(Class<?> clazz, String column, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(column, "column");
         Objects.requireNonNull(condition, "condition");
@@ -45,7 +45,7 @@ public final class PrepareStatementBuilder {
         return new InsertPrepareStatement(clazz);
     }
 
-    public static PrepareStatement update(Class<?> clazz, SqlArgCondition condition) {
+    public static PrepareStatement update(Class<?> clazz, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -56,10 +56,10 @@ public final class PrepareStatementBuilder {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
 
-        return new UpdatePrepareStatement(clazz, SqlArgCondition.id(id));
+        return new UpdatePrepareStatement(clazz, SqlCondition.id(id));
     }
 
-    public static PrepareStatement delete(Class<?> clazz, SqlArgCondition condition) {
+    public static PrepareStatement delete(Class<?> clazz, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -70,6 +70,6 @@ public final class PrepareStatementBuilder {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
 
-        return delete(clazz, SqlArgCondition.id(id));
+        return delete(clazz, SqlCondition.id(id));
     }
 }

@@ -21,7 +21,7 @@ import com.bytehonor.sdk.lang.spring.getter.LongGetter;
 import com.bytehonor.sdk.lang.spring.util.JoinUtils;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
-import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
+import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 
 public class SqlAdaptUtils {
 
@@ -45,39 +45,39 @@ public class SqlAdaptUtils {
         JAVA_SQL.put(JavaValueTypes.DOUBLE, SqlValueTypes.DOUBLE);
     }
 
-    public static PreparedStatement make(String sql, List<ModelColumnValue> items, Connection connection)
+    public static PreparedStatement make(String sql, List<ModelKeyValue> items, Connection connection)
             throws SQLException {
         PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         int idx = 1;
-        for (ModelColumnValue item : items) {
+        for (ModelKeyValue item : items) {
             set(ps, idx, item);
             idx++;
         }
         return ps;
     }
 
-    private static void set(PreparedStatement ps, int idx, ModelColumnValue item) throws SQLException {
-        if (JavaValueTypes.STRING.equals(item.getType())) {
+    private static void set(PreparedStatement ps, int idx, ModelKeyValue item) throws SQLException {
+        if (JavaValueTypes.STRING.equals(item.getJavaType())) {
             ps.setString(idx, item.getValue().toString());
             return;
         }
-        if (JavaValueTypes.LONG.equals(item.getType())) {
+        if (JavaValueTypes.LONG.equals(item.getJavaType())) {
             ps.setLong(idx, LongGetter.optional(item.getValue().toString(), 0L));
             return;
         }
-        if (JavaValueTypes.INTEGER.equals(item.getType())) {
+        if (JavaValueTypes.INTEGER.equals(item.getJavaType())) {
             ps.setInt(idx, IntegerGetter.optional(item.getValue().toString(), 0));
             return;
         }
-        if (JavaValueTypes.BOOLEAN.equals(item.getType())) {
+        if (JavaValueTypes.BOOLEAN.equals(item.getJavaType())) {
             ps.setBoolean(idx, BooleanGetter.optional(item.getValue().toString(), false));
             return;
         }
-        if (JavaValueTypes.DOUBLE.equals(item.getType())) {
+        if (JavaValueTypes.DOUBLE.equals(item.getJavaType())) {
             ps.setDouble(idx, DoubleGetter.optional(item.getValue().toString(), 0.0));
             return;
         }
-        LOG.error("not support type, set key:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
+        LOG.error("not support, key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getJavaType());
         throw new JdbcSdkException("not support type");
     }
 

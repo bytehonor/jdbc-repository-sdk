@@ -5,11 +5,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
-import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
-import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
+import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlMetaUtils;
 
@@ -25,16 +25,16 @@ public abstract class MysqlPrepareStatement implements PrepareStatement {
 
     protected final MetaTable table;
 
-    protected final SqlArgCondition condition;
+    protected final SqlCondition condition;
 
-    public MysqlPrepareStatement(Class<?> clazz, SqlArgCondition condition) {
+    public MysqlPrepareStatement(Class<?> clazz, SqlCondition condition) {
         this.clazz = clazz;
         this.table = SqlMetaUtils.parse(clazz);
         this.condition = condition;
     }
 
     @Override
-    public <T> List<ModelColumnValue> prepare(T model, ModelConvertMapper<T> mapper) {
+    public <T> List<ModelKeyValue> prepare(T model, ModelGetterMapper<T> mapper) {
         return null;
     }
 
@@ -66,7 +66,7 @@ public abstract class MysqlPrepareStatement implements PrepareStatement {
         return table;
     }
 
-    public SqlArgCondition getCondition() {
+    public SqlCondition getCondition() {
         return condition;
     }
 

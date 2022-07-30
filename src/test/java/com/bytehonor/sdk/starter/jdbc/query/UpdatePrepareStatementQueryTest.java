@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import com.bytehonor.sdk.define.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.condition.SqlAdapter;
-import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
-import com.bytehonor.sdk.starter.jdbc.model.ModelGetterGroup;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
 import com.bytehonor.sdk.starter.jdbc.sql.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.sql.UpdatePrepareStatement;
 
@@ -21,15 +21,18 @@ public class UpdatePrepareStatementQueryTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdatePrepareStatementQueryTest.class);
 
-    private static final ModelConvertMapper<Student> MAPPER = new ModelConvertMapper<Student>() {
+    private static final ModelGetterMapper<Student> MAPPER = new ModelGetterMapper<Student>() {
 
         @Override
-        public ModelGetterGroup<Student> create() {
-            ModelGetterGroup<Student> group = ModelGetterGroup.create(Student.class);
-            group.add("age", Student::getAge);
-            group.add("nickname", Student::getNickname);
-            group.add("createAt", Student::getCreateAt);
-            return group;
+        public ModelGetter<Student> create(Student model) {
+            ModelGetter<Student> getters = new ModelGetter<Student>(model);
+
+            getters.add(Student::getId);
+            getters.add(Student::getAge);
+            getters.add(Student::getNickname);
+            getters.add(Student::getUpdateAt);
+            getters.add(Student::getCreateAt);
+            return getters;
         }
 
     };

@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
 
 public class SelectPrepareStatementTest {
 
@@ -22,7 +22,7 @@ public class SelectPrepareStatementTest {
         set.add(1);
         set.add(2);
         set.add(3);
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         condition.integers("age", set);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
@@ -40,7 +40,7 @@ public class SelectPrepareStatementTest {
 
     @Test
     public void testNoCondition() {
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -54,7 +54,7 @@ public class SelectPrepareStatementTest {
 
     @Test
     public void testNoConditionNoPage() {
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         condition.setPage(null);
         PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
         String sql = statement.sql();
@@ -74,7 +74,7 @@ public class SelectPrepareStatementTest {
 
     @Test
     public void testEqEmpty() {
-        SqlArgCondition condition = SqlArgCondition.create();
+        SqlCondition condition = SqlCondition.create();
         condition.eq("nickname", "");
         PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
         String sql = statement.sql();

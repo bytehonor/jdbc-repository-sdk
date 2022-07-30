@@ -12,13 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.define.spring.constant.JavaValueTypes;
 import com.bytehonor.sdk.lang.spring.regex.PatternUtils;
 import com.bytehonor.sdk.lang.spring.util.StringObject;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
-import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
+import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 
 public class SqlColumnUtils {
 
@@ -30,18 +29,18 @@ public class SqlColumnUtils {
 
     private static final Map<String, Boolean> TIME_AT_ENABLED = new ConcurrentHashMap<String, Boolean>();
 
-    public static List<ModelColumnValue> prepareInsert(MetaTable metaTable, List<ModelColumnValue> items) {
+    public static List<ModelKeyValue> prepareInsert(MetaTable metaTable, List<ModelKeyValue> items) {
         Objects.requireNonNull(metaTable, "metaTable");
 
-        List<ModelColumnValue> result = new ArrayList<ModelColumnValue>();
+        List<ModelKeyValue> result = new ArrayList<ModelKeyValue>();
 
         String primary = metaTable.getPrimaryKey();
-        for (ModelColumnValue item : items) {
-            if (isSaveIgnore(primary, item.getColumn())) {
-                LOG.debug("prepare ({}) pass", item.getColumn());
+        for (ModelKeyValue item : items) {
+            if (isSaveIgnore(primary, item.getKey())) {
+                LOG.debug("prepare ({}) pass", item.getKey());
                 continue;
             }
-            LOG.debug("column:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
+            LOG.debug("key:{}, value:{}, javaType:{}", item.getKey(), item.getValue(), item.getJavaType());
             result.add(item);
         }
 
@@ -52,19 +51,19 @@ public class SqlColumnUtils {
         // 自动补充更新时间和创建时间
         long now = System.currentTimeMillis();
         if (enabledUpdateAtIfCache(metaTable)) {
-            result.add(ModelColumnValue.of(SqlConstants.UPDATE_AT_COLUMN, now, JavaValueTypes.LONG));
+            result.add(ModelKeyValue.of(SqlConstants.UPDATE_AT_COLUMN, now));
         }
         if (enabledCreateAtIfCache(metaTable)) {
-            result.add(ModelColumnValue.of(SqlConstants.CREATE_AT_COLUMN, now, JavaValueTypes.LONG));
+            result.add(ModelKeyValue.of(SqlConstants.CREATE_AT_COLUMN, now));
         }
         return result;
     }
 
-    public static List<ModelColumnValue> prepareUpdate(MetaTable metaTable, List<ModelColumnValue> items,
+    public static List<ModelKeyValue> prepareUpdate(MetaTable metaTable, List<ModelKeyValue> items,
             List<String> filterColumns) {
         Objects.requireNonNull(metaTable, "metaTable");
 
-        List<ModelColumnValue> result = new ArrayList<ModelColumnValue>();
+        List<ModelKeyValue> result = new ArrayList<ModelKeyValue>();
 
         String primary = metaTable.getPrimaryKey();
 
@@ -75,23 +74,23 @@ public class SqlColumnUtils {
 
         }
         boolean filter = CollectionUtils.isEmpty(filters) == false;
-        for (ModelColumnValue item : items) {
-            if (isSaveIgnore(primary, item.getColumn())) {
-                LOG.debug("prepare ({}) pass", item.getColumn());
+        for (ModelKeyValue item : items) {
+            if (isSaveIgnore(primary, item.getKey())) {
+                LOG.debug("prepare ({}) pass", item.getKey());
                 continue;
             }
-            if (filter && filters.contains(item.getColumn())) {
-                LOG.debug("prepare ({}) filter", item.getColumn());
+            if (filter && filters.contains(item.getKey())) {
+                LOG.debug("prepare ({}) filter", item.getKey());
                 continue;
             }
-            LOG.debug("column:{}, value:{}, type:{}", item.getColumn(), item.getValue(), item.getType());
+            LOG.debug("key:{}, value:{}, javaType:{}", item.getKey(), item.getValue(), item.getJavaType());
             result.add(item);
         }
 
         // 自动补充更新时间和创建时间
         long now = System.currentTimeMillis();
         if (enabledUpdateAtIfCache(metaTable)) {
-            result.add(ModelColumnValue.of(SqlConstants.UPDATE_AT_COLUMN, now, JavaValueTypes.LONG));
+            result.add(ModelKeyValue.of(SqlConstants.UPDATE_AT_COLUMN, now));
         }
         return result;
     }

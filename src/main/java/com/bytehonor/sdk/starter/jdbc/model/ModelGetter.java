@@ -1,51 +1,85 @@
 package com.bytehonor.sdk.starter.jdbc.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import com.bytehonor.sdk.lang.spring.function.ClassGetter;
-import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
+import com.bytehonor.sdk.lang.spring.function.Getters;
+import com.bytehonor.sdk.lang.spring.function.getter.GetBoolean;
+import com.bytehonor.sdk.lang.spring.function.getter.GetDouble;
+import com.bytehonor.sdk.lang.spring.function.getter.GetInteger;
+import com.bytehonor.sdk.lang.spring.function.getter.GetLong;
+import com.bytehonor.sdk.lang.spring.function.getter.GetString;
 
 public class ModelGetter<T> {
 
-    private String key;
+    private final List<ModelKeyValue> kvs;
 
-    private ClassGetter<T, ?> getter;
+    private final T model;
 
-    public static <T> ModelGetter<T> create(String key, ClassGetter<T, ?> getter) {
-        Objects.requireNonNull(key, "key");
-        Objects.requireNonNull(getter, "getter");
-
-        ModelGetter<T> model = new ModelGetter<T>();
-        model.setKey(key);
-        model.setGetter(getter);
-
-        return model;
+    public ModelGetter(T model) {
+        Objects.requireNonNull(model, "model");
+        this.model = model;
+        this.kvs = new ArrayList<ModelKeyValue>();
     }
 
-    public ModelColumnValue value(T t) {
-        Objects.requireNonNull(t, "t");
+    public static <T> ModelGetter<T> create(T model) {
+        Objects.requireNonNull(model, "model");
 
-        Object val = this.getter.apply(t);
-        if (val == null) {
-            return null;
+        return new ModelGetter<T>(model);
+    }
+
+    public void add(GetString<T> getter) {
+        String value = Getters.get(getter, model);
+        if (value == null) {
+            return;
         }
-        return ModelColumnValue.of(SqlColumnUtils.camelToUnderline(key), val, val.getClass().getName());
+        String key = Getters.field(getter);
+        kvs.add(ModelKeyValue.of(key, value));
     }
 
-    public String getKey() {
-        return key;
+    public void add(GetLong<T> getter) {
+        Long value = Getters.get(getter, model);
+        if (value == null) {
+            return;
+        }
+        String key = Getters.field(getter);
+        kvs.add(ModelKeyValue.of(key, value));
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void add(GetInteger<T> getter) {
+        Integer value = Getters.get(getter, model);
+        if (value == null) {
+            return;
+        }
+        String key = Getters.field(getter);
+        kvs.add(ModelKeyValue.of(key, value));
     }
 
-    public ClassGetter<T, ?> getGetter() {
-        return getter;
+    public void add(GetBoolean<T> getter) {
+        Boolean value = Getters.get(getter, model);
+        if (value == null) {
+            return;
+        }
+        String key = Getters.field(getter);
+        kvs.add(ModelKeyValue.of(key, value));
     }
 
-    public void setGetter(ClassGetter<T, ?> getter) {
-        this.getter = getter;
+    public void add(GetDouble<T> getter) {
+        Double value = Getters.get(getter, model);
+        if (value == null) {
+            return;
+        }
+        String key = Getters.field(getter);
+        kvs.add(ModelKeyValue.of(key, value));
+    }
+
+    public List<ModelKeyValue> getKvs() {
+        return kvs;
+    }
+
+    public T getModel() {
+        return model;
     }
 
 }

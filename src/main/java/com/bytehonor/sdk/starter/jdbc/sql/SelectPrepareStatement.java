@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
@@ -13,7 +13,7 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
  */
 public class SelectPrepareStatement extends MysqlPrepareStatement {
 
-    public SelectPrepareStatement(Class<?> clazz, SqlArgCondition condition) {
+    public SelectPrepareStatement(Class<?> clazz, SqlCondition condition) {
         super(clazz, condition);
     }
 
@@ -30,7 +30,7 @@ public class SelectPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (SqlArgCondition.isArgEmpty(condition)) {
+        if (SqlCondition.isArgEmpty(condition)) {
             if (condition.getPage() == null) {
                 // 禁全表无分页查询
                 throw new JdbcSdkException("select sql condition args isEmpty");
@@ -42,7 +42,7 @@ public class SelectPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public int[] types() {
-        if (SqlArgCondition.isArgEmpty(condition)) {
+        if (SqlCondition.isArgEmpty(condition)) {
             return new int[0];
         }
         return SqlInjectUtils.listArray(condition.types());

@@ -11,7 +11,7 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
-public class SqlColumn {
+public class SqlMatcher {
 
     /**
      * 忽略驼峰或下划线
@@ -32,7 +32,7 @@ public class SqlColumn {
      * @param column
      * @return
      */
-    public static boolean accept(SqlColumn column) {
+    public static boolean accept(SqlMatcher column) {
         if (column == null) {
             return false;
         }
@@ -55,84 +55,84 @@ public class SqlColumn {
         return true;
     }
 
-    public static SqlColumn eq(String key, String value) {
+    public static SqlMatcher eq(String key, String value) {
         return create(key, value, SqlValueTypes.STRING, SqlOperator.EQ);
     }
 
-    public static SqlColumn eq(String key, Long value) {
+    public static SqlMatcher eq(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.EQ);
     }
 
-    public static SqlColumn eq(String key, Integer value) {
+    public static SqlMatcher eq(String key, Integer value) {
 
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.EQ);
     }
 
-    public static SqlColumn eq(String key, Boolean value) {
+    public static SqlMatcher eq(String key, Boolean value) {
         return create(key, value, SqlValueTypes.BOOLEAN, SqlOperator.EQ);
     }
 
-    public static SqlColumn neq(String key, String value) {
+    public static SqlMatcher neq(String key, String value) {
         return create(key, value, SqlValueTypes.STRING, SqlOperator.NEQ);
     }
 
-    public static SqlColumn neq(String key, Long value) {
+    public static SqlMatcher neq(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.NEQ);
     }
 
-    public static SqlColumn neq(String key, Integer value) {
+    public static SqlMatcher neq(String key, Integer value) {
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.NEQ);
     }
 
-    public static SqlColumn neq(String key, Boolean value) {
+    public static SqlMatcher neq(String key, Boolean value) {
         return create(key, value, SqlValueTypes.BOOLEAN, SqlOperator.NEQ);
     }
 
-    public static SqlColumn gt(String key, Long value) {
+    public static SqlMatcher gt(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.GT);
     }
 
-    public static SqlColumn gt(String key, Integer value) {
+    public static SqlMatcher gt(String key, Integer value) {
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.GT);
     }
 
-    public static SqlColumn egt(String key, Long value) {
+    public static SqlMatcher egt(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.EGT);
     }
 
-    public static SqlColumn egt(String key, Integer value) {
+    public static SqlMatcher egt(String key, Integer value) {
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.EGT);
     }
 
-    public static SqlColumn lt(String key, Long value) {
+    public static SqlMatcher lt(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.LT);
     }
 
-    public static SqlColumn lt(String key, Integer value) {
+    public static SqlMatcher lt(String key, Integer value) {
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.LT);
     }
 
-    public static SqlColumn elt(String key, Long value) {
+    public static SqlMatcher elt(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.ELT);
     }
 
-    public static SqlColumn elt(String key, Integer value) {
+    public static SqlMatcher elt(String key, Integer value) {
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.ELT);
     }
 
-    public static SqlColumn like(String key, String value) {
+    public static SqlMatcher like(String key, String value) {
         return create(key, SqlInjectUtils.like(value, true, true), SqlValueTypes.STRING, SqlOperator.LIKE);
     }
 
-    public static SqlColumn likeLeft(String key, String value) {
+    public static SqlMatcher likeLeft(String key, String value) {
         return create(key, SqlInjectUtils.like(value, true, false), SqlValueTypes.STRING, SqlOperator.LIKE_LEFT);
     }
 
-    public static SqlColumn likeRight(String key, String value) {
+    public static SqlMatcher likeRight(String key, String value) {
         return create(key, SqlInjectUtils.like(value, false, true), SqlValueTypes.STRING, SqlOperator.LIKE_RIGHT);
     }
 
-    public static SqlColumn strings(String key, Collection<String> value) {
+    public static SqlMatcher strings(String key, Collection<String> value) {
         String src = null;
         if (value != null && value.isEmpty() == false) {
             src = appendIn(JoinUtils.stringsSafe(value));
@@ -140,7 +140,7 @@ public class SqlColumn {
         return create(key, src, SqlValueTypes.STRING, SqlOperator.IN);
     }
 
-    public static SqlColumn longs(String key, Collection<Long> value) {
+    public static SqlMatcher longs(String key, Collection<Long> value) {
         String src = null;
         if (value != null && value.isEmpty() == false) {
             src = appendIn(JoinUtils.longs(value));
@@ -148,7 +148,7 @@ public class SqlColumn {
         return create(key, src, SqlValueTypes.LONG, SqlOperator.IN);
     }
 
-    public static SqlColumn integers(String key, Collection<Integer> value) {
+    public static SqlMatcher integers(String key, Collection<Integer> value) {
         String src = null;
         if (value != null && value.isEmpty() == false) {
             src = appendIn(JoinUtils.integers(value));
@@ -160,15 +160,15 @@ public class SqlColumn {
         return StringCreator.create().append("(").append(raw).append(")").toString();
     }
 
-    public static SqlColumn create(String key, Object value, int sqlType, SqlOperator operator) {
-        return new SqlColumn(key, value, sqlType, SqlAdaptUtils.toJavaType(sqlType), operator);
+    public static SqlMatcher create(String key, Object value, int sqlType, SqlOperator operator) {
+        return new SqlMatcher(key, value, sqlType, SqlAdaptUtils.toJavaType(sqlType), operator);
     }
 
-    public static SqlColumn create(String key, Object value, String javaType, SqlOperator operator) {
-        return new SqlColumn(key, value, SqlAdaptUtils.toSqlType(javaType), javaType, operator);
+    public static SqlMatcher create(String key, Object value, String javaType, SqlOperator operator) {
+        return new SqlMatcher(key, value, SqlAdaptUtils.toSqlType(javaType), javaType, operator);
     }
 
-    private SqlColumn(String key, Object value, int sqlType, String javaType, SqlOperator operator) {
+    private SqlMatcher(String key, Object value, int sqlType, String javaType, SqlOperator operator) {
         this.key = key;
         this.value = value;
         this.sqlType = sqlType;

@@ -6,14 +6,14 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SqlColumnTest {
+public class SqlMatcherTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SqlColumnTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SqlMatcherTest.class);
 
     @Test
     public void test() {
-        SqlColumn sc = SqlColumn.like("nickname", "");
-        boolean accept = SqlColumn.accept(sc) == false;
+        SqlMatcher sc = SqlMatcher.like("nickname", "");
+        boolean accept = SqlMatcher.accept(sc) == false;
         LOG.info("test {}, {}, {}, {}, {}", sc.getKey(), sc.getValue(), sc.getOperator(), sc.getSqlType(),
                 sc.getJavaType());
         assertTrue("test", accept);
@@ -21,8 +21,8 @@ public class SqlColumnTest {
 
     @Test
     public void test2() {
-        SqlColumn sc = SqlColumn.like("nickname", "boy");
-        boolean accept = SqlColumn.accept(sc);
+        SqlMatcher sc = SqlMatcher.like("nickname", "boy");
+        boolean accept = SqlMatcher.accept(sc);
 
         LOG.info("test2 {}, {}, {}, {}, {}", sc.getKey(), sc.getValue(), sc.getOperator(), sc.getSqlType(),
                 sc.getJavaType());

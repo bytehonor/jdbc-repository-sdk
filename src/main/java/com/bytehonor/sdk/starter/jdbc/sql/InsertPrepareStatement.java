@@ -10,9 +10,9 @@ import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
-import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
-import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
-import com.bytehonor.sdk.starter.jdbc.model.ModelGetterGroup;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
+import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
@@ -39,25 +39,25 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
     }
 
     @Override
-    public <T> List<ModelColumnValue> prepare(T model, ModelConvertMapper<T> mapper) {
+    public <T> List<ModelKeyValue> prepare(T model, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
-        ModelGetterGroup<T> group = mapper.create();
+        ModelGetter<T> group = mapper.create(model);
         Objects.requireNonNull(group, "group");
 
         int keySize = getTable().getKeySet().size();
-        if (keySize - group.size() > 2) {
-            LOG.warn("WARN miss getter! {}, keys:{}, groups:{}", getTable().getModelClazz(), keySize, group.size());
+        List<ModelKeyValue> items = group.getKvs();
+        if (keySize - items.size() > 2) {
+            LOG.warn("WARN miss getter! {}, keys:{}, groups:{}", getTable().getModelClazz(), keySize, items.size());
         }
 
-        List<ModelColumnValue> items = group.spread(model);
-        List<ModelColumnValue> result = SqlColumnUtils.prepareInsert(getTable(), items);
+        List<ModelKeyValue> result = SqlColumnUtils.prepareInsert(getTable(), items);
 
-        for (ModelColumnValue val : result) {
-            saveColumns.add(val.getColumn());
-            saveValues.add(val.getValue());
-            saveTypes.add(SqlAdaptUtils.toSqlType(val.getType())); // 转换
+        for (ModelKeyValue mkv : result) {
+            saveColumns.add(mkv.getKey());
+            saveValues.add(mkv.getValue());
+            saveTypes.add(SqlAdaptUtils.toSqlType(mkv.getJavaType())); // 转换
         }
 
         // 检查参数数目

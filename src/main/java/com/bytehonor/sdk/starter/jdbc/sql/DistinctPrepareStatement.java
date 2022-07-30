@@ -1,7 +1,7 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
 import com.bytehonor.sdk.lang.spring.util.StringObject;
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
@@ -17,7 +17,7 @@ public class DistinctPrepareStatement extends MysqlPrepareStatement {
 
     private final String column;
 
-    public DistinctPrepareStatement(Class<?> clazz, String column, SqlArgCondition condition) {
+    public DistinctPrepareStatement(Class<?> clazz, String column, SqlCondition condition) {
         super(clazz, condition);
         this.column = SqlColumnUtils.camelToUnderline(column);
     }
@@ -36,7 +36,7 @@ public class DistinctPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (SqlArgCondition.isArgEmpty(condition)) {
+        if (SqlCondition.isArgEmpty(condition)) {
             return new Object[0];
         }
         return condition.values().toArray();
@@ -44,7 +44,7 @@ public class DistinctPrepareStatement extends MysqlPrepareStatement {
 
     @Override
     public int[] types() {
-        if (SqlArgCondition.isArgEmpty(condition)) {
+        if (SqlCondition.isArgEmpty(condition)) {
             return new int[0];
         }
         return SqlInjectUtils.listArray(condition.types());

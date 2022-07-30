@@ -8,12 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.starter.jdbc.condition.SqlArgCondition;
+import com.bytehonor.sdk.starter.jdbc.condition.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
-import com.bytehonor.sdk.starter.jdbc.model.ModelColumnValue;
-import com.bytehonor.sdk.starter.jdbc.model.ModelConvertMapper;
-import com.bytehonor.sdk.starter.jdbc.model.ModelGetterGroup;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
+import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
@@ -33,7 +33,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
     private final List<Object> saveValues;
     private final List<Integer> saveTypes;
 
-    public UpdatePrepareStatement(Class<?> clazz, SqlArgCondition condition) {
+    public UpdatePrepareStatement(Class<?> clazz, SqlCondition condition) {
         super(clazz, condition);
         this.saveColumns = new ArrayList<String>();
         this.saveValues = new ArrayList<Object>();
@@ -41,22 +41,22 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
     }
 
     @Override
-    public <T> List<ModelColumnValue> prepare(T model, ModelConvertMapper<T> mapper) {
+    public <T> List<ModelKeyValue> prepare(T model, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
-        ModelGetterGroup<T> group = mapper.create();
+        ModelGetter<T> group = mapper.create(model);
         Objects.requireNonNull(group, "group");
 
         // confilc check
         List<String> filterColumns = condition.getHolder().getKeys();
-        List<ModelColumnValue> items = group.spread(model);
-        List<ModelColumnValue> result = SqlColumnUtils.prepareUpdate(getTable(), items, filterColumns);
+        List<ModelKeyValue> items = group.getKvs();
+        List<ModelKeyValue> result = SqlColumnUtils.prepareUpdate(getTable(), items, filterColumns);
 
-        for (ModelColumnValue val : result) {
-            saveColumns.add(val.getColumn());
-            saveValues.add(val.getValue());
-            saveTypes.add(SqlAdaptUtils.toSqlType(val.getType())); // 转换
+        for (ModelKeyValue mkv : result) {
+            saveColumns.add(mkv.getKey());
+            saveValues.add(mkv.getValue());
+            saveTypes.add(SqlAdaptUtils.toSqlType(mkv.getJavaType())); // 转换
         }
 
         if (LOG.isDebugEnabled()) {
@@ -90,7 +90,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         if (CollectionUtils.isEmpty(saveValues)) {
             throw new JdbcSdkException("update sql saveValues empty");
         }
-        if (SqlArgCondition.isArgEmpty(condition)) {
+        if (SqlCondition.isArgEmpty(condition)) {
             throw new JdbcSdkException("update sql condition args isEmpty");
         }
 
@@ -107,7 +107,7 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         if (CollectionUtils.isEmpty(saveTypes)) {
             throw new JdbcSdkException("update sql saveTypes empty");
         }
-        if (SqlArgCondition.isArgEmpty(condition)) {
+        if (SqlCondition.isArgEmpty(condition)) {
             throw new JdbcSdkException("update sql condition args isEmpty");
         }
 
