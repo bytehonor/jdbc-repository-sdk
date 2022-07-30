@@ -46,6 +46,8 @@ public class ModelGetterTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
+        // 1000000:285ms
+        // 10000000:2189ms
         int times = 1000000;
         for (int i = 0; i < times; i++) {
             ModelGetter<Student> getter = ModelGetter.create(student);
@@ -55,7 +57,7 @@ public class ModelGetterTest {
             getter.add(Student::getUpdateAt);
             getter.add(Student::getCreateAt);
 
-            getter.getKvs();// 几乎不花时间
+            getter.getKvs();
         }
 
         long millis = (System.currentTimeMillis() - now);
