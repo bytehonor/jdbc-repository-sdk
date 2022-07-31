@@ -49,7 +49,7 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         int keySize = getTable().getKeySet().size();
         List<ModelKeyValue> keyValues = getter.getKeyValues();
         if (keySize - keyValues.size() > 2) {
-            LOG.warn("MISS VALUE! {}, keys:{}, keyValues:{}", getTable().getModelClazz(), keySize, keyValues.size());
+            LOG.info("miss values! {}, keys:{}, keyValues:{}", getTable().getModelClazz(), keySize, keyValues.size());
         }
 
         List<ModelKeyValue> result = SqlColumnUtils.prepareInsert(getTable(), keyValues);
