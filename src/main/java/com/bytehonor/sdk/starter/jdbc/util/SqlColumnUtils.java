@@ -33,18 +33,18 @@ public class SqlColumnUtils {
     private static final Set<String> IGNORES = Sets.newHashSet(SqlConstants.UPDATE_AT_KEY,
             SqlConstants.UPDATE_AT_COLUMN, SqlConstants.CREATE_AT_KEY, SqlConstants.CREATE_AT_COLUMN);
 
-    public static List<ModelKeyValue> prepareInsert(MetaTable metaTable, List<ModelKeyValue> items) {
+    public static List<ModelKeyValue> prepareInsert(MetaTable metaTable, List<ModelKeyValue> keyValues) {
         Objects.requireNonNull(metaTable, "metaTable");
 
         List<ModelKeyValue> result = new ArrayList<ModelKeyValue>();
 
         String primary = metaTable.getPrimaryKey();
-        for (ModelKeyValue item : items) {
+        for (ModelKeyValue item : keyValues) {
             if (isSaveIgnore(primary, item.getKey())) {
-                LOG.debug("prepare ({}) pass", item.getKey());
+                // LOG.debug("prepare ({}) pass", item.getKey());
                 continue;
             }
-            LOG.debug("key:{}, value:{}, javaType:{}", item.getKey(), item.getValue(), item.getJavaType());
+            LOG.debug("insert key:{}, value:{}, javaType:{}", item.getKey(), item.getValue(), item.getJavaType());
             result.add(item);
         }
 
@@ -63,8 +63,8 @@ public class SqlColumnUtils {
         return result;
     }
 
-    public static List<ModelKeyValue> prepareUpdate(MetaTable metaTable, List<ModelKeyValue> items,
-            List<String> filterColumns) {
+    public static List<ModelKeyValue> prepareUpdate(MetaTable metaTable, List<ModelKeyValue> keyValues,
+            List<String> filterKeys) {
         Objects.requireNonNull(metaTable, "metaTable");
 
         List<ModelKeyValue> result = new ArrayList<ModelKeyValue>();
@@ -72,22 +72,21 @@ public class SqlColumnUtils {
         String primary = metaTable.getPrimaryKey();
 
         Set<String> filters = new HashSet<String>();
-        if (CollectionUtils.isEmpty(filterColumns) == false) {
-            filters = new HashSet<String>(filterColumns);
-            filters.remove(primary);
+        if (CollectionUtils.isEmpty(filterKeys) == false) {
+            filters = new HashSet<String>(filterKeys);
 
         }
         boolean filter = CollectionUtils.isEmpty(filters) == false;
-        for (ModelKeyValue item : items) {
+        for (ModelKeyValue item : keyValues) {
             if (isSaveIgnore(primary, item.getKey())) {
-                LOG.debug("prepare ({}) pass", item.getKey());
+                // LOG.debug("prepare ({}) pass", item.getKey());
                 continue;
             }
             if (filter && filters.contains(item.getKey())) {
                 LOG.debug("prepare ({}) filter", item.getKey());
                 continue;
             }
-            LOG.debug("key:{}, value:{}, javaType:{}", item.getKey(), item.getValue(), item.getJavaType());
+            LOG.debug("update key:{}, value:{}, javaType:{}", item.getKey(), item.getValue(), item.getJavaType());
             result.add(item);
         }
 

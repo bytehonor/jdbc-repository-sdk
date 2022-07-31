@@ -23,14 +23,14 @@ public class ModelGetterTest {
         student.setUpdateAt(now);
         student.setCreateAt(now);
 
-        ModelGetter<Student> getter = ModelGetter.create(student);
+        ModelGetter<Student> getter = ModelGetter.of(student);
         getter.add(Student::getId);
         getter.add(Student::getAge);
         getter.add(Student::getNickname);
         getter.add(Student::getUpdateAt);
         getter.add(Student::getCreateAt);
 
-        List<ModelKeyValue> items = getter.getKvs();
+        List<ModelKeyValue> items = getter.getKeyValues();
         for (ModelKeyValue item : items) {
             LOG.info("key:{}, value:{}, javaType:{}", item.getKey(), item.getValue(), item.getJavaType());
         }
@@ -50,14 +50,14 @@ public class ModelGetterTest {
         // 10000000:2189ms
         int times = 1000000;
         for (int i = 0; i < times; i++) {
-            ModelGetter<Student> getter = ModelGetter.create(student);
+            ModelGetter<Student> getter = ModelGetter.of(student);
             getter.add(Student::getId);
             getter.add(Student::getAge);
             getter.add(Student::getNickname);
             getter.add(Student::getUpdateAt);
             getter.add(Student::getCreateAt);
 
-            getter.getKvs();
+            getter.getKeyValues();
         }
 
         long millis = (System.currentTimeMillis() - now);

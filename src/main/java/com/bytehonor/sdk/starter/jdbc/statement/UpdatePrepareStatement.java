@@ -45,13 +45,13 @@ public class UpdatePrepareStatement extends MysqlPrepareStatement {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
-        ModelGetter<T> group = mapper.create(model);
-        Objects.requireNonNull(group, "group");
+        ModelGetter<T> getter = mapper.create(model);
+        Objects.requireNonNull(getter, "getter");
 
         // confilc check
-        List<String> filterColumns = condition.getHolder().getKeys();
-        List<ModelKeyValue> items = group.getKvs();
-        List<ModelKeyValue> result = SqlColumnUtils.prepareUpdate(getTable(), items, filterColumns);
+        List<String> filterKeys = condition.getHolder().getKeys();
+        List<ModelKeyValue> keyValues = getter.getKeyValues();
+        List<ModelKeyValue> result = SqlColumnUtils.prepareUpdate(getTable(), keyValues, filterKeys);
 
         for (ModelKeyValue mkv : result) {
             saveColumns.add(mkv.getKey());

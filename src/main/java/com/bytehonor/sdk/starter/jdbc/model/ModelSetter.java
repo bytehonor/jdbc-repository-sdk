@@ -2,6 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import com.bytehonor.sdk.lang.spring.function.Setters;
@@ -19,11 +20,13 @@ public class ModelSetter<T> {
     private final ResultSet rs;
 
     public ModelSetter(T model, ResultSet rs) {
+        Objects.requireNonNull(model, "model");
+
         this.model = model;
         this.rs = rs;
     }
 
-    public static <T> ModelSetter<T> create(Supplier<T> sp, ResultSet rs) {
+    public static <T> ModelSetter<T> of(Supplier<T> sp, ResultSet rs) {
         return new ModelSetter<T>(sp.get(), rs);
     }
 

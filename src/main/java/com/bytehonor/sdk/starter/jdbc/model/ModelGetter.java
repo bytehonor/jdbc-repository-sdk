@@ -13,17 +13,18 @@ import com.bytehonor.sdk.lang.spring.function.getter.GetString;
 
 public class ModelGetter<T> {
 
-    private final List<ModelKeyValue> kvs;
-
     private final T model;
+
+    private final List<ModelKeyValue> keyValues;
 
     public ModelGetter(T model) {
         Objects.requireNonNull(model, "model");
+
         this.model = model;
-        this.kvs = new ArrayList<ModelKeyValue>();
+        this.keyValues = new ArrayList<ModelKeyValue>();
     }
 
-    public static <T> ModelGetter<T> create(T model) {
+    public static <T> ModelGetter<T> of(T model) {
         Objects.requireNonNull(model, "model");
 
         return new ModelGetter<T>(model);
@@ -35,7 +36,7 @@ public class ModelGetter<T> {
             return;
         }
         String key = Getters.field(getter);
-        kvs.add(ModelKeyValue.of(key, value));
+        keyValues.add(ModelKeyValue.of(key, value));
     }
 
     public void add(GetLong<T> getter) {
@@ -44,7 +45,7 @@ public class ModelGetter<T> {
             return;
         }
         String key = Getters.field(getter);
-        kvs.add(ModelKeyValue.of(key, value));
+        keyValues.add(ModelKeyValue.of(key, value));
     }
 
     public void add(GetInteger<T> getter) {
@@ -53,7 +54,7 @@ public class ModelGetter<T> {
             return;
         }
         String key = Getters.field(getter);
-        kvs.add(ModelKeyValue.of(key, value));
+        keyValues.add(ModelKeyValue.of(key, value));
     }
 
     public void add(GetBoolean<T> getter) {
@@ -62,7 +63,7 @@ public class ModelGetter<T> {
             return;
         }
         String key = Getters.field(getter);
-        kvs.add(ModelKeyValue.of(key, value));
+        keyValues.add(ModelKeyValue.of(key, value));
     }
 
     public void add(GetDouble<T> getter) {
@@ -71,15 +72,15 @@ public class ModelGetter<T> {
             return;
         }
         String key = Getters.field(getter);
-        kvs.add(ModelKeyValue.of(key, value));
-    }
-
-    public List<ModelKeyValue> getKvs() {
-        return kvs;
+        keyValues.add(ModelKeyValue.of(key, value));
     }
 
     public T getModel() {
         return model;
+    }
+
+    public List<ModelKeyValue> getKeyValues() {
+        return keyValues;
     }
 
 }

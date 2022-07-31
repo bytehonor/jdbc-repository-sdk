@@ -43,16 +43,16 @@ public class InsertPrepareStatement extends MysqlPrepareStatement {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
-        ModelGetter<T> group = mapper.create(model);
-        Objects.requireNonNull(group, "group");
+        ModelGetter<T> getter = mapper.create(model);
+        Objects.requireNonNull(getter, "getter");
 
         int keySize = getTable().getKeySet().size();
-        List<ModelKeyValue> items = group.getKvs();
-        if (keySize - items.size() > 2) {
-            LOG.warn("WARN miss getter! {}, keys:{}, groups:{}", getTable().getModelClazz(), keySize, items.size());
+        List<ModelKeyValue> keyValues = getter.getKeyValues();
+        if (keySize - keyValues.size() > 2) {
+            LOG.warn("MISS VALUE! {}, keys:{}, keyValues:{}", getTable().getModelClazz(), keySize, keyValues.size());
         }
 
-        List<ModelKeyValue> result = SqlColumnUtils.prepareInsert(getTable(), items);
+        List<ModelKeyValue> result = SqlColumnUtils.prepareInsert(getTable(), keyValues);
 
         for (ModelKeyValue mkv : result) {
             saveColumns.add(mkv.getKey());
