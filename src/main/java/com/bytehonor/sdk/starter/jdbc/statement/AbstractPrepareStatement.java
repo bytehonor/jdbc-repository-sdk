@@ -17,9 +17,9 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlMetaUtils;
  * @author lijianqiang
  *
  */
-public abstract class MysqlPrepareStatement implements PrepareStatement {
+public abstract class AbstractPrepareStatement implements PrepareStatement {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MysqlPrepareStatement.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractPrepareStatement.class);
 
     protected final Class<?> clazz;
 
@@ -27,7 +27,7 @@ public abstract class MysqlPrepareStatement implements PrepareStatement {
 
     protected final SqlCondition condition;
 
-    public MysqlPrepareStatement(Class<?> clazz, SqlCondition condition) {
+    public AbstractPrepareStatement(Class<?> clazz, SqlCondition condition) {
         this.clazz = clazz;
         this.table = SqlMetaUtils.parse(clazz);
         this.condition = condition;

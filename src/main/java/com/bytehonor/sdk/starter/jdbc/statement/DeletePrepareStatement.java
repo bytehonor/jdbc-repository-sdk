@@ -11,7 +11,7 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
  * @author lijianqiang
  *
  */
-public class DeletePrepareStatement extends MysqlPrepareStatement {
+public class DeletePrepareStatement extends AbstractPrepareStatement {
 
     public DeletePrepareStatement(Class<?> clazz, SqlCondition condition) {
         super(clazz, condition);

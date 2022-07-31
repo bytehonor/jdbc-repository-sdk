@@ -11,7 +11,7 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
  * @author lijianqiang
  *
  */
-public class SelectPrepareStatement extends MysqlPrepareStatement {
+public class SelectPrepareStatement extends AbstractPrepareStatement {
 
     public SelectPrepareStatement(Class<?> clazz, SqlCondition condition) {
         super(clazz, condition);

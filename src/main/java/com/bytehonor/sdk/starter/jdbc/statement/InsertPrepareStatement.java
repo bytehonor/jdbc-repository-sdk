@@ -23,7 +23,7 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
  * @author lijianqiang
  *
  */
-public class InsertPrepareStatement extends MysqlPrepareStatement {
+public class InsertPrepareStatement extends AbstractPrepareStatement {
 
     private static final Logger LOG = LoggerFactory.getLogger(InsertPrepareStatement.class);
 

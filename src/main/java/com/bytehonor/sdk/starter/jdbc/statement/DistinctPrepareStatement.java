@@ -13,7 +13,7 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
  * @author lijianqiang
  *
  */
-public class DistinctPrepareStatement extends MysqlPrepareStatement {
+public class DistinctPrepareStatement extends AbstractPrepareStatement {
 
     private final String column;
 

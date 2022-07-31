@@ -25,7 +25,7 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
  * @author lijianqiang
  *
  */
-public class UpdatePrepareStatement extends MysqlPrepareStatement {
+public class UpdatePrepareStatement extends AbstractPrepareStatement {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdatePrepareStatement.class);
 
