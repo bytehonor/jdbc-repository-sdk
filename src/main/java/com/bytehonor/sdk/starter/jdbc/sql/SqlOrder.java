@@ -2,7 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 
 import java.util.Objects;
 
-import com.bytehonor.sdk.lang.spring.util.StringObject;
+import com.bytehonor.sdk.lang.spring.string.StringObject;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 

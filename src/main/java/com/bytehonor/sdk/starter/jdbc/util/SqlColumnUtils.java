@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.lang.spring.regex.PatternUtils;
-import com.bytehonor.sdk.lang.spring.util.StringObject;
+import com.bytehonor.sdk.lang.spring.string.StringObject;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;

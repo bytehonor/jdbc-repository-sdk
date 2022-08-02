@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.bytehonor.sdk.lang.spring.util.StringObject;
+import com.bytehonor.sdk.lang.spring.string.StringObject;
 
 /**
  * @author lijianqiang

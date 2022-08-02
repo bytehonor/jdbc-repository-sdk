@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.starter.jdbc.statement;
 
-import com.bytehonor.sdk.lang.spring.util.StringObject;
+import com.bytehonor.sdk.lang.spring.string.StringObject;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
