@@ -102,9 +102,7 @@ public class InsertPrepareStatement extends AbstractPrepareStatement {
         if (CollectionUtils.isEmpty(saveValues)) {
             throw new JdbcSdkException("insert sql saveValues empty");
         }
-        List<Object> args = new ArrayList<Object>(256);
-        args.addAll(saveValues);
-        return args.toArray();
+        return saveValues.toArray();
     }
 
     @Override
@@ -112,9 +110,7 @@ public class InsertPrepareStatement extends AbstractPrepareStatement {
         if (CollectionUtils.isEmpty(saveTypes)) {
             throw new JdbcSdkException("insert sql saveTypes empty");
         }
-        List<Integer> types = new ArrayList<Integer>(256);
-        types.addAll(saveTypes);
-        return SqlInjectUtils.listArray(types);
+        return SqlInjectUtils.listArray(saveTypes);
     }
 
 }
