@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.define.spring.query.QueryCondition;
+import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;

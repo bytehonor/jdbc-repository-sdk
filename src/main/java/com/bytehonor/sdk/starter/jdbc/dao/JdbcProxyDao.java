@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import com.bytehonor.sdk.define.spring.query.QueryCondition;
+import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelSetterMapper;

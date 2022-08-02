@@ -170,7 +170,7 @@ public class InsertPrepareStatementTest {
         student.setCreateAt(1L);
         student.setUpdateAt(2L);
 
-        int size = 1;
+        int size = 10000;
 
         long start = System.currentTimeMillis();
         for (int i = 0; i < size; i++) {
@@ -182,5 +182,27 @@ public class InsertPrepareStatementTest {
         }
 
         LOG.info("testCost cost:{}", System.currentTimeMillis() - start);
+    }
+
+    @Test
+    public void testAllValueNull() {
+
+        Student student = new Student();
+        student.setId(1L);
+        student.setAge(null);
+        student.setNickname(null);
+        student.setCreateAt(null);
+        student.setUpdateAt(null);
+
+        boolean isOk = false;
+        try {
+            PrepareStatement statement = new InsertPrepareStatement(Student.class);
+            statement.prepare(student, MAPPER);
+        } catch (Exception e) {
+            isOk = true;
+            LOG.info("testAllValueNull {}", e.getMessage());
+        }
+
+        assertTrue("testAllValueNull", isOk);
     }
 }

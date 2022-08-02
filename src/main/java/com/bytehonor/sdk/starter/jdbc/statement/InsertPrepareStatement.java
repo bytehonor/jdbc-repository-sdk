@@ -10,8 +10,8 @@ import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
-import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
@@ -46,12 +46,7 @@ public class InsertPrepareStatement extends AbstractPrepareStatement {
         ModelGetter<T> getter = mapper.create(model);
         Objects.requireNonNull(getter, "getter");
 
-        int keySize = getTable().getKeySet().size();
         List<ModelKeyValue> keyValues = getter.getKeyValues();
-        if (keySize - keyValues.size() > 2) {
-            LOG.info("miss values! {}, keys:{}, keyValues:{}", getTable().getModelClazz(), keySize, keyValues.size());
-        }
-
         List<ModelKeyValue> result = SqlColumnUtils.prepareInsert(getTable(), keyValues);
 
         for (ModelKeyValue mkv : result) {
@@ -60,14 +55,8 @@ public class InsertPrepareStatement extends AbstractPrepareStatement {
             saveTypes.add(SqlAdaptUtils.toSqlType(mkv.getJavaType())); // 转换
         }
 
-        // 检查参数数目
-        int valueSize = saveValues.size();
-        if (keySize != valueSize) {
-            LOG.debug("NOTICE miss value! {}, keys:{} != values:{}", getTable().getModelClazz(), keySize, valueSize);
-        }
-
         if (LOG.isDebugEnabled()) {
-            LOG.debug("prepare saveColumns:{}, saveValues:{}", saveColumns.size(), valueSize);
+            LOG.debug("prepare saveColumns:{}, saveValues:{}", saveColumns.size(), saveValues.size());
         }
         return result;
     }

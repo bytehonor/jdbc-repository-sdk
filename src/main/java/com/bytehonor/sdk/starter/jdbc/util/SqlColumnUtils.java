@@ -26,9 +26,9 @@ public class SqlColumnUtils {
 
     private static final char UNDERLINE = '_';
 
-    private static final Map<String, String> UNDERLINE_COLUMNS = new ConcurrentHashMap<String, String>();
+    private static final Map<String, String> UNDERLINE_CACHE = new ConcurrentHashMap<String, String>();
 
-    private static final Map<String, Boolean> TIME_AT_ENABLED = new ConcurrentHashMap<String, Boolean>();
+    private static final Map<String, Boolean> ENABLED_CACHE = new ConcurrentHashMap<String, Boolean>();
 
     private static final Set<String> IGNORES = Sets.newHashSet(SqlConstants.UPDATE_AT_KEY,
             SqlConstants.UPDATE_AT_COLUMN, SqlConstants.CREATE_AT_KEY, SqlConstants.CREATE_AT_COLUMN);
@@ -41,7 +41,6 @@ public class SqlColumnUtils {
         String primary = metaTable.getPrimaryKey();
         for (ModelKeyValue item : keyValues) {
             if (isSaveIgnore(primary, item.getKey())) {
-                // LOG.debug("prepare ({}) pass", item.getKey());
                 continue;
             }
             LOG.debug("insert key:{}, value:{}, javaType:{}", item.getKey(), item.getValue(), item.getJavaType());
@@ -54,10 +53,10 @@ public class SqlColumnUtils {
 
         // 自动补充更新时间和创建时间
         long now = System.currentTimeMillis();
-        if (enabledUpdateAtIfCache(metaTable)) {
+        if (autoUpdateAt(metaTable)) {
             result.add(ModelKeyValue.of(SqlConstants.UPDATE_AT_COLUMN, now));
         }
-        if (enabledCreateAtIfCache(metaTable)) {
+        if (autodCreateAt(metaTable)) {
             result.add(ModelKeyValue.of(SqlConstants.CREATE_AT_COLUMN, now));
         }
         return result;
@@ -74,12 +73,11 @@ public class SqlColumnUtils {
         Set<String> filters = new HashSet<String>();
         if (CollectionUtils.isEmpty(filterKeys) == false) {
             filters = new HashSet<String>(filterKeys);
-
         }
+
         boolean filter = CollectionUtils.isEmpty(filters) == false;
         for (ModelKeyValue item : keyValues) {
             if (isSaveIgnore(primary, item.getKey())) {
-                // LOG.debug("prepare ({}) pass", item.getKey());
                 continue;
             }
             if (filter && filters.contains(item.getKey())) {
@@ -92,24 +90,24 @@ public class SqlColumnUtils {
 
         // 自动补充更新时间和创建时间
         long now = System.currentTimeMillis();
-        if (enabledUpdateAtIfCache(metaTable)) {
+        if (autoUpdateAt(metaTable)) {
             result.add(ModelKeyValue.of(SqlConstants.UPDATE_AT_COLUMN, now));
         }
         return result;
     }
 
-    public static boolean enabledUpdateAtIfCache(MetaTable metaTable) {
+    public static boolean autoUpdateAt(MetaTable metaTable) {
         String key = metaTable.getModelClazz() + ":update";
-        Boolean enabled = TIME_AT_ENABLED.get(key);
+        Boolean enabled = ENABLED_CACHE.get(key);
         if (enabled != null) {
             return enabled;
         }
-        enabled = enabledUpdateAt(metaTable);
-        TIME_AT_ENABLED.put(key, enabled);
+        enabled = hasUpdateAt(metaTable);
+        ENABLED_CACHE.put(key, enabled);
         return enabled;
     }
 
-    public static boolean enabledUpdateAt(MetaTable metaTable) {
+    public static boolean hasUpdateAt(MetaTable metaTable) {
         if (metaTable.getKeySet().contains(SqlConstants.UPDATE_AT_KEY)) {
             return true;
         }
@@ -119,18 +117,18 @@ public class SqlColumnUtils {
         return false;
     }
 
-    public static boolean enabledCreateAtIfCache(MetaTable metaTable) {
+    public static boolean autodCreateAt(MetaTable metaTable) {
         String key = metaTable.getModelClazz() + ":create";
-        Boolean enabled = TIME_AT_ENABLED.get(key);
+        Boolean enabled = ENABLED_CACHE.get(key);
         if (enabled != null) {
             return enabled;
         }
-        enabled = enabledCreateAt(metaTable);
-        TIME_AT_ENABLED.put(key, enabled);
+        enabled = hasCreateAt(metaTable);
+        ENABLED_CACHE.put(key, enabled);
         return enabled;
     }
 
-    public static boolean enabledCreateAt(MetaTable metaTable) {
+    public static boolean hasCreateAt(MetaTable metaTable) {
         if (metaTable.getKeySet().contains(SqlConstants.CREATE_AT_KEY)) {
             return true;
         }
@@ -143,7 +141,7 @@ public class SqlColumnUtils {
     public static String camelToUnderline(String column) {
         Objects.requireNonNull(column, "column");
 
-        String val = UNDERLINE_COLUMNS.get(column);
+        String val = UNDERLINE_CACHE.get(column);
         if (StringObject.isEmpty(val) == false) {
             return val;
         }
@@ -151,7 +149,7 @@ public class SqlColumnUtils {
         acceptChar(column);
 
         val = StringObject.camelToUnderline(column);
-        UNDERLINE_COLUMNS.put(column, val);
+        UNDERLINE_CACHE.put(column, val);
         return val;
     }
 

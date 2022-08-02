@@ -57,27 +57,28 @@ public class SqlAdaptUtils {
     }
 
     private static void set(PreparedStatement ps, int idx, ModelKeyValue item) throws SQLException {
-        if (JavaValueTypes.STRING.equals(item.getJavaType())) {
+        String javaType = item.getJavaType();
+        if (JavaValueTypes.STRING.equals(javaType)) {
             ps.setString(idx, item.getValue().toString());
             return;
         }
-        if (JavaValueTypes.LONG.equals(item.getJavaType())) {
+        if (JavaValueTypes.LONG.equals(javaType)) {
             ps.setLong(idx, LongGetter.optional(item.getValue().toString(), 0L));
             return;
         }
-        if (JavaValueTypes.INTEGER.equals(item.getJavaType())) {
+        if (JavaValueTypes.INTEGER.equals(javaType)) {
             ps.setInt(idx, IntegerGetter.optional(item.getValue().toString(), 0));
             return;
         }
-        if (JavaValueTypes.BOOLEAN.equals(item.getJavaType())) {
+        if (JavaValueTypes.BOOLEAN.equals(javaType)) {
             ps.setBoolean(idx, BooleanGetter.optional(item.getValue().toString(), false));
             return;
         }
-        if (JavaValueTypes.DOUBLE.equals(item.getJavaType())) {
+        if (JavaValueTypes.DOUBLE.equals(javaType)) {
             ps.setDouble(idx, DoubleGetter.optional(item.getValue().toString(), 0.0));
             return;
         }
-        LOG.error("not support, key:{}, value:{}, type:{}", item.getKey(), item.getValue(), item.getJavaType());
+        LOG.error("not support, key:{}, value:{}, type:{}", item.getKey(), item.getValue(), javaType);
         throw new JdbcSdkException("not support type");
     }
 

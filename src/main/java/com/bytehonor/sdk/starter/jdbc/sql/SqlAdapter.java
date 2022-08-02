@@ -3,10 +3,10 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 import java.util.List;
 
 import com.bytehonor.sdk.define.spring.constant.SqlOperator;
-import com.bytehonor.sdk.define.spring.query.KeyMatcher;
-import com.bytehonor.sdk.define.spring.query.QueryCondition;
-import com.bytehonor.sdk.define.spring.query.QueryOrder;
-import com.bytehonor.sdk.define.spring.query.QueryPage;
+import com.bytehonor.sdk.lang.spring.match.KeyMatcher;
+import com.bytehonor.sdk.lang.spring.query.QueryCondition;
+import com.bytehonor.sdk.lang.spring.query.QueryOrder;
+import com.bytehonor.sdk.lang.spring.query.QueryPage;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
