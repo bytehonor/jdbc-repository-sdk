@@ -2,7 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 
 import java.util.List;
 
-import com.bytehonor.sdk.define.spring.constant.SqlOperator;
+import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.match.KeyMatcher;
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.lang.spring.query.QueryOrder;

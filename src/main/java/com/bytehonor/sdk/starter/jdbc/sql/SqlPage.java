@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
-import com.bytehonor.sdk.define.spring.constant.HttpConstants;
+import com.bytehonor.sdk.lang.spring.constant.HttpConstants;
 
 public class SqlPage {
 

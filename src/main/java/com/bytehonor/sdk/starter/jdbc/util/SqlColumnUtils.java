@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.lang.spring.regex.PatternUtils;
-import com.bytehonor.sdk.lang.spring.string.StringObject;
+import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
@@ -142,13 +142,13 @@ public class SqlColumnUtils {
         Objects.requireNonNull(column, "column");
 
         String val = UNDERLINE_CACHE.get(column);
-        if (StringObject.isEmpty(val) == false) {
+        if (SpringString.isEmpty(val) == false) {
             return val;
         }
 
         acceptChar(column);
 
-        val = StringObject.camelToUnderline(column);
+        val = SpringString.camelToUnderline(column);
         UNDERLINE_CACHE.put(column, val);
         return val;
     }
@@ -177,7 +177,7 @@ public class SqlColumnUtils {
     }
 
     public static boolean isSaveIgnore(String primary, String column) {
-        if (StringObject.equals(primary, column)) {
+        if (SpringString.equals(primary, column)) {
             return true;
         }
         return IGNORES.contains(column);

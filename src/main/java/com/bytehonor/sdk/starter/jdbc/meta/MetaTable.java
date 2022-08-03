@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.bytehonor.sdk.lang.spring.string.StringObject;
+import com.bytehonor.sdk.lang.spring.string.SpringString;
 
 /**
  * @author lijianqiang
@@ -34,7 +34,7 @@ public class MetaTable {
     }
 
     public void finish() {
-        if (StringObject.isEmpty(fullColumns) == false) {
+        if (SpringString.isEmpty(fullColumns) == false) {
             return;
         }
         keySet = new HashSet<String>();

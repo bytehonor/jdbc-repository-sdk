@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
-import com.bytehonor.sdk.lang.spring.string.StringObject;
+import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 
 public class SqlElement<T> {
@@ -10,7 +10,7 @@ public class SqlElement<T> {
     private Class<T> type;
 
     private static void required(String column) {
-        if (StringObject.isEmpty(column)) {
+        if (SpringString.isEmpty(column)) {
             throw new JdbcSdkException("column cannt be empty");
         }
     }

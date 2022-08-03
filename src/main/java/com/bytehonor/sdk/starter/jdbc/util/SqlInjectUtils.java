@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.util.CollectionUtils;
 
+import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.lang.spring.string.StringCreator;
-import com.bytehonor.sdk.lang.spring.string.StringObject;
 
 public class SqlInjectUtils {
 
@@ -18,7 +18,7 @@ public class SqlInjectUtils {
             return "";
         }
         String raw = src.trim();
-        if (StringObject.isEmpty(raw)) {
+        if (SpringString.isEmpty(raw)) {
             return "";
         }
         StringBuilder sb = new StringBuilder();
@@ -33,7 +33,7 @@ public class SqlInjectUtils {
     }
 
     public static String escape(String src) {
-        if (StringObject.isEmpty(src)) {
+        if (SpringString.isEmpty(src)) {
             return src;
         }
         int len = src.length();
@@ -58,7 +58,7 @@ public class SqlInjectUtils {
     }
 
     public static String column(String src) {
-        if (StringObject.isEmpty(src)) {
+        if (SpringString.isEmpty(src)) {
             return src;
         }
         int len = src.length();

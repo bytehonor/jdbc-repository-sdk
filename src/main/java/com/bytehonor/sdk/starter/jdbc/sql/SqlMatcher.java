@@ -2,9 +2,9 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 
 import java.util.Collection;
 
-import com.bytehonor.sdk.define.spring.constant.SqlOperator;
+import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
+import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.lang.spring.string.StringCreator;
-import com.bytehonor.sdk.lang.spring.string.StringObject;
 import com.bytehonor.sdk.lang.spring.util.JoinUtils;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
@@ -37,7 +37,7 @@ public class SqlMatcher {
             return false;
         }
 
-        if (StringObject.isEmpty(column.getKey())) {
+        if (SpringString.isEmpty(column.getKey())) {
             return false;
         }
 
@@ -46,7 +46,7 @@ public class SqlMatcher {
             return false;
         }
 
-        if (SqlOperator.LIKE.equals(column.getOperator()) && StringObject.isEmpty(column.getValue().toString())) {
+        if (SqlOperator.LIKE.equals(column.getOperator()) && SpringString.isEmpty(column.getValue().toString())) {
             return false;
         }
 

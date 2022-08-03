@@ -6,9 +6,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.define.spring.constant.QueryLogic;
-import com.bytehonor.sdk.define.spring.constant.SqlOperator;
-import com.bytehonor.sdk.lang.spring.string.StringObject;
+import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
+import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
+import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 
@@ -62,7 +62,7 @@ public class SqlArgHolder {
 
         // 转成下划线
         String key = SqlColumnUtils.camelToUnderline(matcher.getKey());
-        if (StringObject.isEmpty(key)) {
+        if (SpringString.isEmpty(key)) {
             return this;
         }
 

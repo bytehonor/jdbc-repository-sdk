@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import com.bytehonor.sdk.define.spring.constant.QueryLogic;
+import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
 
 public class SqlCondition {
 
