@@ -16,6 +16,9 @@ public class SqlCondition {
     private final SqlArgHolder holder;
 
     private SqlCondition(QueryLogic logic, SqlPage page) {
+        Objects.requireNonNull(logic, "logic");
+        Objects.requireNonNull(page, "page");
+
         this.order = null;
         this.page = page;
         this.holder = SqlArgHolder.create(logic);
@@ -26,8 +29,6 @@ public class SqlCondition {
     }
 
     public static SqlCondition create(QueryLogic logic, SqlPage page) {
-        Objects.requireNonNull(logic, "logic");
-
         return new SqlCondition(logic, page);
     }
 
