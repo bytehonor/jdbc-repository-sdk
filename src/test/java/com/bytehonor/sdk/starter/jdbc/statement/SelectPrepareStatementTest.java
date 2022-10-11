@@ -31,7 +31,7 @@ public class SelectPrepareStatementTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("test sql:{}", sql);
+        LOG.info("test sql:({})", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? ORDER BY age DESC LIMIT 0,20";
@@ -45,7 +45,7 @@ public class SelectPrepareStatementTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testNoCondition sql:{}", sql);
+        LOG.info("testNoCondition sql:({})", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student LIMIT 0,20";
@@ -55,7 +55,7 @@ public class SelectPrepareStatementTest {
     @Test
     public void testNoConditionNoPage() {
         SqlCondition condition = SqlCondition.create();
-        condition.setPage(null);
+        condition.getPage().setLimit(-1);
         PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
         String sql = statement.sql();
         boolean hasError = false;
@@ -66,10 +66,10 @@ public class SelectPrepareStatementTest {
             LOG.error("error {}", e.getMessage());
         }
 
-        LOG.info("testNoConditionNoPage sql:{}", sql);
+        LOG.info("testNoConditionNoPage sql:({})", sql);
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student";
-        assertTrue("testNoConditionNoPage", target.equals(sql) && hasError);
+        assertTrue("testNoConditionNoPage", target.equals(sql) && hasError == false);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class SelectPrepareStatementTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testEqEmpty sql:{}", sql);
+        LOG.info("testEqEmpty sql:({})", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname = ? LIMIT 0,20";

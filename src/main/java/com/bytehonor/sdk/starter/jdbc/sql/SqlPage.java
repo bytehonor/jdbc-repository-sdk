@@ -4,7 +4,9 @@ import com.bytehonor.sdk.lang.spring.constant.HttpConstants;
 
 public class SqlPage {
 
-    private static int LIMIT_DEF = HttpConstants.LIMIT_DEF;
+    public static int LIMIT_DEF = HttpConstants.LIMIT_DEF;
+
+    public static int LIMIT_ALL = -1;
 
     private int offset;
 
@@ -27,7 +29,7 @@ public class SqlPage {
     }
 
     public String toSql() {
-        if (limit < -1) {
+        if (isAll()) {
             return "";
         }
         StringBuilder sb = new StringBuilder();
@@ -56,4 +58,7 @@ public class SqlPage {
         this.limit = limit;
     }
 
+    public boolean isAll() {
+        return this.limit == LIMIT_ALL;
+    }
 }

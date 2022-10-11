@@ -11,7 +11,7 @@ public class SqlCondition {
 
     private SqlOrder order;
 
-    private SqlPage page;
+    private final SqlPage page;
 
     private final SqlArgHolder holder;
 
@@ -22,11 +22,7 @@ public class SqlCondition {
     }
 
     public static SqlCondition create() {
-        return create(QueryLogic.AND, SqlPage.create());
-    }
-
-    public static SqlCondition create(QueryLogic logic) {
-        return create(logic, SqlPage.create());
+        return new SqlCondition(QueryLogic.AND, SqlPage.create());
     }
 
     public static SqlCondition create(QueryLogic logic, SqlPage page) {
@@ -191,10 +187,6 @@ public class SqlCondition {
         return page;
     }
 
-    public void setPage(SqlPage page) {
-        this.page = page;
-    }
-
 //    public List<SqlColumn> getColumns() {
 //        return columns;
 //    }
@@ -203,4 +195,15 @@ public class SqlCondition {
         return holder;
     }
 
+    public void setOffset(int offset) {
+        this.page.setOffset(offset);
+    }
+
+    public void setLimit(int limit) {
+        this.page.setLimit(limit);
+    }
+
+    public boolean isQueryAll() {
+        return this.page.isAll();
+    }
 }

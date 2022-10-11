@@ -1,6 +1,7 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.match.KeyMatcher;
@@ -13,24 +14,26 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 public class SqlAdapter {
 
     public static SqlCondition convert(QueryCondition condition) {
-        SqlCondition model = SqlCondition.create(condition.getLogic());
+        Objects.requireNonNull(condition, "condition");
+
+        SqlCondition model = SqlCondition.create(condition.getLogic(), page(condition.getPage()));
 
         List<KeyMatcher> matchers = condition.getMatchers();
         for (KeyMatcher matcher : matchers) {
-            model.safeAdd(from(matcher));
+            model.safeAdd(matcher(matcher));
         }
         QueryOrder order = condition.getOrder();
         if (order != null) {
             model.setOrder(SqlOrder.of(order.getKey(), order.isDesc()));
         }
-        QueryPage page = condition.getPage();
-        if (page != null) {
-            model.setPage(SqlPage.of(page.getOffset(), page.getLimit()));
-        }
         return model;
     }
 
-    public static SqlMatcher from(KeyMatcher matcher) {
+    public static SqlPage page(QueryPage page) {
+        return page != null ? SqlPage.of(page.getOffset(), page.getLimit()) : SqlPage.create();
+    }
+
+    public static SqlMatcher matcher(KeyMatcher matcher) {
         Object value = matcher.getValue();
         Object copy = "";
         String javaType = matcher.getType();

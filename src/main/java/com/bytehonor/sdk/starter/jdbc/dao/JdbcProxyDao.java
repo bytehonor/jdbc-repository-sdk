@@ -3,6 +3,7 @@ package com.bytehonor.sdk.starter.jdbc.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +14,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.util.CollectionUtils;
 
+import com.bytehonor.sdk.lang.spring.constant.HttpConstants;
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
@@ -52,6 +55,37 @@ public class JdbcProxyDao {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
 
+        if (condition.isQueryAll()) {
+            return doQueryAll(clazz, condition, mapper);
+        }
+
+        return doQuery(clazz, condition, mapper);
+    }
+
+    private <T> List<T> doQueryAll(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
+        int total = count(clazz, condition);
+        if (total < 1) {
+            return new ArrayList<T>();
+        }
+
+        List<T> result = new ArrayList<T>(total * 2);
+        List<T> part = new ArrayList<T>();
+        int offset = 0;
+        int limit = HttpConstants.LIMIT_MAX_TOP;
+        while (offset < total) {
+            condition.setLimit(limit);
+            condition.setOffset(offset);
+            part = doQuery(clazz, condition, mapper);
+            if (CollectionUtils.isEmpty(part)) {
+                break;
+            }
+            result.addAll(part);
+            offset += limit;
+        }
+        return result;
+    }
+
+    private <T> List<T> doQuery(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
         PrepareStatement statement = PrepareStatementBuilder.select(clazz, condition);
         String sql = statement.sql();
 
