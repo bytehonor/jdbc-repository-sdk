@@ -41,8 +41,8 @@ public class UpdatePrepareStatementQueryTest {
     public void test() {
 
         QueryCondition condition = QueryCondition.and();
-        condition.gt("createAt", System.currentTimeMillis());
-        condition.descBy("age");
+        condition.gt(Student::getCreateAt, System.currentTimeMillis());
+        condition.descBy(Student::getAge);
 
         long now = System.currentTimeMillis();
         Student student = new Student();
@@ -73,8 +73,8 @@ public class UpdatePrepareStatementQueryTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.and();
-        condition.integers("age", set); // conflict 不会被更新
-        condition.gt("createAt", System.currentTimeMillis());
+        condition.integers(Student::getAge, set); // conflict 不会被更新
+        condition.gt(Student::getCreateAt, System.currentTimeMillis());
 
         long now = System.currentTimeMillis();
         Student student = new Student();
@@ -100,7 +100,7 @@ public class UpdatePrepareStatementQueryTest {
     @Test
     public void testSetValueNull() {
         QueryCondition condition = QueryCondition.and();
-        condition.gt("createAt", System.currentTimeMillis());
+        condition.gt(Student::getCreateAt, System.currentTimeMillis());
 
         long now = System.currentTimeMillis();
         Student student = new Student();
@@ -126,7 +126,7 @@ public class UpdatePrepareStatementQueryTest {
     @Test
     public void testSetValueConflict() {
         QueryCondition condition = QueryCondition.and();
-        condition.eq("nickname", "boy");
+        condition.eq(Student::getNickname, "boy");
 
         long now = System.currentTimeMillis();
         Student student = new Student();
@@ -151,7 +151,7 @@ public class UpdatePrepareStatementQueryTest {
 
     @Test
     public void testUpdateById() {
-        QueryCondition condition = QueryCondition.one().eq("id", 1L);
+        QueryCondition condition = QueryCondition.one().eq(Student::getId, 1L);
 
         long now = System.currentTimeMillis();
         Student student = new Student();
@@ -178,8 +178,8 @@ public class UpdatePrepareStatementQueryTest {
     public void testUpdateAtConflict() {
 
         QueryCondition condition = QueryCondition.and();
-        condition.gt("updateAt", System.currentTimeMillis());
-        condition.descBy("age");
+        condition.gt(Student::getUpdateAt, System.currentTimeMillis());
+        condition.descBy(Student::getAge);
 
         long now = System.currentTimeMillis();
         Student student = new Student();

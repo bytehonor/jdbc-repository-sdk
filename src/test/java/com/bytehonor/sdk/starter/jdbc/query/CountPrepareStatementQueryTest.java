@@ -27,10 +27,10 @@ public class CountPrepareStatementQueryTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.and();
-        condition.integers("age", set);
-        condition.gt("createAt", System.currentTimeMillis());
-        condition.like("nickname", "boy");
-        condition.descBy("age");
+        condition.integers(Student::getAge, set);
+        condition.gt(Student::getCreateAt, System.currentTimeMillis());
+        condition.like(Student::getNickname, "boy");
+        condition.descBy(Student::getAge);
         PrepareStatement statement = new CountPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();

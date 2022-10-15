@@ -23,10 +23,10 @@ public class PrepareStatementBuilderQueryTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.and();
-        condition.integers("age", set);
-        condition.gt("create_at", System.currentTimeMillis());
-        condition.like("nickname", "boy");
-        condition.descBy("age");
+        condition.integers(Student::getAge, set);
+        condition.gt(Student::getCreateAt, System.currentTimeMillis());
+        condition.like(Student::getNickname, "boy");
+        condition.descBy(Student::getAge);
 
         PrepareStatement select = PrepareStatementBuilder.select(Student.class, SqlAdapter.convert(condition));
         LOG.info("select sql:{}", select.sql());

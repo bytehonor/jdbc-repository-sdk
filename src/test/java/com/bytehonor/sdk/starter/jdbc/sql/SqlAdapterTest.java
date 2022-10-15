@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
+import com.bytehonor.sdk.starter.jdbc.Student;
 
 public class SqlAdapterTest {
 
@@ -22,10 +23,10 @@ public class SqlAdapterTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.and();
-        condition.integers("age", set);
-        condition.gt("createAt", System.currentTimeMillis());
-        condition.like("nickname", "boy");
-        condition.descBy("age");
+        condition.integers(Student::getAge, set);
+        condition.gt(Student::getCreateAt, System.currentTimeMillis());
+        condition.like(Student::getNickname, "boy");
+        condition.descBy(Student::getAge);
 
         SqlCondition model = SqlAdapter.convert(condition);
 

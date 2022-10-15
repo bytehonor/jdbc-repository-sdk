@@ -26,10 +26,10 @@ public class SelectPrepareStatementQueryTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.and();
-        condition.integers("age", set);
-        condition.gt("createAt", System.currentTimeMillis());
-        condition.like("nickname", "boy");
-        condition.descBy("age");
+        condition.integers(Student::getAge, set);
+        condition.gt(Student::getCreateAt, System.currentTimeMillis());
+        condition.like(Student::getNickname, "boy");
+        condition.descBy(Student::getAge);
         PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -58,7 +58,7 @@ public class SelectPrepareStatementQueryTest {
     @Test
     public void testEqEmpty() {
         QueryCondition condition = QueryCondition.and();
-        condition.eq("nickname", "");
+        condition.eq(Student::getNickname, "");
         PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -77,15 +77,15 @@ public class SelectPrepareStatementQueryTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.and();
-        condition.integers("age", set);
-        condition.gt("createAt", System.currentTimeMillis());
-        condition.like("nickname", "boy");
-        condition.descBy("createAt");
+        condition.integers(Student::getAge, set);
+        condition.gt(Student::getCreateAt, System.currentTimeMillis());
+        condition.like(Student::getNickname, "boy");
+        condition.descBy(Student::getCreateAt);
         PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testOrder sql:{}", sql);
+        LOG.info("testOrder sql:({})", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? ORDER BY create_at DESC LIMIT 0,20";

@@ -27,10 +27,10 @@ public class DeletePrepareStatementQueryTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.and();
-        condition.integers("age", set);
-        condition.gt("createAt", System.currentTimeMillis());
-        condition.like("nickname", "boy");
-        condition.descBy("age");
+        condition.integers(Student::getAge, set);
+        condition.gt(Student::getCreateAt, System.currentTimeMillis());
+        condition.like(Student::getNickname, "boy");
+        condition.descBy(Student::getAge);
         PrepareStatement statement = new DeletePrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -59,11 +59,11 @@ public class DeletePrepareStatementQueryTest {
         String target = "DELETE FROM tbl_student";
         assertTrue("testNoCondition", target.equals(sql) && hasError);
     }
-    
+
     @Test
     public void testValueNull() {
         String uuid = null;
-        QueryCondition condition = QueryCondition.and().eq("uuid", uuid);
+        QueryCondition condition = QueryCondition.and().eq(Student::getNickname, uuid);
         PrepareStatement statement = new DeletePrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
 
