@@ -39,7 +39,7 @@ public class UpdatePrepareStatementTest {
 
         SqlCondition condition = SqlCondition.create();
         condition.gt("createAt", System.currentTimeMillis());
-        condition.descBy("age");
+        condition.desc("age");
 
         long now = System.currentTimeMillis();
         Student student = new Student();
@@ -176,7 +176,7 @@ public class UpdatePrepareStatementTest {
 
         SqlCondition condition = SqlCondition.create();
         condition.gt("updateAt", System.currentTimeMillis());
-        condition.descBy("age");
+        condition.desc("age");
 
         long now = System.currentTimeMillis();
         Student student = new Student();

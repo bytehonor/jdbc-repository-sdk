@@ -26,7 +26,7 @@ public class SelectPrepareStatementTest {
         condition.integers("age", set);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
-        condition.descBy("age");
+        condition.desc("age");
         PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -97,7 +97,7 @@ public class SelectPrepareStatementTest {
         condition.integers("age", set);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
-        condition.descBy("age");
+        condition.desc("age");
 
         int size = 100000;
         long start = System.currentTimeMillis();

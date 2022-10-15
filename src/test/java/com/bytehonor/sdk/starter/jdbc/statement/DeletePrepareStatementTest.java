@@ -26,7 +26,7 @@ public class DeletePrepareStatementTest {
         condition.integers("age", set);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
-        condition.descBy("age");
+        condition.desc("age");
         PrepareStatement statement = new DeletePrepareStatement(Student.class, condition);
         String sql = statement.sql();
         Object[] args = statement.args();

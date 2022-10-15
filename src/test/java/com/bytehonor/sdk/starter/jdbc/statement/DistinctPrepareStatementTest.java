@@ -26,7 +26,7 @@ public class DistinctPrepareStatementTest {
         condition.integers("age", set);
         condition.gt("createAt", System.currentTimeMillis());
         condition.like("nickname", "boy");
-        condition.descBy("age");
+        condition.desc("age");
         PrepareStatement statement = new DistinctPrepareStatement(Student.class, "age", condition);
         String sql = statement.sql();
         Object[] args = statement.args();

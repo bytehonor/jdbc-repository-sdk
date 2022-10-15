@@ -73,8 +73,8 @@ public class JdbcProxyDao {
         int offset = 0;
         int limit = HttpConstants.LIMIT_MAX_TOP;
         while (offset < total) {
-            condition.setLimit(limit);
-            condition.setOffset(offset);
+            condition.limit(limit);
+            condition.offset(offset);
             part = doQuery(clazz, condition, mapper);
             if (CollectionUtils.isEmpty(part)) {
                 break;

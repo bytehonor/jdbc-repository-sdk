@@ -26,7 +26,7 @@ public class PrepareStatementBuilderQueryTest {
         condition.integers(Student::getAge, set);
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
         condition.like(Student::getNickname, "boy");
-        condition.descBy(Student::getAge);
+        condition.desc(Student::getAge);
 
         PrepareStatement select = PrepareStatementBuilder.select(Student.class, SqlAdapter.convert(condition));
         LOG.info("select sql:{}", select.sql());

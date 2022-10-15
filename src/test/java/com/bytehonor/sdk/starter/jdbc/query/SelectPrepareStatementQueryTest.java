@@ -29,7 +29,7 @@ public class SelectPrepareStatementQueryTest {
         condition.integers(Student::getAge, set);
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
         condition.like(Student::getNickname, "boy");
-        condition.descBy(Student::getAge);
+        condition.desc(Student::getAge);
         PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -80,7 +80,7 @@ public class SelectPrepareStatementQueryTest {
         condition.integers(Student::getAge, set);
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
         condition.like(Student::getNickname, "boy");
-        condition.descBy(Student::getCreateAt);
+        condition.desc(Student::getCreateAt);
         PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();

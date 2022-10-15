@@ -42,7 +42,7 @@ public class UpdatePrepareStatementQueryTest {
 
         QueryCondition condition = QueryCondition.and();
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
-        condition.descBy(Student::getAge);
+        condition.desc(Student::getAge);
 
         long now = System.currentTimeMillis();
         Student student = new Student();
@@ -179,7 +179,7 @@ public class UpdatePrepareStatementQueryTest {
 
         QueryCondition condition = QueryCondition.and();
         condition.gt(Student::getUpdateAt, System.currentTimeMillis());
-        condition.descBy(Student::getAge);
+        condition.desc(Student::getAge);
 
         long now = System.currentTimeMillis();
         Student student = new Student();

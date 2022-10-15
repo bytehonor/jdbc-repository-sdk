@@ -26,7 +26,7 @@ public class CountPrepareStatementTest {
         condition.integers("age", set);
         condition.gt("createAt", System.currentTimeMillis());
         condition.like("nickname", "boy");
-        condition.descBy("age");
+        condition.desc("age");
         PrepareStatement statement = new CountPrepareStatement(Student.class, condition);
         String sql = statement.sql();
         Object[] args = statement.args();

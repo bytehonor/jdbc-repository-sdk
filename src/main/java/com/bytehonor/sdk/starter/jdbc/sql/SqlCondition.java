@@ -126,12 +126,12 @@ public class SqlCondition {
         return this.safeAdd(SqlMatcher.integers(key, value));
     }
 
-    public SqlCondition descBy(String key) {
+    public SqlCondition desc(String key) {
         this.order = SqlOrder.descOf(key);
         return this;
     }
 
-    public SqlCondition ascBy(String key) {
+    public SqlCondition asc(String key) {
         this.order = SqlOrder.ascOf(key);
         return this;
     }
@@ -196,11 +196,11 @@ public class SqlCondition {
         return holder;
     }
 
-    public void setOffset(int offset) {
+    public void offset(int offset) {
         this.page.setOffset(offset);
     }
 
-    public void setLimit(int limit) {
+    public void limit(int limit) {
         this.page.setLimit(limit);
     }
 
