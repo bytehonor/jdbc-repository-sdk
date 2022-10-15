@@ -6,7 +6,7 @@ public class SqlPage {
 
     public static int LIMIT_DEF = HttpConstants.LIMIT_DEF;
 
-    public static int LIMIT_ALL = -1;
+    public static int LIMIT_ALL = HttpConstants.LIMIT_NON;
 
     private int offset;
 
@@ -23,7 +23,7 @@ public class SqlPage {
 
     public static SqlPage of(int offset, int limit) {
         SqlPage page = new SqlPage();
-        page.setOffset(offset > -1 ? offset : HttpConstants.OFFSET_DEF);
+        page.setOffset(offset > LIMIT_ALL ? offset : HttpConstants.OFFSET_DEF);
         page.setLimit(limit);
         return page;
     }
