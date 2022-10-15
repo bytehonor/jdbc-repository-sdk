@@ -8,10 +8,27 @@ import com.bytehonor.sdk.lang.spring.match.KeyMatcher;
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.lang.spring.query.QueryOrder;
 import com.bytehonor.sdk.lang.spring.query.QueryPage;
+import com.bytehonor.sdk.lang.spring.query.SimpleQueryCondition;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
 public class SqlAdapter {
+    
+    public static SqlCondition convert(SimpleQueryCondition condition) {
+        Objects.requireNonNull(condition, "condition");
+
+        SqlCondition model = SqlCondition.create(condition.getLogic(), page(condition.getPage()));
+
+        List<KeyMatcher> matchers = condition.getMatchers();
+        for (KeyMatcher matcher : matchers) {
+            model.safeAdd(matcher(matcher));
+        }
+        QueryOrder order = condition.getOrder();
+        if (order != null) {
+            model.setOrder(SqlOrder.of(order.getKey(), order.isDesc()));
+        }
+        return model;
+    }
 
     public static SqlCondition convert(QueryCondition condition) {
         Objects.requireNonNull(condition, "condition");
