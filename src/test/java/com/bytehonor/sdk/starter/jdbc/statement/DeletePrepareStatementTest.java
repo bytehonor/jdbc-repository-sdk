@@ -23,7 +23,7 @@ public class DeletePrepareStatementTest {
         set.add(2);
         set.add(3);
         SqlCondition condition = SqlCondition.create();
-        condition.integers("age", set);
+        condition.ini("age", set);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.desc("age");

@@ -114,15 +114,15 @@ public class SqlCondition {
         return this.safeAdd(SqlMatcher.likeRight(key, value));
     }
 
-    public SqlCondition strings(String key, Collection<String> value) {
+    public SqlCondition ins(String key, Collection<String> value) {
         return this.safeAdd(SqlMatcher.strings(key, value));
     }
 
-    public SqlCondition longs(String key, Collection<Long> value) {
+    public SqlCondition inl(String key, Collection<Long> value) {
         return this.safeAdd(SqlMatcher.longs(key, value));
     }
 
-    public SqlCondition integers(String key, Collection<Integer> value) {
+    public SqlCondition ini(String key, Collection<Integer> value) {
         return this.safeAdd(SqlMatcher.integers(key, value));
     }
 
