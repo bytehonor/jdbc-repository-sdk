@@ -17,7 +17,7 @@ import com.bytehonor.sdk.starter.jdbc.annotation.SqlColumn;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlTable;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
-import com.bytehonor.sdk.starter.jdbc.meta.MetaTableColumn;
+import com.bytehonor.sdk.starter.jdbc.meta.MetaTableField;
 
 public class SqlMetaUtils {
 
@@ -51,7 +51,7 @@ public class SqlMetaUtils {
         metaTable.setPrimaryKey(primary);
         LOG.debug("table name:{}, primary:{}", metaTable.getTableName(), primary);
 
-        List<MetaTableColumn> columns = new ArrayList<MetaTableColumn>();
+        List<MetaTableField> metaTableFields = new ArrayList<MetaTableField>();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             String key = field.getName();
@@ -62,26 +62,27 @@ public class SqlMetaUtils {
                 continue;
             }
 
-            MetaTableColumn column = new MetaTableColumn();
-            column.setKey(key);
+            MetaTableField tableField = new MetaTableField();
+            tableField.setKey(key);
+            tableField.setType(field.getType().getName());
 
-            String columnName = "";
+            String column = "";
             if (field.isAnnotationPresent(SqlColumn.class)) {
                 SqlColumn sqlColumn = AnnotationUtils.getAnnotation(field, SqlColumn.class);
                 LOG.debug("key:{}, column name:{}, ignore:{}", key, sqlColumn.name(), sqlColumn.ignore());
                 if (sqlColumn.ignore()) {
                     continue;
                 }
-                columnName = sqlColumn.name();
+                column = sqlColumn.name();
             }
-            if (SpringString.isEmpty(columnName)) {
+            if (SpringString.isEmpty(column)) {
                 LOG.debug("key:{}, use camelToUnderline", key);
-                columnName = SqlColumnUtils.camelToUnderline(key);
+                column = SqlColumnUtils.camelToUnderline(key);
             }
-            column.setColumn(columnName);
-            columns.add(column);
+            tableField.setColumn(column);
+            metaTableFields.add(tableField);
         }
-        metaTable.setColumns(columns);
+        metaTable.setFields(metaTableFields);
 
         metaTable.finish();
         TABLES.put(clazzName, metaTable);

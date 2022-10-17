@@ -19,7 +19,7 @@ public class MetaTable {
 
     private String primaryKey;
 
-    private List<MetaTableColumn> columns;
+    private List<MetaTableField> fields;
 
     private Set<String> keySet;
 
@@ -28,7 +28,7 @@ public class MetaTable {
     private String fullColumns;
 
     public MetaTable() {
-        columns = new ArrayList<MetaTableColumn>();
+        fields = new ArrayList<MetaTableField>();
         keySet = new HashSet<String>();
         columnSet = new HashSet<String>();
     }
@@ -41,10 +41,10 @@ public class MetaTable {
         columnSet = new HashSet<String>();
         StringBuilder sb = new StringBuilder();
         sb.append(primaryKey);
-        for (MetaTableColumn column : columns) {
-            keySet.add(column.getKey());
-            columnSet.add(column.getColumn());
-            sb.append(", ").append(column.getColumn());
+        for (MetaTableField field : fields) {
+            keySet.add(field.getKey());
+            columnSet.add(field.getColumn());
+            sb.append(", ").append(field.getColumn());
         }
         fullColumns = sb.toString();
     }
@@ -73,12 +73,12 @@ public class MetaTable {
         this.primaryKey = primaryKey;
     }
 
-    public List<MetaTableColumn> getColumns() {
-        return columns;
+    public List<MetaTableField> getFields() {
+        return fields;
     }
 
-    public void setColumns(List<MetaTableColumn> columns) {
-        this.columns = columns;
+    public void setFields(List<MetaTableField> fields) {
+        this.fields = fields;
     }
 
     public Set<String> getKeySet() {
