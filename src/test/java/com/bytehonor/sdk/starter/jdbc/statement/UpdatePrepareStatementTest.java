@@ -70,7 +70,7 @@ public class UpdatePrepareStatementTest {
         set.add(2);
         set.add(3);
         SqlCondition condition = SqlCondition.create();
-        condition.ini("age", set); // conflict 不会被更新
+        condition.in("age", set, Integer.class); // conflict 不会被更新
         condition.gt("createAt", System.currentTimeMillis());
 
         long now = System.currentTimeMillis();

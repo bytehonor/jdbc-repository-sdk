@@ -23,7 +23,7 @@ public class DeletePrepareStatementTest {
         set.add(2);
         set.add(3);
         SqlCondition condition = SqlCondition.create();
-        condition.ini("age", set);
+        condition.in("age", set, Integer.class);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.desc("age");
@@ -55,7 +55,7 @@ public class DeletePrepareStatementTest {
         String target = "DELETE FROM tbl_student";
         assertTrue("testNoCondition", target.equals(sql) && hasError);
     }
-    
+
     @Test
     public void testValueNull() {
         String uuid = null;

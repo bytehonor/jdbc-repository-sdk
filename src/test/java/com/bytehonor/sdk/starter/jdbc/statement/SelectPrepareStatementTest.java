@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bytehonor.sdk.lang.spring.constant.JavaValueTypes;
 import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 
@@ -23,7 +24,7 @@ public class SelectPrepareStatementTest {
         set.add(2);
         set.add(3);
         SqlCondition condition = SqlCondition.create();
-        condition.ini("age", set);
+        condition.in("age", set, Integer.class);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.desc("age");
@@ -94,7 +95,7 @@ public class SelectPrepareStatementTest {
         set.add(2);
         set.add(3);
         SqlCondition condition = SqlCondition.create();
-        condition.ini("age", set);
+        condition.in("age", set, Integer.class);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.desc("age");
@@ -108,6 +109,50 @@ public class SelectPrepareStatementTest {
         }
 
         LOG.info("testTime cost:{}", System.currentTimeMillis() - start);
+    }
 
+    @Test
+    public void testSetString() {
+        Set<String> set = new HashSet<String>();
+        set.add("boy1");
+        set.add("boy3");
+        set.add("boy4");
+        set.add("boy5");
+        SqlCondition condition = SqlCondition.create();
+        // condition.in("nickname", set, String.class);
+        condition.in("nickname", set, JavaValueTypes.STRING);
+        condition.gt("create_at", System.currentTimeMillis());
+        condition.desc("age");
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        String sql = statement.sql();
+        Object[] args = statement.args();
+
+        LOG.info("testSetString sql:({})", sql);
+        statement.check();
+
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ('boy4','boy5','boy3','boy1') AND create_at > ? ORDER BY age DESC LIMIT 0,20";
+        assertTrue("testSetString", target.equals(sql) && args.length == 1);
+    }
+
+    @Test
+    public void testSetString2() {
+        Set<String> set = new HashSet<String>();
+        set.add("boy1");
+        set.add("boy3");
+        set.add("boy4");
+        set.add("boy5");
+        SqlCondition condition = SqlCondition.create();
+        condition.in("nickname", set, String.class);
+        condition.gt("create_at", System.currentTimeMillis());
+        condition.desc("age");
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        String sql = statement.sql();
+        Object[] args = statement.args();
+
+        LOG.info("testSetString sql:({})", sql);
+        statement.check();
+
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ('boy4','boy5','boy3','boy1') AND create_at > ? ORDER BY age DESC LIMIT 0,20";
+        assertTrue("testSetString", target.equals(sql) && args.length == 1);
     }
 }

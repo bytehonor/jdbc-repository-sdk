@@ -114,17 +114,25 @@ public class SqlCondition {
         return this.doSafeAdd(SqlMatcher.likeRight(key, value));
     }
 
-    public SqlCondition ins(String key, Collection<String> value) {
-        return this.doSafeAdd(SqlMatcher.ins(key, value));
+    public <T> SqlCondition in(String key, Collection<T> value, Class<T> type) {
+        return this.doSafeAdd(SqlMatcher.in(key, value, type));
     }
 
-    public SqlCondition inl(String key, Collection<Long> value) {
-        return this.doSafeAdd(SqlMatcher.inl(key, value));
+    public <T> SqlCondition in(String key, Collection<T> value, String type) {
+        return this.doSafeAdd(SqlMatcher.in(key, value, type));
     }
 
-    public SqlCondition ini(String key, Collection<Integer> value) {
-        return this.doSafeAdd(SqlMatcher.ini(key, value));
-    }
+//    public SqlCondition ins(String key, Collection<String> value) {
+//        return this.doSafeAdd(SqlMatcher.ins(key, value));
+//    }
+//
+//    public SqlCondition inl(String key, Collection<Long> value) {
+//        return this.doSafeAdd(SqlMatcher.inl(key, value));
+//    }
+//
+//    public SqlCondition ini(String key, Collection<Integer> value) {
+//        return this.doSafeAdd(SqlMatcher.ini(key, value));
+//    }
 
     public SqlCondition desc(String key) {
         this.order = SqlOrder.descOf(key);

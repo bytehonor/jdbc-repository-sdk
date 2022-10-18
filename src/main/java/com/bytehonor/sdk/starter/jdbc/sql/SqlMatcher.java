@@ -2,6 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 
 import java.util.Collection;
 
+import com.bytehonor.sdk.lang.spring.constant.JavaValueTypes;
 import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.lang.spring.string.StringCreator;
@@ -132,29 +133,45 @@ public class SqlMatcher {
         return create(key, SqlInjectUtils.like(value, false, true), SqlValueTypes.STRING, SqlOperator.LIKE_RIGHT);
     }
 
-    public static SqlMatcher ins(String key, Collection<String> value) {
+    public static <T> SqlMatcher in(String key, Collection<T> value, Class<T> type) {
+        return in(key, value, type.getName());
+    }
+
+    public static <T> SqlMatcher in(String key, Collection<T> value, String type) {
         String src = null;
         if (value != null && value.isEmpty() == false) {
-            src = appendIn(JoinUtils.stringsSafe(value));
+            if (JavaValueTypes.STRING.equals(type)) {
+                src = appendIn(JoinUtils.joinSafe(value));
+            } else {
+                src = appendIn(JoinUtils.join(value));
+            }
         }
         return create(key, src, SqlValueTypes.STRING, SqlOperator.IN);
     }
 
-    public static SqlMatcher inl(String key, Collection<Long> value) {
-        String src = null;
-        if (value != null && value.isEmpty() == false) {
-            src = appendIn(JoinUtils.longs(value));
-        }
-        return create(key, src, SqlValueTypes.LONG, SqlOperator.IN);
-    }
-
-    public static SqlMatcher ini(String key, Collection<Integer> value) {
-        String src = null;
-        if (value != null && value.isEmpty() == false) {
-            src = appendIn(JoinUtils.integers(value));
-        }
-        return create(key, src, SqlValueTypes.INTEGER, SqlOperator.IN);
-    }
+//    public static SqlMatcher ins(String key, Collection<String> value) {
+//        String src = null;
+//        if (value != null && value.isEmpty() == false) {
+//            src = appendIn(JoinUtils.stringsSafe(value));
+//        }
+//        return create(key, src, SqlValueTypes.STRING, SqlOperator.IN);
+//    }
+//
+//    public static SqlMatcher inl(String key, Collection<Long> value) {
+//        String src = null;
+//        if (value != null && value.isEmpty() == false) {
+//            src = appendIn(JoinUtils.longs(value));
+//        }
+//        return create(key, src, SqlValueTypes.LONG, SqlOperator.IN);
+//    }
+//
+//    public static SqlMatcher ini(String key, Collection<Integer> value) {
+//        String src = null;
+//        if (value != null && value.isEmpty() == false) {
+//            src = appendIn(JoinUtils.integers(value));
+//        }
+//        return create(key, src, SqlValueTypes.INTEGER, SqlOperator.IN);
+//    }
 
     public static String appendIn(String raw) {
         return StringCreator.create().append("(").append(raw).append(")").toString();
