@@ -26,7 +26,7 @@ public class SelectPrepareStatementQueryTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.and();
-        condition.ini(Student::getAge, set);
+        condition.in(Student::getAge, set);
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
         condition.like(Student::getNickname, "boy");
         condition.desc(Student::getAge);
@@ -77,7 +77,7 @@ public class SelectPrepareStatementQueryTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.and();
-        condition.ini(Student::getAge, set);
+        condition.in(Student::getAge, set);
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
         condition.like(Student::getNickname, "boy");
         condition.desc(Student::getCreateAt);

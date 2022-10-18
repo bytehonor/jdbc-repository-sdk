@@ -132,7 +132,7 @@ public class SqlMatcher {
         return create(key, SqlInjectUtils.like(value, false, true), SqlValueTypes.STRING, SqlOperator.LIKE_RIGHT);
     }
 
-    public static SqlMatcher strings(String key, Collection<String> value) {
+    public static SqlMatcher ins(String key, Collection<String> value) {
         String src = null;
         if (value != null && value.isEmpty() == false) {
             src = appendIn(JoinUtils.stringsSafe(value));
@@ -140,7 +140,7 @@ public class SqlMatcher {
         return create(key, src, SqlValueTypes.STRING, SqlOperator.IN);
     }
 
-    public static SqlMatcher longs(String key, Collection<Long> value) {
+    public static SqlMatcher inl(String key, Collection<Long> value) {
         String src = null;
         if (value != null && value.isEmpty() == false) {
             src = appendIn(JoinUtils.longs(value));
@@ -148,7 +148,7 @@ public class SqlMatcher {
         return create(key, src, SqlValueTypes.LONG, SqlOperator.IN);
     }
 
-    public static SqlMatcher integers(String key, Collection<Integer> value) {
+    public static SqlMatcher ini(String key, Collection<Integer> value) {
         String src = null;
         if (value != null && value.isEmpty() == false) {
             src = appendIn(JoinUtils.integers(value));

@@ -21,7 +21,7 @@ public class SqlAdapter {
 
         List<KeyMatcher> matchers = condition.getMatchers();
         for (KeyMatcher matcher : matchers) {
-            model.safeAdd(matcher(matcher));
+            model.doSafeAdd(matcher(matcher));
         }
         QueryOrder order = condition.getOrder();
         if (order != null) {
@@ -37,7 +37,7 @@ public class SqlAdapter {
 
         List<KeyMatcher> matchers = condition.getMatchers();
         for (KeyMatcher matcher : matchers) {
-            model.safeAdd(matcher(matcher));
+            model.doSafeAdd(matcher(matcher));
         }
         QueryOrder order = condition.getOrder();
         if (order != null) {

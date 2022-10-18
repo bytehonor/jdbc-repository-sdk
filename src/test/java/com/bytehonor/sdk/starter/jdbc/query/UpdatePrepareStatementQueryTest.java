@@ -73,7 +73,7 @@ public class UpdatePrepareStatementQueryTest {
         set.add(2);
         set.add(3);
         QueryCondition condition = QueryCondition.and();
-        condition.ini(Student::getAge, set); // conflict 不会被更新
+        condition.in(Student::getAge, set); // conflict 不会被更新
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
 
         long now = System.currentTimeMillis();
