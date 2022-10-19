@@ -21,13 +21,10 @@ public class SqlAdapter {
 
         List<KeyMatcher> matchers = condition.getMatchers();
         for (KeyMatcher matcher : matchers) {
-            model.doSafeAdd(matcher(matcher));
+            model.add(matcher(matcher));
         }
-        QueryOrder order = condition.getOrder();
-        if (order != null) {
-            model.getOrder().setKey(order.getKey());
-            model.getOrder().setDesc(order.isDesc());
-        }
+
+        model.order(order(condition.getOrder()));
         return model;
     }
 
@@ -38,7 +35,7 @@ public class SqlAdapter {
 
         List<KeyMatcher> matchers = condition.getMatchers();
         for (KeyMatcher matcher : matchers) {
-            model.doSafeAdd(matcher(matcher));
+            model.add(matcher(matcher));
         }
 
         model.order(order(condition.getOrder()));
