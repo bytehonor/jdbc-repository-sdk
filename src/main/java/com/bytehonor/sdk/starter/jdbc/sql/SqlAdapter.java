@@ -40,12 +40,13 @@ public class SqlAdapter {
         for (KeyMatcher matcher : matchers) {
             model.doSafeAdd(matcher(matcher));
         }
-        QueryOrder order = condition.getOrder();
-        if (order != null) {
-            model.getOrder().setKey(order.getKey());
-            model.getOrder().setDesc(order.isDesc());
-        }
+
+        model.order(order(condition.getOrder()));
         return model;
+    }
+
+    public static SqlOrder order(QueryOrder order) {
+        return order != null ? SqlOrder.of(order.getKey(), order.isDesc()) : SqlOrder.non();
     }
 
     public static SqlPager pager(QueryPager pager) {

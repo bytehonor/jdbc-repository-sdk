@@ -204,6 +204,13 @@ public class SqlCondition {
         this.pager.setLimit(limit);
     }
 
+    public void order(SqlOrder order) {
+        if (order != null) {
+            this.order.setKey(order.getKey());
+            this.order.setDesc(order.isDesc());
+        }
+    }
+
     public boolean isQueryAll() {
         return this.pager.isAll();
     }
