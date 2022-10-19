@@ -24,14 +24,14 @@ public class SelectPrepareStatement extends AbstractPrepareStatement {
 
         sql.append(SqlStringUtils.toWhereSql(condition));
         sql.append(SqlStringUtils.toOrderSql(condition.getOrder()));
-        sql.append(SqlStringUtils.toLimitSql(condition.getPage()));
+        sql.append(SqlStringUtils.toLimitSql(condition.getPager()));
         return sql.toString();
     }
 
     @Override
     public Object[] args() {
         if (SqlCondition.isArgEmpty(condition)) {
-            if (condition.getPage() == null) {
+            if (condition.getPager() == null) {
                 // 禁全表无分页查询
                 throw new JdbcSdkException("select sql condition args isEmpty");
             }

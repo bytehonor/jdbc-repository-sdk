@@ -23,7 +23,7 @@ import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelSetterMapper;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlElement;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlField;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatementBuilder;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
@@ -153,50 +153,50 @@ public class JdbcProxyDao {
     }
 
     public List<String> strings(Class<?> clazz, String column, QueryCondition condition) {
-        return distinct(clazz, SqlElement.stringer(column), SqlAdapter.convert(condition));
+        return distinct(clazz, SqlField.stringer(column), SqlAdapter.convert(condition));
     }
 
     public List<Long> longs(Class<?> clazz, String column, QueryCondition condition) {
-        return distinct(clazz, SqlElement.longer(column), SqlAdapter.convert(condition));
+        return distinct(clazz, SqlField.longer(column), SqlAdapter.convert(condition));
     }
 
     public List<Integer> integers(Class<?> clazz, String column, QueryCondition condition) {
-        return distinct(clazz, SqlElement.integer(column), SqlAdapter.convert(condition));
+        return distinct(clazz, SqlField.integer(column), SqlAdapter.convert(condition));
     }
 
     /**
      * @param <T>
      * @param clazz
-     * @param element
+     * @param field
      * @param condition
      * @return
      */
-    public <T> List<T> distinct(Class<?> clazz, SqlElement<T> element, QueryCondition condition) {
+    public <T> List<T> distinct(Class<?> clazz, SqlField<T> field, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
-        Objects.requireNonNull(element, "element");
+        Objects.requireNonNull(field, "field");
         Objects.requireNonNull(condition, "condition");
 
-        return distinct(clazz, element, SqlAdapter.convert(condition));
+        return distinct(clazz, field, SqlAdapter.convert(condition));
     }
 
     /**
      * @param <T>
      * @param clazz
-     * @param element
+     * @param field
      * @param condition
      * @return
      */
-    public <T> List<T> distinct(Class<?> clazz, SqlElement<T> element, SqlCondition condition) {
+    public <T> List<T> distinct(Class<?> clazz, SqlField<T> field, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
-        Objects.requireNonNull(element, "element");
+        Objects.requireNonNull(field, "field");
         Objects.requireNonNull(condition, "condition");
 
-        PrepareStatement statement = PrepareStatementBuilder.distinct(clazz, element.getColumn(), condition);
+        PrepareStatement statement = PrepareStatementBuilder.distinct(clazz, field.getColumn(), condition);
         String sql = statement.sql();
 
         log(clazz, sql);
 
-        return jdbcTemplate.queryForList(sql, statement.args(), statement.types(), element.getType());
+        return jdbcTemplate.queryForList(sql, statement.args(), statement.types(), field.getType());
     }
 
     private void log(Class<?> clazz, String sql) {

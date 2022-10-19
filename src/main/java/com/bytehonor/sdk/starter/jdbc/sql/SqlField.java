@@ -3,7 +3,7 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 
-public class SqlElement<T> {
+public class SqlField<T> {
 
     private String column;
 
@@ -15,28 +15,28 @@ public class SqlElement<T> {
         }
     }
 
-    public static SqlElement<Long> longer(String column) {
+    public static SqlField<Long> longer(String column) {
         required(column);
 
-        SqlElement<Long> sd = new SqlElement<Long>();
+        SqlField<Long> sd = new SqlField<Long>();
         sd.setColumn(column);
         sd.setType(Long.class);
         return sd;
     }
 
-    public static SqlElement<Integer> integer(String column) {
+    public static SqlField<Integer> integer(String column) {
         required(column);
 
-        SqlElement<Integer> sd = new SqlElement<Integer>();
+        SqlField<Integer> sd = new SqlField<Integer>();
         sd.setColumn(column);
         sd.setType(Integer.class);
         return sd;
     }
 
-    public static SqlElement<String> stringer(String column) {
+    public static SqlField<String> stringer(String column) {
         required(column);
 
-        SqlElement<String> sd = new SqlElement<String>();
+        SqlField<String> sd = new SqlField<String>();
         sd.setColumn(column);
         sd.setType(String.class);
         return sd;

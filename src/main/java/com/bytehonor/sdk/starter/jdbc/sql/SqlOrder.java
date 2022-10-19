@@ -30,8 +30,12 @@ public class SqlOrder {
         return new SqlOrder(key, desc);
     }
 
+    public static SqlOrder non() {
+        return new SqlOrder();
+    }
+
     public SqlOrder() {
-        this("id", false);
+        this("", false);
     }
 
     public SqlOrder(String key, boolean desc) {
@@ -53,6 +57,18 @@ public class SqlOrder {
 
     public void setDesc(boolean desc) {
         this.desc = desc;
+    }
+
+    public SqlOrder desc(String key) {
+        this.key = key;
+        this.desc = true;
+        return this;
+    }
+
+    public SqlOrder asc(String key) {
+        this.key = key;
+        this.desc = false;
+        return this;
     }
 
     public String toSql() {

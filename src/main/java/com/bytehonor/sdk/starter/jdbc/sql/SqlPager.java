@@ -2,7 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 
 import com.bytehonor.sdk.lang.spring.constant.HttpConstants;
 
-public class SqlPage {
+public class SqlPager {
 
     public static int LIMIT_DEF = HttpConstants.LIMIT_DEF;
 
@@ -12,17 +12,17 @@ public class SqlPage {
 
     private int limit;
 
-    public SqlPage() {
+    public SqlPager() {
         this.offset = 0;
         this.limit = LIMIT_DEF;
     }
 
-    public static SqlPage create() {
-        return new SqlPage();
+    public static SqlPager create() {
+        return new SqlPager();
     }
 
-    public static SqlPage of(int offset, int limit) {
-        SqlPage page = new SqlPage();
+    public static SqlPager of(int offset, int limit) {
+        SqlPager page = new SqlPager();
         page.setOffset(offset > LIMIT_ALL ? offset : HttpConstants.OFFSET_DEF);
         page.setLimit(limit);
         return page;

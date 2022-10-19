@@ -9,32 +9,32 @@ import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
 
 public class SqlCondition {
 
-    private SqlOrder order;
+    private final SqlOrder order;
 
-    private final SqlPage page;
+    private final SqlPager pager;
 
     private final SqlArgHolder holder;
 
-    private SqlCondition(QueryLogic logic, SqlPage page) {
+    private SqlCondition(QueryLogic logic, SqlPager pager) {
         Objects.requireNonNull(logic, "logic");
-        Objects.requireNonNull(page, "page");
+        Objects.requireNonNull(pager, "pager");
 
-        this.order = null;
-        this.page = page;
+        this.order = SqlOrder.non();
+        this.pager = pager;
         this.holder = SqlArgHolder.create(logic);
     }
 
     public static SqlCondition create() {
-        return new SqlCondition(QueryLogic.AND, SqlPage.create());
+        return new SqlCondition(QueryLogic.AND, SqlPager.create());
     }
 
-    public static SqlCondition create(QueryLogic logic, SqlPage page) {
+    public static SqlCondition create(QueryLogic logic, SqlPager page) {
         return new SqlCondition(logic, page);
     }
 
     public static SqlCondition id(Long id) {
         Objects.requireNonNull(id, "id");
-        SqlCondition condition = SqlCondition.create(QueryLogic.AND, SqlPage.of(0, 1));
+        SqlCondition condition = SqlCondition.create(QueryLogic.AND, SqlPager.of(0, 1));
         return condition.eq("id", id);
     }
 
@@ -135,12 +135,12 @@ public class SqlCondition {
 //    }
 
     public SqlCondition desc(String key) {
-        this.order = SqlOrder.descOf(key);
+        this.order.desc(key);
         return this;
     }
 
     public SqlCondition asc(String key) {
-        this.order = SqlOrder.ascOf(key);
+        this.order.asc(key);
         return this;
     }
 
@@ -188,31 +188,23 @@ public class SqlCondition {
         return order;
     }
 
-    public void setOrder(SqlOrder order) {
-        this.order = order;
+    public SqlPager getPager() {
+        return pager;
     }
-
-    public SqlPage getPage() {
-        return page;
-    }
-
-//    public List<SqlColumn> getColumns() {
-//        return columns;
-//    }
 
     public SqlArgHolder getHolder() {
         return holder;
     }
 
     public void offset(int offset) {
-        this.page.setOffset(offset);
+        this.pager.setOffset(offset);
     }
 
     public void limit(int limit) {
-        this.page.setLimit(limit);
+        this.pager.setLimit(limit);
     }
 
     public boolean isQueryAll() {
-        return this.page.isAll();
+        return this.pager.isAll();
     }
 }

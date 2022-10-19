@@ -56,7 +56,7 @@ public class SelectPrepareStatementTest {
     @Test
     public void testNoConditionNoPage() {
         SqlCondition condition = SqlCondition.create();
-        condition.getPage().setLimit(-1);
+        condition.getPager().setLimit(-1);
         PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
         String sql = statement.sql();
         boolean hasError = false;

@@ -2,7 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.util;
 
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlOrder;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlPage;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlPager;
 
 public class SqlStringUtils {
 
@@ -20,7 +20,7 @@ public class SqlStringUtils {
         return order.toSql();
     }
 
-    public static String toLimitSql(SqlPage page) {
+    public static String toLimitSql(SqlPager page) {
         if (page == null) {
             return "";
         }
