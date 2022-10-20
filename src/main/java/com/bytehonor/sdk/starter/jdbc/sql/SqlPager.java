@@ -29,7 +29,7 @@ public class SqlPager {
     }
 
     public String toSql() {
-        if (isAll()) {
+        if (unlimited()) {
             return "";
         }
         StringBuilder sb = new StringBuilder();
@@ -58,7 +58,7 @@ public class SqlPager {
         this.limit = limit;
     }
 
-    public boolean isAll() {
+    public boolean unlimited() {
         return this.limit == LIMIT_ALL;
     }
 }

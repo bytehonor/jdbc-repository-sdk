@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
+import com.bytehonor.sdk.lang.spring.string.SpringString;
 
 public class SqlCondition {
 
@@ -204,13 +205,15 @@ public class SqlCondition {
     }
 
     public void order(SqlOrder order) {
-        if (order != null) {
-            this.order.setKey(order.getKey());
-            this.order.setDesc(order.isDesc());
-        }
+        this.order.setKey(order.getKey());
+        this.order.setDesc(order.isDesc());
     }
 
-    public boolean isQueryAll() {
-        return this.pager.isAll();
+    public boolean unlimited() {
+        return this.pager.unlimited();
+    }
+
+    public boolean sorted() {
+        return SpringString.isEmpty(order.getKey()) == false;
     }
 }

@@ -55,7 +55,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
 
-        if (condition.isQueryAll()) {
+        if (condition.unlimited()) {
             return doQueryAll(clazz, condition, mapper);
         }
 
