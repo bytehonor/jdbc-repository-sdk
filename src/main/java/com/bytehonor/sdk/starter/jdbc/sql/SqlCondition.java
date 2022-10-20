@@ -196,17 +196,29 @@ public class SqlCondition {
         return holder;
     }
 
-    public void offset(int offset) {
+    public SqlCondition offset(int offset) {
         this.pager.setOffset(offset);
+        return this;
     }
 
-    public void limit(int limit) {
+    public SqlCondition limit(int limit) {
         this.pager.setLimit(limit);
+        return this;
     }
 
-    public void order(SqlOrder order) {
-        this.order.setKey(order.getKey());
-        this.order.setDesc(order.isDesc());
+    public SqlCondition order(SqlOrder order) {
+        if (order != null) {
+            this.order.setKey(order.getKey());
+            this.order.setDesc(order.isDesc());
+        }
+        return this;
+    }
+
+    public SqlCondition orderIfNon(SqlOrder order) {
+        if (sorted()) {
+            return this;
+        }
+        return order(order);
     }
 
     public boolean unlimited() {
