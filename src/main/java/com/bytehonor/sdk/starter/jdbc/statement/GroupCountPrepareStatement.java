@@ -31,8 +31,8 @@ public class GroupCountPrepareStatement extends AbstractPrepareStatement {
             throw new JdbcSdkException("GROUP BY column isEmpty");
         }
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT `").append(column).append("` as key,");
-        sql.append(" COUNT(").append(table.getPrimaryKey()).append(") AS value FROM ").append(table.getTableName());
+        sql.append("SELECT `").append(column).append("` AS `key`,");
+        sql.append(" COUNT(").append(table.getPrimaryKey()).append(") AS `value` FROM ").append(table.getTableName());
 
         sql.append(SqlStringUtils.toWhereSql(condition));
         sql.append(" GROUP BY `").append(column).append("`");

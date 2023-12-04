@@ -34,7 +34,7 @@ public class GroupCountPrepareStatementTest {
         LOG.info("sql:{}", sql);
         statement.check();
 
-        String target = "SELECT `age` as key, COUNT(id) AS value FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? GROUP BY `age`";
+        String target = "SELECT `age` AS `key`, COUNT(id) AS `value` FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? GROUP BY `age`";
         assertTrue("test", target.equals(sql) && args.length == 2);
     }
 
