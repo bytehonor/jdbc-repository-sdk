@@ -18,6 +18,10 @@ import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.lang.spring.constant.HttpConstants;
 import com.bytehonor.sdk.lang.spring.function.ClassGetter;
+import com.bytehonor.sdk.lang.spring.function.getter.GetBoolean;
+import com.bytehonor.sdk.lang.spring.function.getter.GetInteger;
+import com.bytehonor.sdk.lang.spring.function.getter.GetLong;
+import com.bytehonor.sdk.lang.spring.function.getter.GetString;
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.model.ColumnSizeItem;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
@@ -146,16 +150,20 @@ public class JdbcProxyDao {
         return jdbcTemplate.queryForObject(sql, statement.args(), statement.types(), Integer.class);
     }
 
-    public <T> List<String> strings(Class<T> clazz, ClassGetter<T, String> getter, QueryCondition condition) {
+    public <T> List<String> strings(Class<T> clazz, GetString<T> getter, QueryCondition condition) {
         return distinct(clazz, getter, String.class, condition);
     }
 
-    public <T> List<Long> longs(Class<T> clazz, ClassGetter<T, Long> getter, QueryCondition condition) {
+    public <T> List<Long> longs(Class<T> clazz, GetLong<T> getter, QueryCondition condition) {
         return distinct(clazz, getter, Long.class, condition);
     }
 
-    public <T> List<Integer> integers(Class<T> clazz, ClassGetter<T, Integer> getter, QueryCondition condition) {
+    public <T> List<Integer> integers(Class<T> clazz, GetInteger<T> getter, QueryCondition condition) {
         return distinct(clazz, getter, Integer.class, condition);
+    }
+
+    public <T> List<Boolean> booleans(Class<T> clazz, GetBoolean<T> getter, QueryCondition condition) {
+        return distinct(clazz, getter, Boolean.class, condition);
     }
 
     /**
