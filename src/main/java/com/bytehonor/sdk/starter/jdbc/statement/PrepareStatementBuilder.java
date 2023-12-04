@@ -2,6 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.statement;
 
 import java.util.Objects;
 
+import com.bytehonor.sdk.lang.spring.function.ClassGetter;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 
 /**
@@ -24,19 +25,19 @@ public final class PrepareStatementBuilder {
         return select(clazz, SqlCondition.id(id));
     }
 
-    public static PrepareStatement count(Class<?> clazz, SqlCondition condition) {
+    public static PrepareStatement selectCount(Class<?> clazz, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
-        return new CountPrepareStatement(clazz, condition);
+        return new SelectCountPrepareStatement(clazz, condition);
     }
 
-    public static PrepareStatement distinct(Class<?> clazz, String column, SqlCondition condition) {
+    public static <T> PrepareStatement distinct(Class<T> clazz, ClassGetter<T, ?> getter, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
-        Objects.requireNonNull(column, "column");
+        Objects.requireNonNull(getter, "getter");
         Objects.requireNonNull(condition, "condition");
 
-        return new DistinctPrepareStatement(clazz, column, condition);
+        return new DistinctPrepareStatement(clazz, getter, condition);
     }
 
     public static PrepareStatement insert(Class<?> clazz) {
@@ -71,5 +72,13 @@ public final class PrepareStatementBuilder {
         Objects.requireNonNull(id, "id");
 
         return delete(clazz, SqlCondition.id(id));
+    }
+
+    public static <T> PrepareStatement groupCount(Class<T> clazz, ClassGetter<T, ?> getter, SqlCondition condition) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(getter, "getter");
+        Objects.requireNonNull(condition, "condition");
+
+        return new DistinctPrepareStatement(clazz, getter, condition);
     }
 }

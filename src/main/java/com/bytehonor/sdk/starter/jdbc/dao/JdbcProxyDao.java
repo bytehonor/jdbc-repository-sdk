@@ -17,13 +17,14 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.lang.spring.constant.HttpConstants;
+import com.bytehonor.sdk.lang.spring.function.ClassGetter;
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
+import com.bytehonor.sdk.starter.jdbc.model.ColumnSizeItem;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelSetterMapper;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlField;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatementBuilder;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
@@ -63,7 +64,7 @@ public class JdbcProxyDao {
     }
 
     private <T> List<T> doQueryAll(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
-        int total = count(clazz, condition);
+        int total = doCount(clazz, condition);
         if (total < 1) {
             return new ArrayList<T>();
         }
@@ -106,14 +107,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
-        return delete(clazz, SqlAdapter.convert(condition));
-    }
-
-    public int delete(Class<?> clazz, SqlCondition condition) {
-        Objects.requireNonNull(clazz, "clazz");
-        Objects.requireNonNull(condition, "condition");
-
-        PrepareStatement statement = PrepareStatementBuilder.delete(clazz, condition);
+        PrepareStatement statement = PrepareStatementBuilder.delete(clazz, SqlAdapter.convert(condition));
         String sql = statement.sql();
 
         log(clazz, sql);
@@ -137,14 +131,14 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
-        return count(clazz, SqlAdapter.convert(condition));
+        return doCount(clazz, SqlAdapter.convert(condition));
     }
 
-    public int count(Class<?> clazz, SqlCondition condition) {
+    private int doCount(Class<?> clazz, SqlCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
-        PrepareStatement statement = PrepareStatementBuilder.count(clazz, condition);
+        PrepareStatement statement = PrepareStatementBuilder.selectCount(clazz, condition);
         String sql = statement.sql();
 
         log(clazz, sql);
@@ -152,51 +146,39 @@ public class JdbcProxyDao {
         return jdbcTemplate.queryForObject(sql, statement.args(), statement.types(), Integer.class);
     }
 
-    public List<String> strings(Class<?> clazz, String column, QueryCondition condition) {
-        return distinct(clazz, SqlField.stringer(column), SqlAdapter.convert(condition));
+    public <T> List<String> strings(Class<T> clazz, ClassGetter<T, String> getter, QueryCondition condition) {
+        return distinct(clazz, getter, String.class, condition);
     }
 
-    public List<Long> longs(Class<?> clazz, String column, QueryCondition condition) {
-        return distinct(clazz, SqlField.longer(column), SqlAdapter.convert(condition));
+    public <T> List<Long> longs(Class<T> clazz, ClassGetter<T, Long> getter, QueryCondition condition) {
+        return distinct(clazz, getter, Long.class, condition);
     }
 
-    public List<Integer> integers(Class<?> clazz, String column, QueryCondition condition) {
-        return distinct(clazz, SqlField.integer(column), SqlAdapter.convert(condition));
-    }
-
-    /**
-     * @param <T>
-     * @param clazz
-     * @param field
-     * @param condition
-     * @return
-     */
-    public <T> List<T> distinct(Class<?> clazz, SqlField<T> field, QueryCondition condition) {
-        Objects.requireNonNull(clazz, "clazz");
-        Objects.requireNonNull(field, "field");
-        Objects.requireNonNull(condition, "condition");
-
-        return distinct(clazz, field, SqlAdapter.convert(condition));
+    public <T> List<Integer> integers(Class<T> clazz, ClassGetter<T, Integer> getter, QueryCondition condition) {
+        return distinct(clazz, getter, Integer.class, condition);
     }
 
     /**
-     * @param <T>
+     * @param <T>         Model类的类型
+     * @param <R>         getter的返回值的类型
      * @param clazz
-     * @param field
+     * @param getter
+     * @param elementType
      * @param condition
      * @return
      */
-    public <T> List<T> distinct(Class<?> clazz, SqlField<T> field, SqlCondition condition) {
+    public <T, R> List<R> distinct(Class<T> clazz, ClassGetter<T, R> getter, Class<R> elementType,
+            QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
-        Objects.requireNonNull(field, "field");
+        Objects.requireNonNull(getter, "getter");
         Objects.requireNonNull(condition, "condition");
 
-        PrepareStatement statement = PrepareStatementBuilder.distinct(clazz, field.getColumn(), condition);
+        PrepareStatement statement = PrepareStatementBuilder.distinct(clazz, getter, SqlAdapter.convert(condition));
         String sql = statement.sql();
 
         log(clazz, sql);
 
-        return jdbcTemplate.queryForList(sql, statement.args(), statement.types(), field.getType());
+        return jdbcTemplate.queryForList(sql, statement.args(), statement.types(), elementType);
     }
 
     private void log(Class<?> clazz, String sql) {
@@ -211,16 +193,8 @@ public class JdbcProxyDao {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
 
-        return update(model, SqlAdapter.convert(condition), mapper);
-    }
-
-    public <T> int update(T model, SqlCondition condition, ModelGetterMapper<T> mapper) {
-        Objects.requireNonNull(model, "model");
-        Objects.requireNonNull(condition, "condition");
-        Objects.requireNonNull(mapper, "mapper");
-
         Class<? extends Object> clazz = model.getClass();
-        PrepareStatement statement = PrepareStatementBuilder.update(clazz, condition);
+        PrepareStatement statement = PrepareStatementBuilder.update(clazz, SqlAdapter.convert(condition));
         statement.prepare(model, mapper);
 
         String sql = statement.sql();
@@ -281,5 +255,17 @@ public class JdbcProxyDao {
         log(clazz, sql);
 
         return jdbcTemplate.update(sql, statement.args(), statement.types());
+    }
+
+    public <T> List<ColumnSizeItem> groupCount(Class<T> clazz, ClassGetter<T, ?> getter, QueryCondition condition) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(condition, "condition");
+
+        PrepareStatement statement = PrepareStatementBuilder.groupCount(clazz, getter, SqlAdapter.convert(condition));
+        String sql = statement.sql();
+
+        log(clazz, sql);
+
+        return jdbcTemplate.query(sql, statement.args(), statement.types(), ColumnSizeItem.SETTERS);
     }
 }

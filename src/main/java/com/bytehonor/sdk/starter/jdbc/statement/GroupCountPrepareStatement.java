@@ -10,16 +10,17 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 
 /**
- * SELECT DISTINCT(column) FROM TableName WHERE condition
+ * SELECT column, COUNT(PrimaryKey) as size FROM TableName WHERE condition GROUP
+ * BY column;
  * 
  * @author lijianqiang
  *
  */
-public class DistinctPrepareStatement extends AbstractPrepareStatement {
+public class GroupCountPrepareStatement extends AbstractPrepareStatement {
 
     private final String column;
 
-    public <T> DistinctPrepareStatement(Class<T> clazz, ClassGetter<T, ?> getter, SqlCondition condition) {
+    public <T> GroupCountPrepareStatement(Class<T> clazz, ClassGetter<T, ?> getter, SqlCondition condition) {
         super(clazz, condition);
         this.column = SqlColumnUtils.camelToUnderline(Getters.field(getter));
     }
@@ -27,12 +28,14 @@ public class DistinctPrepareStatement extends AbstractPrepareStatement {
     @Override
     public String sql() {
         if (SpringString.isEmpty(column)) {
-            throw new JdbcSdkException("DISTINCT column isEmpty");
+            throw new JdbcSdkException("GROUP BY column isEmpty");
         }
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT DISTINCT(").append(column).append(") FROM ").append(table.getTableName());
+        sql.append("SELECT `").append(column).append("`,");
+        sql.append(" COUNT(").append(table.getPrimaryKey()).append(") AS size FROM ").append(table.getTableName());
 
         sql.append(SqlStringUtils.toWhereSql(condition));
+        sql.append(" GROUP BY `").append(column).append("`");
         return sql.toString();
     }
 

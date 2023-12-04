@@ -3,6 +3,7 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 
+@Deprecated
 public class SqlField<T> {
 
     private String column;

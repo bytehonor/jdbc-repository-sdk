@@ -10,9 +10,9 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
  * @author lijianqiang
  *
  */
-public class CountPrepareStatement extends AbstractPrepareStatement {
+public class SelectCountPrepareStatement extends AbstractPrepareStatement {
 
-    public CountPrepareStatement(Class<?> clazz, SqlCondition condition) {
+    public SelectCountPrepareStatement(Class<?> clazz, SqlCondition condition) {
         super(clazz, condition);
     }
 

@@ -6,11 +6,11 @@ import com.bytehonor.sdk.starter.jdbc.sql.SqlPager;
 
 public class SqlStringUtils {
 
-    public static String toWhereSql(SqlCondition group) {
-        if (group == null) {
+    public static String toWhereSql(SqlCondition condition) {
+        if (condition == null) {
             return "";
         }
-        return group.toSql();
+        return condition.toSql();
     }
 
     public static String toOrderSql(SqlOrder order) {

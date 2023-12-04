@@ -27,7 +27,7 @@ public class DistinctPrepareStatementTest {
         condition.gt("createAt", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.desc("age");
-        PrepareStatement statement = new DistinctPrepareStatement(Student.class, "age", condition);
+        PrepareStatement statement = new DistinctPrepareStatement(Student.class, Student::getAge, condition);
         String sql = statement.sql();
         Object[] args = statement.args();
 
@@ -41,7 +41,7 @@ public class DistinctPrepareStatementTest {
     @Test
     public void testNoCondition() {
         SqlCondition condition = SqlCondition.create();
-        PrepareStatement statement = new DistinctPrepareStatement(Student.class, "age", condition);
+        PrepareStatement statement = new DistinctPrepareStatement(Student.class, Student::getAge, condition);
         String sql = statement.sql();
         Object[] args = statement.args();
 

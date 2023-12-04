@@ -36,7 +36,7 @@ public class PrepareStatementBuilderQueryTest {
         LOG.info("selectById sql:{}", selectById.sql());
         selectById.check();
 
-        PrepareStatement count = PrepareStatementBuilder.count(Student.class, SqlAdapter.convert(condition));
+        PrepareStatement count = PrepareStatementBuilder.selectCount(Student.class, SqlAdapter.convert(condition));
         LOG.info("count sql:{}", count.sql());
         count.check();
 
