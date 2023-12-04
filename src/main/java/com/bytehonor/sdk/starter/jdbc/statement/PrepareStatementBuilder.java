@@ -79,6 +79,6 @@ public final class PrepareStatementBuilder {
         Objects.requireNonNull(getter, "getter");
         Objects.requireNonNull(condition, "condition");
 
-        return new DistinctPrepareStatement(clazz, getter, condition);
+        return new GroupCountPrepareStatement(clazz, getter, condition);
     }
 }
