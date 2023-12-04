@@ -5,9 +5,9 @@ import java.sql.SQLException;
 
 public class GroupCountItem {
 
-    private String key;
+    private String value;
 
-    private Integer value;
+    private Integer size;
 
     public static final ModelSetterMapper<GroupCountItem> SETTERS = new ModelSetterMapper<GroupCountItem>() {
 
@@ -15,42 +15,27 @@ public class GroupCountItem {
         public ModelSetter<GroupCountItem> create(ResultSet rs) throws SQLException {
             ModelSetter<GroupCountItem> setter = ModelSetter.of(GroupCountItem::new, rs);
 
-            setter.add(GroupCountItem::setKey);
             setter.add(GroupCountItem::setValue);
+            setter.add(GroupCountItem::setSize);
 
             return setter;
         }
     };
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public Integer getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
-//    public static final ModelGetterMapper<ColumnSizeItem> GETTERS = new ModelGetterMapper<ColumnSizeItem>() {
-//
-//        @Override
-//        public ModelGetter<ColumnSizeItem> create(ColumnSizeItem model) {
-//
-//            ModelGetter<ColumnSizeItem> getter = ModelGetter.of(model);
-//
-//            getter.add(ColumnSizeItem::getColumn);
-//            getter.add(ColumnSizeItem::getSize);
-//
-//            return getter;
-//        }
-//
-//    };
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
 
 }
