@@ -3,20 +3,20 @@ package com.bytehonor.sdk.starter.jdbc.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GroupByItem {
+public class GroupCountItem {
 
     private String key;
 
-    private String value;
+    private Integer value;
 
-    public static final ModelSetterMapper<GroupByItem> SETTERS = new ModelSetterMapper<GroupByItem>() {
+    public static final ModelSetterMapper<GroupCountItem> SETTERS = new ModelSetterMapper<GroupCountItem>() {
 
         @Override
-        public ModelSetter<GroupByItem> create(ResultSet rs) throws SQLException {
-            ModelSetter<GroupByItem> setter = ModelSetter.of(GroupByItem::new, rs);
+        public ModelSetter<GroupCountItem> create(ResultSet rs) throws SQLException {
+            ModelSetter<GroupCountItem> setter = ModelSetter.of(GroupCountItem::new, rs);
 
-            setter.add(GroupByItem::setKey);
-            setter.add(GroupByItem::setValue);
+            setter.add(GroupCountItem::setKey);
+            setter.add(GroupCountItem::setValue);
 
             return setter;
         }
@@ -30,11 +30,11 @@ public class GroupByItem {
         this.key = key;
     }
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 

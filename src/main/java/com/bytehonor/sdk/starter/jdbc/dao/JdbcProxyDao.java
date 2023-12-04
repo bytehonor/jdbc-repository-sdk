@@ -24,7 +24,7 @@ import com.bytehonor.sdk.lang.spring.function.getter.GetLong;
 import com.bytehonor.sdk.lang.spring.function.getter.GetString;
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.JdbcConfig;
-import com.bytehonor.sdk.starter.jdbc.model.GroupByItem;
+import com.bytehonor.sdk.starter.jdbc.model.GroupCountItem;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelSetterMapper;
@@ -265,7 +265,7 @@ public class JdbcProxyDao {
         return jdbcTemplate.update(sql, statement.args(), statement.types());
     }
 
-    public <T> List<GroupByItem> groupCount(Class<T> clazz, ClassGetter<T, ?> getter, QueryCondition condition) {
+    public <T> List<GroupCountItem> groupCount(Class<T> clazz, ClassGetter<T, ?> getter, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -274,6 +274,6 @@ public class JdbcProxyDao {
 
         log(clazz, sql);
 
-        return jdbcTemplate.query(sql, statement.args(), statement.types(), GroupByItem.SETTERS);
+        return jdbcTemplate.query(sql, statement.args(), statement.types(), GroupCountItem.SETTERS);
     }
 }
