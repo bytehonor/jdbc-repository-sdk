@@ -23,6 +23,7 @@ import com.bytehonor.sdk.lang.spring.function.getter.GetInteger;
 import com.bytehonor.sdk.lang.spring.function.getter.GetLong;
 import com.bytehonor.sdk.lang.spring.function.getter.GetString;
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
+import com.bytehonor.sdk.starter.jdbc.JdbcConfig;
 import com.bytehonor.sdk.starter.jdbc.model.ColumnSizeItem;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
@@ -190,10 +191,9 @@ public class JdbcProxyDao {
     }
 
     private void log(Class<?> clazz, String sql) {
-        if (LOG.isDebugEnabled() == false) {
-            return;
+        if (JdbcConfig.isInfoEnabled()) {
+            LOG.info("clazz:{}, sql:{}", clazz.getSimpleName(), sql);
         }
-        LOG.debug("clazz:{}, sql:{}", clazz.getSimpleName(), sql);
     }
 
     public <T> int update(T model, QueryCondition condition, ModelGetterMapper<T> mapper) {
