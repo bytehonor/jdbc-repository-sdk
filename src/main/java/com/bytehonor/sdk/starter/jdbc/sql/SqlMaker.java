@@ -1,10 +1,6 @@
-package com.bytehonor.sdk.starter.jdbc.util;
+package com.bytehonor.sdk.starter.jdbc.sql;
 
-import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlOrder;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlPager;
-
-public class SqlStringUtils {
+public class SqlMaker {
 
     public static String toWhereSql(SqlCondition condition) {
         if (condition == null) {

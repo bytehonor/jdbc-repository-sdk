@@ -5,9 +5,9 @@ import com.bytehonor.sdk.lang.spring.function.Getters;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlMaker;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
-import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 
 /**
  * SELECT column, COUNT(PrimaryKey) as size FROM TableName WHERE condition GROUP
@@ -34,9 +34,17 @@ public class GroupCountPrepareStatement extends AbstractPrepareStatement {
         sql.append("SELECT `").append(column).append("` AS `value`,");
         sql.append(" COUNT(").append(table.getPrimaryKey()).append(") AS `size` FROM ").append(table.getTableName());
 
-        sql.append(SqlStringUtils.toWhereSql(condition));
+        sql.append(SqlMaker.toWhereSql(condition));
         sql.append(" GROUP BY `").append(column).append("`");
+        sql.append(orderBy(SqlMaker.toOrderSql(condition.getOrder())));
         return sql.toString();
+    }
+
+    private String orderBy(String sql) {
+        if (SpringString.isEmpty(sql)) {
+            return " ORDER BY NULL";
+        }
+        return sql;
     }
 
     @Override

@@ -5,9 +5,9 @@ import com.bytehonor.sdk.lang.spring.function.Getters;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlMaker;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
-import com.bytehonor.sdk.starter.jdbc.util.SqlStringUtils;
 
 /**
  * SELECT DISTINCT(column) FROM TableName WHERE condition
@@ -32,7 +32,7 @@ public class DistinctPrepareStatement extends AbstractPrepareStatement {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT DISTINCT(").append(column).append(") FROM ").append(table.getTableName());
 
-        sql.append(SqlStringUtils.toWhereSql(condition));
+        sql.append(SqlMaker.toWhereSql(condition));
         return sql.toString();
     }
 
