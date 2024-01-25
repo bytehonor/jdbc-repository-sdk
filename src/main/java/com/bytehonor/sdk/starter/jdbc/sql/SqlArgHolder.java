@@ -51,17 +51,17 @@ public class SqlArgHolder {
 
     /**
      * 
-     * @param matcher
+     * @param filter
      * @return
      */
-    public SqlArgHolder safeAdd(SqlMatcher matcher) {
-        if (SqlMatcher.accept(matcher) == false) {
-            LOG.warn("put SqlMatcher ignore, key:{}, value:{}", matcher.getKey(), matcher.getValue());
+    public SqlArgHolder safeAdd(SqlFilter filter) {
+        if (SqlFilter.accept(filter) == false) {
+            LOG.warn("SqlFilter ignore, key:{}, value:{}", filter.getKey(), filter.getValue());
             return this;
         }
 
         // 转成下划线
-        String key = SqlColumnUtils.camelToUnderline(matcher.getKey());
+        String key = SqlColumnUtils.camelToUnderline(filter.getKey());
         if (SpringString.isEmpty(key)) {
             return this;
         }
@@ -74,16 +74,16 @@ public class SqlArgHolder {
 
         argSize++;
 
-        if (SqlOperator.IN.getKey().equals(matcher.getOperator().getKey())) {
-            this.sql.append(key).append(BLANK).append(matcher.getOperator().getOpt()).append(BLANK)
-                    .append(matcher.getValue());
+        if (SqlOperator.IN.getKey().equals(filter.getOperator().getKey())) {
+            this.sql.append(key).append(BLANK).append(filter.getOperator().getOpt()).append(BLANK)
+                    .append(filter.getValue());
             return this;
         }
-        this.sql.append(key).append(BLANK).append(matcher.getOperator().getOpt()).append(BLANK)
+        this.sql.append(key).append(BLANK).append(filter.getOperator().getOpt()).append(BLANK)
                 .append(SqlConstants.PARAM);
-        this.values.add(matcher.getValue());
-        this.sqlTypes.add(matcher.getSqlType());
-        this.javaTypes.add(matcher.getJavaType());
+        this.values.add(filter.getValue());
+        this.sqlTypes.add(filter.getSqlType());
+        this.javaTypes.add(filter.getJavaType());
         return this;
     }
 

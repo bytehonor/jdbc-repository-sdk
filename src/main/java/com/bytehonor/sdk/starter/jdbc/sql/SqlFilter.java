@@ -12,7 +12,7 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
-public class SqlMatcher {
+public class SqlFilter {
 
     /**
      * 忽略驼峰或下划线
@@ -30,114 +30,114 @@ public class SqlMatcher {
     /**
      * 允许空字符串做value
      * 
-     * @param column
+     * @param filter
      * @return
      */
-    public static boolean accept(SqlMatcher column) {
-        if (column == null) {
+    public static boolean accept(SqlFilter filter) {
+        if (filter == null) {
             return false;
         }
 
-        if (SpringString.isEmpty(column.getKey())) {
+        if (SpringString.isEmpty(filter.getKey())) {
             return false;
         }
 
-        if (column.getValue() == null) {
+        if (filter.getValue() == null) {
             // 仅非null判断
             return false;
         }
 
-        if (SqlOperator.LIKE.equals(column.getOperator()) && SpringString.isEmpty(column.getValue().toString())) {
+        if (SqlOperator.LIKE.equals(filter.getOperator()) && SpringString.isEmpty(filter.getValue().toString())) {
             return false;
         }
 
-        SqlColumnUtils.acceptChar(column.getKey());
+        SqlColumnUtils.acceptChar(filter.getKey());
 
         return true;
     }
 
-    public static SqlMatcher eq(String key, String value) {
+    public static SqlFilter eq(String key, String value) {
         return create(key, value, SqlValueTypes.STRING, SqlOperator.EQ);
     }
 
-    public static SqlMatcher eq(String key, Long value) {
+    public static SqlFilter eq(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.EQ);
     }
 
-    public static SqlMatcher eq(String key, Integer value) {
+    public static SqlFilter eq(String key, Integer value) {
 
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.EQ);
     }
 
-    public static SqlMatcher eq(String key, Boolean value) {
+    public static SqlFilter eq(String key, Boolean value) {
         return create(key, value, SqlValueTypes.BOOLEAN, SqlOperator.EQ);
     }
 
-    public static SqlMatcher neq(String key, String value) {
+    public static SqlFilter neq(String key, String value) {
         return create(key, value, SqlValueTypes.STRING, SqlOperator.NEQ);
     }
 
-    public static SqlMatcher neq(String key, Long value) {
+    public static SqlFilter neq(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.NEQ);
     }
 
-    public static SqlMatcher neq(String key, Integer value) {
+    public static SqlFilter neq(String key, Integer value) {
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.NEQ);
     }
 
-    public static SqlMatcher neq(String key, Boolean value) {
+    public static SqlFilter neq(String key, Boolean value) {
         return create(key, value, SqlValueTypes.BOOLEAN, SqlOperator.NEQ);
     }
 
-    public static SqlMatcher gt(String key, Long value) {
+    public static SqlFilter gt(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.GT);
     }
 
-    public static SqlMatcher gt(String key, Integer value) {
+    public static SqlFilter gt(String key, Integer value) {
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.GT);
     }
 
-    public static SqlMatcher egt(String key, Long value) {
+    public static SqlFilter egt(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.EGT);
     }
 
-    public static SqlMatcher egt(String key, Integer value) {
+    public static SqlFilter egt(String key, Integer value) {
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.EGT);
     }
 
-    public static SqlMatcher lt(String key, Long value) {
+    public static SqlFilter lt(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.LT);
     }
 
-    public static SqlMatcher lt(String key, Integer value) {
+    public static SqlFilter lt(String key, Integer value) {
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.LT);
     }
 
-    public static SqlMatcher elt(String key, Long value) {
+    public static SqlFilter elt(String key, Long value) {
         return create(key, value, SqlValueTypes.LONG, SqlOperator.ELT);
     }
 
-    public static SqlMatcher elt(String key, Integer value) {
+    public static SqlFilter elt(String key, Integer value) {
         return create(key, value, SqlValueTypes.INTEGER, SqlOperator.ELT);
     }
 
-    public static SqlMatcher like(String key, String value) {
+    public static SqlFilter like(String key, String value) {
         return create(key, SqlInjectUtils.like(value, true, true), SqlValueTypes.STRING, SqlOperator.LIKE);
     }
 
-    public static SqlMatcher likeLeft(String key, String value) {
+    public static SqlFilter likeLeft(String key, String value) {
         return create(key, SqlInjectUtils.like(value, true, false), SqlValueTypes.STRING, SqlOperator.LIKE_LEFT);
     }
 
-    public static SqlMatcher likeRight(String key, String value) {
+    public static SqlFilter likeRight(String key, String value) {
         return create(key, SqlInjectUtils.like(value, false, true), SqlValueTypes.STRING, SqlOperator.LIKE_RIGHT);
     }
 
-    public static <T> SqlMatcher in(String key, Collection<T> value, Class<T> type) {
+    public static <T> SqlFilter in(String key, Collection<T> value, Class<T> type) {
         return in(key, value, type.getName());
     }
 
-    public static <T> SqlMatcher in(String key, Collection<T> value, String type) {
+    public static <T> SqlFilter in(String key, Collection<T> value, String type) {
         String src = null;
         if (value != null && value.isEmpty() == false) {
             if (JavaValueTypes.STRING.equals(type)) {
@@ -177,15 +177,15 @@ public class SqlMatcher {
         return StringCreator.create().append("(").append(raw).append(")").toString();
     }
 
-    public static SqlMatcher create(String key, Object value, int sqlType, SqlOperator operator) {
-        return new SqlMatcher(key, value, sqlType, SqlAdaptUtils.toJavaType(sqlType), operator);
+    public static SqlFilter create(String key, Object value, int sqlType, SqlOperator operator) {
+        return new SqlFilter(key, value, sqlType, SqlAdaptUtils.toJavaType(sqlType), operator);
     }
 
-    public static SqlMatcher create(String key, Object value, String javaType, SqlOperator operator) {
-        return new SqlMatcher(key, value, SqlAdaptUtils.toSqlType(javaType), javaType, operator);
+    public static SqlFilter create(String key, Object value, String javaType, SqlOperator operator) {
+        return new SqlFilter(key, value, SqlAdaptUtils.toSqlType(javaType), javaType, operator);
     }
 
-    private SqlMatcher(String key, Object value, int sqlType, String javaType, SqlOperator operator) {
+    private SqlFilter(String key, Object value, int sqlType, String javaType, SqlOperator operator) {
         this.key = key;
         this.value = value;
         this.sqlType = sqlType;

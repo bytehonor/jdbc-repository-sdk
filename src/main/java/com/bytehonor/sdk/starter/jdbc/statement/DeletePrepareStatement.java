@@ -2,7 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.statement;
 
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlMaker;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlFormatter;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
 /**
@@ -26,7 +26,7 @@ public class DeletePrepareStatement extends AbstractPrepareStatement {
             throw new JdbcSdkException("delete sql condition null");
         }
 
-        sql.append(SqlMaker.toWhereSql(condition));
+        sql.append(SqlFormatter.toWhereSql(condition));
         return sql.toString();
     }
 

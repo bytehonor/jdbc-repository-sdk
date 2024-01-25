@@ -1,7 +1,7 @@
 package com.bytehonor.sdk.starter.jdbc.statement;
 
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlMaker;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlFormatter;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
 /**
@@ -21,7 +21,7 @@ public class SelectCountPrepareStatement extends AbstractPrepareStatement {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT COUNT(").append(table.getPrimaryKey()).append(") FROM ").append(table.getTableName());
 
-        sql.append(SqlMaker.toWhereSql(condition));
+        sql.append(SqlFormatter.toWhereSql(condition));
         return sql.toString();
     }
 

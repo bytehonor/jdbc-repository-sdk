@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
-public class SqlMaker {
+public class SqlFormatter {
 
     public static String toWhereSql(SqlCondition condition) {
         if (condition == null) {

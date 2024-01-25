@@ -14,7 +14,7 @@ import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlMaker;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlFormatter;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
@@ -81,7 +81,7 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
             sql.append(column).append(" = ").append(SqlConstants.PARAM);
         }
 
-        sql.append(SqlMaker.toWhereSql(condition));
+        sql.append(SqlFormatter.toWhereSql(condition));
         return sql.toString();
     }
 

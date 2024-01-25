@@ -5,7 +5,7 @@ import com.bytehonor.sdk.lang.spring.function.Getters;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlMaker;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlFormatter;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
@@ -34,9 +34,9 @@ public class GroupCountPrepareStatement extends AbstractPrepareStatement {
         sql.append("SELECT `").append(column).append("` AS `value`,");
         sql.append(" COUNT(").append(table.getPrimaryKey()).append(") AS `size` FROM ").append(table.getTableName());
 
-        sql.append(SqlMaker.toWhereSql(condition));
+        sql.append(SqlFormatter.toWhereSql(condition));
         sql.append(" GROUP BY `").append(column).append("`");
-        sql.append(orderBy(SqlMaker.toOrderSql(condition.getOrder())));
+        sql.append(orderBy(SqlFormatter.toOrderSql(condition.getOrder())));
         return sql.toString();
     }
 
