@@ -100,10 +100,11 @@ public class SqlWhere {
         if (isEmpty()) {
             return "";
         }
+
         StringBuilder sb = new StringBuilder();
         sb.append(" WHERE ").append(sql.toString());
         return sb.toString();
-        
+
     }
 
     public QueryLogic getLogic() {

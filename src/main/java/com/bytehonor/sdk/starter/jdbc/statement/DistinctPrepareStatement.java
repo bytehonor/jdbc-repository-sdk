@@ -29,9 +29,9 @@ public class DistinctPrepareStatement extends AbstractPrepareStatement {
         if (SpringString.isEmpty(column)) {
             throw new JdbcSdkException("DISTINCT column isEmpty");
         }
+
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT DISTINCT(").append(column).append(") FROM ").append(table.getName());
-
         sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
         return sql.toString();
     }

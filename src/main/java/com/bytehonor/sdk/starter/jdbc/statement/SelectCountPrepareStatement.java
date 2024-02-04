@@ -20,7 +20,6 @@ public class SelectCountPrepareStatement extends AbstractPrepareStatement {
     public String sql() {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT COUNT(").append(table.getPrimary()).append(") FROM ").append(table.getName());
-
         sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
         return sql.toString();
     }

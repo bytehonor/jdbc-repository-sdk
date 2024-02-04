@@ -36,12 +36,4 @@ public class SqlAdapterTest {
         assertTrue("test", target.equals(sql));
     }
 
-    @Test
-    public void testFrom() {
-    }
-
-    @Test
-    public void testInValue() {
-    }
-
 }

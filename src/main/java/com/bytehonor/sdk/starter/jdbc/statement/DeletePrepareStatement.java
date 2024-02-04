@@ -19,13 +19,12 @@ public class DeletePrepareStatement extends AbstractPrepareStatement {
 
     @Override
     public String sql() {
-        StringBuilder sql = new StringBuilder();
-        sql.append("DELETE FROM ").append(table.getName());
-
         if (condition == null) {
             throw new JdbcSdkException("delete sql condition null");
         }
 
+        StringBuilder sql = new StringBuilder();
+        sql.append("DELETE FROM ").append(table.getName());
         sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
         return sql.toString();
     }

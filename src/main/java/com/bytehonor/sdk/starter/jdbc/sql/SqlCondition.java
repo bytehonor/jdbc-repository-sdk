@@ -10,19 +10,19 @@ import com.bytehonor.sdk.lang.spring.string.SpringString;
 
 public class SqlCondition {
 
+    private final SqlWhere where;
+
     private final SqlOrder order;
 
     private final SqlPager pager;
-
-    private final SqlWhere where;
 
     private SqlCondition(QueryLogic logic, SqlPager pager) {
         Objects.requireNonNull(logic, "logic");
         Objects.requireNonNull(pager, "pager");
 
+        this.where = SqlWhere.create(logic);
         this.order = SqlOrder.non();
         this.pager = pager;
-        this.where = SqlWhere.create(logic);
     }
 
     public static SqlCondition create() {

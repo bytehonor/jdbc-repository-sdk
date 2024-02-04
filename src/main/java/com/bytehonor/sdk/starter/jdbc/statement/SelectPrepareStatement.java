@@ -21,7 +21,6 @@ public class SelectPrepareStatement extends AbstractPrepareStatement {
     public String sql() {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ").append(table.getFullColumns()).append(" FROM ").append(table.getName());
-
         sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
         sql.append(SqlFormatter.toOrderSql(condition.getOrder()));
         sql.append(SqlFormatter.toLimitSql(condition.getPager()));
