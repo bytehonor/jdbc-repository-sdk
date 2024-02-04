@@ -6,45 +6,46 @@ import com.bytehonor.sdk.starter.jdbc.sql.SqlFormatter;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
 /**
- * DELETE FROM TableName WHERE condition
+ * SELECT m.columns,s.cloumns FROM TableMain as m LEFT JOIN TableSub as s on
+ * m.one = s.one WHERE condition Order Page
  * 
  * @author lijianqiang
  *
  */
-public class DeletePrepareStatement extends AbstractPrepareStatement {
+public class LeftJoinPrepareStatement extends AbstractJoinStatement {
 
-    public DeletePrepareStatement(Class<?> clazz, SqlCondition condition) {
-        super(clazz, condition);
+    public LeftJoinPrepareStatement(Class<?> clazzm, Class<?> clazzs, SqlCondition condition) {
+        super(clazzm, clazzs, condition);
     }
 
     @Override
     public String sql() {
         StringBuilder sql = new StringBuilder();
-        sql.append("DELETE FROM ").append(table.getName());
-
-        if (condition == null) {
-            throw new JdbcSdkException("delete sql condition null");
-        }
+        sql.append("SELECT ").append(tablem.getFullColumns()).append(" FROM ").append(tablem.getName());
 
         sql.append(SqlFormatter.toWhereSql(condition));
+        sql.append(SqlFormatter.toOrderSql(condition.getOrder()));
+        sql.append(SqlFormatter.toLimitSql(condition.getPager()));
         return sql.toString();
     }
 
     @Override
     public Object[] args() {
         if (SqlCondition.isArgEmpty(condition)) {
-            throw new JdbcSdkException("delete sql condition args isEmpty");
+            if (condition.getPager() == null) {
+                // 禁全表无分页查询
+                throw new JdbcSdkException("select sql condition args isEmpty");
+            }
+            return new Object[0];
         }
-
         return condition.values().toArray();
     }
 
     @Override
     public int[] types() {
         if (SqlCondition.isArgEmpty(condition)) {
-            throw new JdbcSdkException("delete sql condition args isEmpty");
+            return new int[0];
         }
         return SqlInjectUtils.listArray(condition.types());
     }
-
 }

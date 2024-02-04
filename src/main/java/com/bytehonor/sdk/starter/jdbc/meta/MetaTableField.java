@@ -9,12 +9,12 @@ public class MetaTableField {
     /**
      * 如：updateAt
      */
-    private String key;
+    private String camel;
 
     /**
      * 如：update_at
      */
-    private String column;
+    private String underline;
 
     /**
      * java类型
@@ -25,26 +25,26 @@ public class MetaTableField {
         this("", "", "");
     }
 
-    public MetaTableField(String key, String column, String type) {
-        this.key = key;
-        this.column = column;
+    public MetaTableField(String camel, String underline, String type) {
+        this.camel = camel;
+        this.underline = underline;
         this.type = type;
     }
 
-    public String getKey() {
-        return key;
+    public String getCamel() {
+        return camel;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setCamel(String camel) {
+        this.camel = camel;
     }
 
-    public String getColumn() {
-        return column;
+    public String getUnderline() {
+        return underline;
     }
 
-    public void setColumn(String column) {
-        this.column = column;
+    public void setUnderline(String underline) {
+        this.underline = underline;
     }
 
     public String getType() {

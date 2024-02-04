@@ -67,7 +67,7 @@ public class InsertPrepareStatement extends AbstractPrepareStatement {
             throw new JdbcSdkException("insert sql insertColumns empty");
         }
         StringBuilder sql = new StringBuilder();
-        sql.append("INSERT INTO ").append(table.getTableName());
+        sql.append("INSERT INTO ").append(table.getName());
         int idx = 0;
         StringBuilder columnHolder = new StringBuilder();
         StringBuilder paramHolder = new StringBuilder();

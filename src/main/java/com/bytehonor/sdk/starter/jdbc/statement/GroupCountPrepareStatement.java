@@ -32,7 +32,7 @@ public class GroupCountPrepareStatement extends AbstractPrepareStatement {
         }
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT `").append(column).append("` AS `value`,");
-        sql.append(" COUNT(").append(table.getPrimaryKey()).append(") AS `size` FROM ").append(table.getTableName());
+        sql.append(" COUNT(").append(table.getPrimary()).append(") AS `size` FROM ").append(table.getName());
 
         sql.append(SqlFormatter.toWhereSql(condition));
         sql.append(" GROUP BY `").append(column).append("`");

@@ -13,64 +13,64 @@ import com.bytehonor.sdk.lang.spring.string.SpringString;
  */
 public class MetaTable {
 
-    private String modelClazz;
+    private String clazz;
 
-    private String tableName;
+    private String name;
 
-    private String primaryKey;
+    private String primary;
 
     private List<MetaTableField> fields;
 
-    private Set<String> keySet;
+    private Set<String> camels;
 
-    private Set<String> columnSet;
+    private Set<String> underlines;
 
     private String fullColumns;
 
     public MetaTable() {
         fields = new ArrayList<MetaTableField>();
-        keySet = new HashSet<String>();
-        columnSet = new HashSet<String>();
+        camels = new HashSet<String>();
+        underlines = new HashSet<String>();
     }
 
     public void finish() {
         if (SpringString.isEmpty(fullColumns) == false) {
             return;
         }
-        keySet = new HashSet<String>();
-        columnSet = new HashSet<String>();
+        camels = new HashSet<String>();
+        underlines = new HashSet<String>();
         StringBuilder sb = new StringBuilder();
-        sb.append(primaryKey);
+        sb.append(primary);
         for (MetaTableField field : fields) {
-            keySet.add(field.getKey());
-            columnSet.add(field.getColumn());
-            sb.append(", ").append(field.getColumn());
+            camels.add(field.getCamel());
+            underlines.add(field.getUnderline());
+            sb.append(", ").append(field.getUnderline());
         }
         fullColumns = sb.toString();
     }
 
-    public String getModelClazz() {
-        return modelClazz;
+    public String getClazz() {
+        return clazz;
     }
 
-    public void setModelClazz(String modelClazz) {
-        this.modelClazz = modelClazz;
+    public void setClazz(String clazz) {
+        this.clazz = clazz;
     }
 
-    public String getTableName() {
-        return tableName;
+    public String getName() {
+        return name;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPrimaryKey() {
-        return primaryKey;
+    public String getPrimary() {
+        return primary;
     }
 
-    public void setPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
+    public void setPrimary(String primary) {
+        this.primary = primary;
     }
 
     public List<MetaTableField> getFields() {
@@ -81,20 +81,20 @@ public class MetaTable {
         this.fields = fields;
     }
 
-    public Set<String> getKeySet() {
-        return keySet;
+    public Set<String> getCamels() {
+        return camels;
     }
 
-    public void setKeySet(Set<String> keySet) {
-        this.keySet = keySet;
+    public void setCamels(Set<String> camels) {
+        this.camels = camels;
     }
 
-    public Set<String> getColumnSet() {
-        return columnSet;
+    public Set<String> getUnderlines() {
+        return underlines;
     }
 
-    public void setColumnSet(Set<String> columnSet) {
-        this.columnSet = columnSet;
+    public void setUnderlines(Set<String> underlines) {
+        this.underlines = underlines;
     }
 
     public String getFullColumns() {

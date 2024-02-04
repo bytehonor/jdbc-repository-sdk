@@ -39,7 +39,7 @@ public class SqlMetaUtils {
         }
 
         metaTable = new MetaTable();
-        metaTable.setModelClazz(clazz.getName());
+        metaTable.setClazz(clazz.getName());
 
         SqlTable sqlTable = AnnotationUtils.getAnnotation(clazz, SqlTable.class);
         String primary = sqlTable.primary();
@@ -47,15 +47,15 @@ public class SqlMetaUtils {
             throw new JdbcSdkException("No SqlTable primary, clazz:" + clazzName);
         }
 
-        metaTable.setTableName(sqlTable.name());
-        metaTable.setPrimaryKey(primary);
-        LOG.debug("table name:{}, primary:{}", metaTable.getTableName(), primary);
+        metaTable.setName(sqlTable.name());
+        metaTable.setPrimary(primary);
+        LOG.debug("table name:{}, primary:{}", metaTable.getName(), primary);
 
         List<MetaTableField> metaTableFields = new ArrayList<MetaTableField>();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            String key = field.getName();
-            if (primary.equals(key)) {
+            String camel = field.getName();
+            if (primary.equals(camel)) {
                 continue;
             }
             if (Modifier.isStatic(field.getModifiers())) {
@@ -63,23 +63,23 @@ public class SqlMetaUtils {
             }
 
             MetaTableField tableField = new MetaTableField();
-            tableField.setKey(key);
+            tableField.setCamel(camel);
             tableField.setType(field.getType().getName());
 
-            String column = "";
+            String underline = "";
             if (field.isAnnotationPresent(SqlColumn.class)) {
                 SqlColumn sqlColumn = AnnotationUtils.getAnnotation(field, SqlColumn.class);
-                LOG.debug("key:{}, column name:{}, ignore:{}", key, sqlColumn.name(), sqlColumn.ignore());
+                LOG.debug("camel:{}, column name:{}, ignore:{}", camel, sqlColumn.name(), sqlColumn.ignore());
                 if (sqlColumn.ignore()) {
                     continue;
                 }
-                column = sqlColumn.name();
+                underline = sqlColumn.name();
             }
-            if (SpringString.isEmpty(column)) {
-                LOG.debug("key:{}, use camelToUnderline", key);
-                column = SqlColumnUtils.camelToUnderline(key);
+            if (SpringString.isEmpty(underline)) {
+                LOG.debug("camel:{}, use camelToUnderline", camel);
+                underline = SqlColumnUtils.camelToUnderline(camel);
             }
-            tableField.setColumn(column);
+            tableField.setUnderline(underline);
             metaTableFields.add(tableField);
         }
         metaTable.setFields(metaTableFields);

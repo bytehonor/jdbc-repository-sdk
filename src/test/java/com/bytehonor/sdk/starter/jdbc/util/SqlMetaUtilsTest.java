@@ -1,5 +1,7 @@
 package com.bytehonor.sdk.starter.jdbc.util;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.junit.Test;
@@ -9,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTableField;
+import com.google.common.base.Objects;
 
 public class SqlMetaUtilsTest {
 
@@ -17,11 +20,13 @@ public class SqlMetaUtilsTest {
     @Test
     public void testParse() {
         MetaTable table = SqlMetaUtils.parse(Student.class);
-        LOG.info("tableName:{}, primaryKey:{}", table.getTableName(), table.getPrimaryKey());
+        LOG.info("name:{}, primary:{}", table.getName(), table.getPrimary());
         List<MetaTableField> fields = table.getFields();
         for (MetaTableField field : fields) {
-            LOG.info("key:{}, column:{}, type:{}", field.getKey(), field.getColumn(), field.getType());
+            LOG.info("camel:{}, underline:{}, type:{}", field.getCamel(), field.getUnderline(), field.getType());
         }
+
+        assertTrue("testColumn", Objects.equal("tbl_student", table.getName()));
     }
 
 }

@@ -71,7 +71,7 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
             throw new JdbcSdkException("update sql updateColumns empty");
         }
         StringBuilder sql = new StringBuilder();
-        sql.append("UPDATE ").append(table.getTableName()).append(" SET ");
+        sql.append("UPDATE ").append(table.getName()).append(" SET ");
         int idx = 0;
         for (String column : saveColumns) {
             if (idx > 0) {

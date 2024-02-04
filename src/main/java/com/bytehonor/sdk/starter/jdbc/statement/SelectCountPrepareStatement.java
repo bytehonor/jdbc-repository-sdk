@@ -19,7 +19,7 @@ public class SelectCountPrepareStatement extends AbstractPrepareStatement {
     @Override
     public String sql() {
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT COUNT(").append(table.getPrimaryKey()).append(") FROM ").append(table.getTableName());
+        sql.append("SELECT COUNT(").append(table.getPrimary()).append(") FROM ").append(table.getName());
 
         sql.append(SqlFormatter.toWhereSql(condition));
         return sql.toString();

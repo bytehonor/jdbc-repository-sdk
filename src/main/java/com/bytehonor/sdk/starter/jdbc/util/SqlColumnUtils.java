@@ -38,7 +38,7 @@ public class SqlColumnUtils {
 
         List<ModelKeyValue> result = new ArrayList<ModelKeyValue>();
 
-        String primary = metaTable.getPrimaryKey();
+        String primary = metaTable.getPrimary();
         for (ModelKeyValue item : keyValues) {
             if (isSaveIgnore(primary, item.getKey())) {
                 continue;
@@ -56,7 +56,7 @@ public class SqlColumnUtils {
         if (autoUpdateAt(metaTable)) {
             result.add(ModelKeyValue.of(SqlConstants.UPDATE_AT_COLUMN, now));
         }
-        if (autodCreateAt(metaTable)) {
+        if (autoCreateAt(metaTable)) {
             result.add(ModelKeyValue.of(SqlConstants.CREATE_AT_COLUMN, now));
         }
         return result;
@@ -68,7 +68,7 @@ public class SqlColumnUtils {
 
         List<ModelKeyValue> result = new ArrayList<ModelKeyValue>();
 
-        String primary = metaTable.getPrimaryKey();
+        String primary = metaTable.getPrimary();
 
         Set<String> filters = new HashSet<String>();
         if (CollectionUtils.isEmpty(filterKeys) == false) {
@@ -97,7 +97,7 @@ public class SqlColumnUtils {
     }
 
     public static boolean autoUpdateAt(MetaTable metaTable) {
-        String key = metaTable.getModelClazz() + ":update";
+        String key = metaTable.getClazz() + ":update";
         Boolean enabled = ENABLED_CACHE.get(key);
         if (enabled != null) {
             return enabled;
@@ -108,17 +108,17 @@ public class SqlColumnUtils {
     }
 
     public static boolean hasUpdateAt(MetaTable metaTable) {
-        if (metaTable.getKeySet().contains(SqlConstants.UPDATE_AT_KEY)) {
+        if (metaTable.getCamels().contains(SqlConstants.UPDATE_AT_KEY)) {
             return true;
         }
-        if (metaTable.getColumnSet().contains(SqlConstants.UPDATE_AT_COLUMN)) {
+        if (metaTable.getUnderlines().contains(SqlConstants.UPDATE_AT_COLUMN)) {
             return true;
         }
         return false;
     }
 
-    public static boolean autodCreateAt(MetaTable metaTable) {
-        String key = metaTable.getModelClazz() + ":create";
+    public static boolean autoCreateAt(MetaTable metaTable) {
+        String key = metaTable.getClazz() + ":create";
         Boolean enabled = ENABLED_CACHE.get(key);
         if (enabled != null) {
             return enabled;
@@ -129,10 +129,10 @@ public class SqlColumnUtils {
     }
 
     public static boolean hasCreateAt(MetaTable metaTable) {
-        if (metaTable.getKeySet().contains(SqlConstants.CREATE_AT_KEY)) {
+        if (metaTable.getCamels().contains(SqlConstants.CREATE_AT_KEY)) {
             return true;
         }
-        if (metaTable.getColumnSet().contains(SqlConstants.CREATE_AT_COLUMN)) {
+        if (metaTable.getUnderlines().contains(SqlConstants.CREATE_AT_COLUMN)) {
             return true;
         }
         return false;

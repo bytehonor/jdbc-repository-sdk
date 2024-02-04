@@ -18,19 +18,25 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlMetaUtils;
  * @author lijianqiang
  *
  */
-public abstract class AbstractPrepareStatement implements PrepareStatement {
+public abstract class AbstractJoinStatement implements PrepareStatement {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractPrepareStatement.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractJoinStatement.class);
 
-    protected final Class<?> clazz;
+    protected final Class<?> clazzm;
 
-    protected final MetaTable table;
+    protected final MetaTable tablem;
+
+    protected final Class<?> clazzs;
+
+    protected final MetaTable tables;
 
     protected final SqlCondition condition;
 
-    public AbstractPrepareStatement(Class<?> clazz, SqlCondition condition) {
-        this.clazz = clazz;
-        this.table = SqlMetaUtils.parse(clazz);
+    public AbstractJoinStatement(Class<?> clazzm, Class<?> clazzs, SqlCondition condition) {
+        this.clazzm = clazzm;
+        this.tablem = SqlMetaUtils.parse(clazzm);
+        this.clazzs = clazzs;
+        this.tables = SqlMetaUtils.parse(clazzs);
         this.condition = condition;
     }
 
@@ -57,14 +63,6 @@ public abstract class AbstractPrepareStatement implements PrepareStatement {
             }
         }
 
-    }
-
-    public Class<?> getClazz() {
-        return clazz;
-    }
-
-    public MetaTable getTable() {
-        return table;
     }
 
     public SqlCondition getCondition() {
