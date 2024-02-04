@@ -9,7 +9,7 @@ public class UserProfile {
 
     private String uuid;
 
-    private String name;
+    private String nickname;
 
     private Integer age;
 
@@ -41,12 +41,12 @@ public class UserProfile {
         this.uuid = uuid;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public Integer getAge() {

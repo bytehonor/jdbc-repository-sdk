@@ -17,7 +17,7 @@ public class ModelGetterMapperTest {
                 getter.add(UserProfile::getId);
 
                 getter.add(UserProfile::getUuid);
-                getter.add(UserProfile::getName);
+                getter.add(UserProfile::getNickname);
                 getter.add(UserProfile::getAge);
                 getter.add(UserProfile::getGender);
                 getter.add(UserProfile::getIncome);

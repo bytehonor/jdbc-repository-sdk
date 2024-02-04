@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.util;
+package com.bytehonor.sdk.starter.jdbc.meta;
 
 import static org.junit.Assert.assertTrue;
 
@@ -9,17 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
-import com.bytehonor.sdk.starter.jdbc.meta.MetaTableField;
 import com.google.common.base.Objects;
 
-public class SqlMetaUtilsTest {
+public class MetaTableParserTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SqlMetaUtilsTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MetaTableParserTest.class);
 
     @Test
-    public void testParse() {
-        MetaTable table = SqlMetaUtils.parse(Student.class);
+    public void testTable() {
+        MetaTable table = MetaTableParser.parse(Student.class);
         LOG.info("name:{}, primary:{}", table.getName(), table.getPrimary());
         List<MetaTableField> fields = table.getFields();
         for (MetaTableField field : fields) {

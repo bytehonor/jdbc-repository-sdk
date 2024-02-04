@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.util;
+package com.bytehonor.sdk.starter.jdbc.meta;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -16,12 +16,11 @@ import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlColumn;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlTable;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
-import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
-import com.bytehonor.sdk.starter.jdbc.meta.MetaTableField;
+import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 
-public class SqlMetaUtils {
+public class MetaTableParser {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SqlMetaUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MetaTableParser.class);
 
     private static final Map<String, MetaTable> TABLES = new ConcurrentHashMap<String, MetaTable>();
 

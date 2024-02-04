@@ -7,12 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
+import com.bytehonor.sdk.starter.jdbc.meta.MetaTableParser;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
-import com.bytehonor.sdk.starter.jdbc.util.SqlMetaUtils;
 
 /**
  * @author lijianqiang
@@ -30,7 +30,7 @@ public abstract class AbstractPrepareStatement implements PrepareStatement {
 
     public AbstractPrepareStatement(Class<?> clazz, SqlCondition condition) {
         this.clazz = clazz;
-        this.table = SqlMetaUtils.parse(clazz);
+        this.table = MetaTableParser.parse(clazz);
         this.condition = condition;
     }
 

@@ -20,7 +20,7 @@ public class ModelSetterMapperTest {
                 setter.add(UserProfile::setId);
 
                 setter.add(UserProfile::setUuid);
-                setter.add(UserProfile::setName);
+                setter.add(UserProfile::setNickname);
                 setter.add(UserProfile::setAge);
                 setter.add(UserProfile::setGender);
                 setter.add(UserProfile::setIncome);
