@@ -74,4 +74,23 @@ public class DeletePrepareStatementTest {
         String target = "DELETE FROM tbl_student";
         assertTrue("testValueNull", target.equals(sql) && hasError);
     }
+    
+    @Test
+    public void testStringEmpty() {
+        String uuid = "";
+        SqlCondition condition = SqlCondition.create().eq("uuid", uuid); // 空值会被查询
+        PrepareStatement statement = new DeletePrepareStatement(Student.class, condition);
+        String sql = statement.sql();
+
+        LOG.info("testStringEmpty sql:{}", sql);
+        boolean hasError = true;
+        try {
+            statement.args();
+        } catch (Exception e) {
+            hasError = false;
+            LOG.error("error {}", e.getMessage());
+        }
+        String target = "DELETE FROM tbl_student WHERE uuid = ?";
+        assertTrue("testStringEmpty", target.equals(sql) && hasError);
+    }
 }
