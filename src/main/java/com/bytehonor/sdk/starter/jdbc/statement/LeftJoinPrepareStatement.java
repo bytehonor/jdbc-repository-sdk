@@ -17,8 +17,6 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
 /**
- * SELECT column, COUNT(PrimaryKey) as size FROM TableName WHERE condition GROUP
- * BY column;
  * 
  * @author lijianqiang
  *
@@ -46,8 +44,8 @@ public class LeftJoinPrepareStatement implements PrepareStatement {
         sql.append(" FROM ").append(table.getMain().getName()).append(" as m");
         sql.append(" LEFT JOIN ").append(table.getSub().getName()).append(" as s");
         sql.append(" ON m.").append(table.getOn()).append(" = s.").append(table.getOn());
-        sql.append(SqlFormatter.toWhereSql(condition.getWhere(), "m."));
-        sql.append(SqlFormatter.toOrderSql(condition.getOrder(), "m."));
+        sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
+        sql.append(SqlFormatter.toOrderSql(condition.getOrder()));
         sql.append(SqlFormatter.toLimitSql(condition.getPager()));
         return sql.toString();
     }

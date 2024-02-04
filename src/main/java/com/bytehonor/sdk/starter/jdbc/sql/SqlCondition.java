@@ -7,6 +7,8 @@ import java.util.Objects;
 
 import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
+import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
+import com.bytehonor.sdk.starter.jdbc.sql.key.UnderlineRewriter;
 
 public class SqlCondition {
 
@@ -16,21 +18,30 @@ public class SqlCondition {
 
     private final SqlPager pager;
 
-    private SqlCondition(QueryLogic logic, SqlPager pager) {
+    private SqlCondition(QueryLogic logic, SqlPager pager, KeyRewriter rewriter) {
         Objects.requireNonNull(logic, "logic");
         Objects.requireNonNull(pager, "pager");
+        Objects.requireNonNull(rewriter, "rewriter");
 
-        this.where = SqlWhere.create(logic);
-        this.order = SqlOrder.non();
+        this.where = SqlWhere.create(logic, rewriter);
+        this.order = SqlOrder.plain(rewriter);
         this.pager = pager;
     }
 
     public static SqlCondition create() {
-        return new SqlCondition(QueryLogic.AND, SqlPager.create());
+        return new SqlCondition(QueryLogic.AND, SqlPager.create(), new UnderlineRewriter());
     }
 
     public static SqlCondition create(QueryLogic logic, SqlPager page) {
-        return new SqlCondition(logic, page);
+        return new SqlCondition(logic, page, new UnderlineRewriter());
+    }
+
+    public static SqlCondition create(KeyRewriter rewriter) {
+        return new SqlCondition(QueryLogic.AND, SqlPager.create(), rewriter);
+    }
+
+    public static SqlCondition create(QueryLogic logic, SqlPager page, KeyRewriter rewriter) {
+        return new SqlCondition(logic, page, rewriter);
     }
 
     public static SqlCondition id(Long id) {
@@ -122,18 +133,6 @@ public class SqlCondition {
     public <T> SqlCondition in(String key, Collection<T> value, String type) {
         return this.add(SqlFilter.in(key, value, type));
     }
-
-//    public SqlCondition ins(String key, Collection<String> value) {
-//        return this.doSafeAdd(SqlMatcher.ins(key, value));
-//    }
-//
-//    public SqlCondition inl(String key, Collection<Long> value) {
-//        return this.doSafeAdd(SqlMatcher.inl(key, value));
-//    }
-//
-//    public SqlCondition ini(String key, Collection<Integer> value) {
-//        return this.doSafeAdd(SqlMatcher.ini(key, value));
-//    }
 
     public SqlCondition desc(String key) {
         this.order.desc(key);

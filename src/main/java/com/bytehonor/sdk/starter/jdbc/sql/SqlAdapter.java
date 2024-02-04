@@ -8,6 +8,7 @@ import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.lang.spring.query.QueryFilter;
 import com.bytehonor.sdk.lang.spring.query.QueryOrder;
 import com.bytehonor.sdk.lang.spring.query.QueryPager;
+import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
@@ -27,8 +28,22 @@ public class SqlAdapter {
         return model;
     }
 
+    public static SqlCondition convert(QueryCondition condition, KeyRewriter rewriter) {
+        Objects.requireNonNull(condition, "condition");
+
+        SqlCondition model = SqlCondition.create(condition.getLogic(), pager(condition.getPager()), rewriter);
+
+        List<QueryFilter> filters = condition.listFilters();
+        for (QueryFilter filter : filters) {
+            model.add(filter(filter));
+        }
+
+        model.order(order(condition.getOrder()));
+        return model;
+    }
+
     public static SqlOrder order(QueryOrder order) {
-        return order != null ? SqlOrder.of(order.getKey(), order.isDesc()) : SqlOrder.non();
+        return order != null ? SqlOrder.of(order.getKey(), order.isDesc()) : SqlOrder.plain();
     }
 
     public static SqlPager pager(QueryPager pager) {

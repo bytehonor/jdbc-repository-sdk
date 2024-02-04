@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.StudentContact;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.sql.key.PrefixRewriter;
 
 public class LeftJoinPrepareStatementTest {
 
@@ -22,7 +23,7 @@ public class LeftJoinPrepareStatementTest {
         set.add(1);
         set.add(2);
         set.add(3);
-        SqlCondition condition = SqlCondition.create();
+        SqlCondition condition = SqlCondition.create(PrefixRewriter.of("m."));
         condition.in("age", set, Integer.class);
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");

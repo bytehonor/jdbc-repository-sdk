@@ -10,7 +10,7 @@ import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
 import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
-import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
+import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
 
 public class SqlWhere {
 
@@ -35,10 +35,13 @@ public class SqlWhere {
 
     private final List<String> javaTypes;
 
+    private final KeyRewriter rewriter;
+
     private int argSize;
 
-    private SqlWhere(QueryLogic logic) {
+    private SqlWhere(QueryLogic logic, KeyRewriter rewriter) {
         this.logic = logic != null ? logic : QueryLogic.AND;
+        this.rewriter = rewriter;
         this.filters = new ArrayList<SqlFilter>(128);
         this.sql = new StringBuilder();
         this.keys = new ArrayList<String>(128);
@@ -48,8 +51,8 @@ public class SqlWhere {
         this.argSize = 0;
     }
 
-    public static SqlWhere create(QueryLogic logic) {
-        return new SqlWhere(logic);
+    public static SqlWhere create(QueryLogic logic, KeyRewriter rewriter) {
+        return new SqlWhere(logic, rewriter);
     }
 
     /**
@@ -77,19 +80,9 @@ public class SqlWhere {
         return argSize < 1;
     }
 
-    public String toSql() {
-        if (isEmpty()) {
-            return "";
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(" WHERE ").append(sql.toString());
-        return sb.toString();
-    }
-
     private void doRead(SqlFilter filter) {
         // 转成下划线
-        String key = SqlColumnUtils.camelToUnderline(filter.getKey());
+        String key = rewriter.rewrite(filter.getKey());
         if (SpringString.isEmpty(key)) {
             return;
         }
@@ -112,6 +105,16 @@ public class SqlWhere {
         this.values.add(filter.getValue());
         this.sqlTypes.add(filter.getSqlType());
         this.javaTypes.add(filter.getJavaType());
+    }
+
+    public String toSql() {
+        if (isEmpty()) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(" WHERE ").append(sql.toString());
+        return sb.toString();
     }
 
     public QueryLogic getLogic() {

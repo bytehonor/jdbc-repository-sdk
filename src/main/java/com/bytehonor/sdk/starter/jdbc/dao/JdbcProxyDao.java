@@ -30,6 +30,7 @@ import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelSetterMapper;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.sql.key.PrefixRewriter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatementBuilder;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
@@ -48,31 +49,27 @@ public class JdbcProxyDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public <T> List<T> query(String sql, ModelSetterMapper<T> mapper) {
-        return jdbcTemplate.query(sql, mapper);
-    }
-
     public <T> List<T> query(Class<T> clazz, QueryCondition condition, ModelSetterMapper<T> mapper) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
 
-        return query(clazz, SqlAdapter.convert(condition), mapper);
+        return doQuery(clazz, SqlAdapter.convert(condition), mapper);
     }
 
-    public <T> List<T> query(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
+    private <T> List<T> doQuery(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
 
         if (condition.unlimited()) {
-            return doQueryAll(clazz, condition, mapper);
+            return doQuerySelectAll(clazz, condition, mapper);
         }
 
-        return doQuery(clazz, condition, mapper);
+        return doQuerySelect(clazz, condition, mapper);
     }
 
-    private <T> List<T> doQueryAll(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
+    private <T> List<T> doQuerySelectAll(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
         int total = doCount(clazz, condition);
         if (total < 1) {
             return new ArrayList<T>();
@@ -85,7 +82,7 @@ public class JdbcProxyDao {
         while (offset < total) {
             condition.limit(limit);
             condition.offset(offset);
-            part = doQuery(clazz, condition, mapper);
+            part = doQuerySelect(clazz, condition, mapper);
             if (CollectionUtils.isEmpty(part)) {
                 break;
             }
@@ -95,8 +92,25 @@ public class JdbcProxyDao {
         return result;
     }
 
-    private <T> List<T> doQuery(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
+    private <T> List<T> doQuerySelect(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
         PrepareStatement statement = PrepareStatementBuilder.select(clazz, condition);
+        String sql = statement.sql();
+
+        log(clazz, sql);
+
+        return jdbcTemplate.query(sql, statement.args(), statement.types(), mapper);
+    }
+
+    public <T> List<T> queryLeftJoin(Class<T> clazz, QueryCondition condition, ModelSetterMapper<T> mapper) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(condition, "condition");
+        Objects.requireNonNull(mapper, "mapper");
+
+        return doQueryLeftJoin(clazz, SqlAdapter.convert(condition, PrefixRewriter.leftJoin()), mapper);
+    }
+
+    private <T> List<T> doQueryLeftJoin(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
+        PrepareStatement statement = PrepareStatementBuilder.leftJoin(clazz, condition);
         String sql = statement.sql();
 
         log(clazz, sql);
@@ -108,7 +122,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
 
-        List<T> result = query(clazz, SqlCondition.id(id), mapper);
+        List<T> result = doQuery(clazz, SqlCondition.id(id), mapper);
         return DataAccessUtils.uniqueResult(result);
     }
 
