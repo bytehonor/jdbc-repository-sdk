@@ -81,4 +81,12 @@ public final class PrepareStatementBuilder {
 
         return new GroupCountPrepareStatement(clazz, getter, condition);
     }
+
+    public static PrepareStatement leftJoin(Class<?> clazz, SqlCondition condition) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(condition, "condition");
+
+        return new LeftJoinPrepareStatement(clazz, condition);
+    }
+
 }

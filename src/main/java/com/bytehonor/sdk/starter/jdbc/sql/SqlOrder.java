@@ -82,6 +82,17 @@ public class SqlOrder {
         return sb.toString();
     }
 
+    public String toSql(String prefix) {
+        if (SpringString.isEmpty(key)) {
+            return "";
+        }
+        String column = SqlColumnUtils.camelToUnderline(key);
+        StringBuilder sb = new StringBuilder();
+        sb.append(" ORDER BY ").append(prefix).append(column).append(SqlConstants.BLANK);
+        sb.append(desc ? SqlConstants.DESC : SqlConstants.ASC);
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
         return toSql();

@@ -20,6 +20,8 @@ public class SqlWhere {
 
     private final QueryLogic logic;
 
+    private final List<SqlFilter> filters;
+
     private final StringBuilder sql;
 
     /**
@@ -37,11 +39,12 @@ public class SqlWhere {
 
     private SqlWhere(QueryLogic logic) {
         this.logic = logic != null ? logic : QueryLogic.AND;
+        this.filters = new ArrayList<SqlFilter>(128);
         this.sql = new StringBuilder();
-        this.keys = new ArrayList<String>();
-        this.values = new ArrayList<Object>();
-        this.sqlTypes = new ArrayList<Integer>();
-        this.javaTypes = new ArrayList<String>();
+        this.keys = new ArrayList<String>(128);
+        this.values = new ArrayList<Object>(128);
+        this.sqlTypes = new ArrayList<Integer>(128);
+        this.javaTypes = new ArrayList<String>(128);
         this.argSize = 0;
     }
 
@@ -59,32 +62,10 @@ public class SqlWhere {
             LOG.warn("SqlFilter ignore, key:{}, value:{}", filter.getKey(), filter.getValue());
             return this;
         }
-
-        // 转成下划线
-        String key = SqlColumnUtils.camelToUnderline(filter.getKey());
-        if (SpringString.isEmpty(key)) {
-            return this;
-        }
-
-        this.keys.add(key);
-
-        if (argSize > 0) {
-            this.sql.append(BLANK).append(logic.getKey()).append(BLANK);
-        }
-
-        argSize++;
-
-        if (SqlOperator.IN.getKey().equals(filter.getOperator().getKey())) {
-            this.sql.append(key).append(BLANK).append(filter.getOperator().getOpt()).append(BLANK)
-                    .append(filter.getValue());
-            return this;
-        }
-        this.sql.append(key).append(BLANK).append(filter.getOperator().getOpt()).append(BLANK)
-                .append(SqlConstants.PARAM);
-        this.values.add(filter.getValue());
-        this.sqlTypes.add(filter.getSqlType());
-        this.javaTypes.add(filter.getJavaType());
+        doRead(filter);
+        filters.add(filter);
         return this;
+
     }
 
     @Override
@@ -104,7 +85,33 @@ public class SqlWhere {
         StringBuilder sb = new StringBuilder();
         sb.append(" WHERE ").append(sql.toString());
         return sb.toString();
+    }
 
+    private void doRead(SqlFilter filter) {
+        // 转成下划线
+        String key = SqlColumnUtils.camelToUnderline(filter.getKey());
+        if (SpringString.isEmpty(key)) {
+            return;
+        }
+
+        this.keys.add(key);
+
+        if (argSize > 0) {
+            this.sql.append(BLANK).append(logic.getKey()).append(BLANK);
+        }
+
+        argSize++;
+
+        if (SqlOperator.IN.getKey().equals(filter.getOperator().getKey())) {
+            this.sql.append(key).append(BLANK).append(filter.getOperator().getOpt()).append(BLANK)
+                    .append(filter.getValue());
+            return;
+        }
+        this.sql.append(key).append(BLANK).append(filter.getOperator().getOpt()).append(BLANK)
+                .append(SqlConstants.PARAM);
+        this.values.add(filter.getValue());
+        this.sqlTypes.add(filter.getSqlType());
+        this.javaTypes.add(filter.getJavaType());
     }
 
     public QueryLogic getLogic() {

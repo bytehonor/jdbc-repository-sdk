@@ -14,49 +14,47 @@ import org.springframework.core.annotation.AnnotationUtils;
 
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlColumn;
-import com.bytehonor.sdk.starter.jdbc.annotation.SqlTable;
+import com.bytehonor.sdk.starter.jdbc.annotation.SqlTableLeftJoin;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 
-public class MetaTableParser {
+public class MetaTableLeftJoinParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(MetaTableParser.class);
 
-    private static final Map<String, MetaTable> CACHE = new ConcurrentHashMap<String, MetaTable>(1024);
+    private static final Map<String, MetaTableLeftJoin> CACHE = new ConcurrentHashMap<String, MetaTableLeftJoin>();
 
-    public static MetaTable parse(Class<?> clazz) {
+    public static MetaTableLeftJoin parse(Class<?> clazz) {
         Objects.requireNonNull(clazz, "clazz");
 
         String clazzName = clazz.getName();
-        if (clazz.isAnnotationPresent(SqlTable.class) == false) {
-            throw new JdbcSdkException("No SqlTable Annotation, clazz:" + clazzName);
+        if (clazz.isAnnotationPresent(SqlTableLeftJoin.class) == false) {
+            throw new JdbcSdkException("No SqlTableLeftJoin Annotation, clazz:" + clazzName);
         }
 
-        MetaTable mata = CACHE.get(clazzName);
-        if (mata != null) {
-            return mata;
+        MetaTableLeftJoin meta = CACHE.get(clazzName);
+        if (meta != null) {
+            return meta;
         }
 
-        mata = new MetaTable();
-        mata.setClazz(clazzName);
+        meta = new MetaTableLeftJoin();
+        meta.setClazz(clazzName);
 
-        SqlTable annotation = AnnotationUtils.getAnnotation(clazz, SqlTable.class);
-        String primary = annotation.primary();
-        if (SpringString.isEmpty(primary)) {
-            throw new JdbcSdkException("No SqlTable primary, clazz:" + clazzName);
+        SqlTableLeftJoin annotation = AnnotationUtils.getAnnotation(clazz, SqlTableLeftJoin.class);
+        String on = annotation.on();
+        if (SpringString.isEmpty(on)) {
+            throw new JdbcSdkException("No SqlTableLeftJoin on, clazz:" + clazzName);
         }
 
-        mata.setName(annotation.name());
-        mata.setPrimary(primary);
-        LOG.debug("table name:{}, primary:{}", mata.getName(), primary);
+        meta.setOn(SqlColumnUtils.camelToUnderline(on));
+
+        meta.setMain(MetaTableParser.parse(annotation.main()));
+        meta.setSub(MetaTableParser.parse(annotation.sub()));
 
         List<MetaTableField> metaTableFields = new ArrayList<MetaTableField>();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             String camel = field.getName();
-            if (primary.equals(camel)) {
-                continue;
-            }
             if (Modifier.isStatic(field.getModifiers())) {
                 continue;
             }
@@ -81,10 +79,10 @@ public class MetaTableParser {
             tableField.setUnderline(underline);
             metaTableFields.add(tableField);
         }
-        mata.setFields(metaTableFields);
+        meta.setFields(metaTableFields);
 
-        mata.finish();
-        CACHE.put(clazzName, mata);
-        return mata;
+        meta.finish();
+        CACHE.put(clazzName, meta);
+        return meta;
     }
 }

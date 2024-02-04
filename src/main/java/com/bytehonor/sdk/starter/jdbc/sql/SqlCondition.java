@@ -156,15 +156,6 @@ public class SqlCondition {
         return condition.getWhere().isEmpty();
     }
 
-//    public String toSql() {
-//        if (holder.isEmpty()) {
-//            return "";
-//        }
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(" WHERE ").append(holder.toSql());
-//        return sb.toString();
-//    }
-
     public List<Object> values() {
         if (where == null) {
             return new ArrayList<Object>();

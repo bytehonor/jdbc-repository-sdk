@@ -8,28 +8,16 @@ import java.util.Set;
 
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 
-/**
- * @author lijianqiang
- *
- */
-public class MetaTable implements Serializable {
+public class MetaTableLeftJoin implements Serializable {
 
-    private static final long serialVersionUID = 6830586578834793702L;
+    private static final long serialVersionUID = -3957039146909053296L;
 
     /**
      * Model Clazz
      */
     private String clazz;
 
-    /**
-     * Table Name
-     */
-    private String name;
-
-    /**
-     * Table Primary Key
-     */
-    private String primary;
+    private String on;
 
     private List<MetaTableField> fields;
 
@@ -39,7 +27,11 @@ public class MetaTable implements Serializable {
 
     private String fullColumns;
 
-    public MetaTable() {
+    private MetaTable main;
+
+    private MetaTable sub;
+
+    public MetaTableLeftJoin() {
         fields = new ArrayList<MetaTableField>();
         camels = new HashSet<String>();
         underlines = new HashSet<String>();
@@ -52,11 +44,24 @@ public class MetaTable implements Serializable {
         camels = new HashSet<String>();
         underlines = new HashSet<String>();
         StringBuilder sb = new StringBuilder();
-        sb.append(primary);
+
+        sb.append("m.").append(main.getPrimary());
         for (MetaTableField field : fields) {
+            if (field.getUnderline().equals(main.getPrimary())) {
+                continue;
+            }
+            if (field.getUnderline().equals(sub.getPrimary())) {
+                continue;
+            }
             camels.add(field.getCamel());
             underlines.add(field.getUnderline());
-            sb.append(", ").append(field.getUnderline());
+            sb.append(", ");
+            if (main.getUnderlines().contains(field.getUnderline())) {
+                sb.append("m.");
+            } else {
+                sb.append("s.");
+            }
+            sb.append(field.getUnderline());
         }
         fullColumns = sb.toString();
     }
@@ -69,20 +74,12 @@ public class MetaTable implements Serializable {
         this.clazz = clazz;
     }
 
-    public String getName() {
-        return name;
+    public String getOn() {
+        return on;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPrimary() {
-        return primary;
-    }
-
-    public void setPrimary(String primary) {
-        this.primary = primary;
+    public void setOn(String on) {
+        this.on = on;
     }
 
     public List<MetaTableField> getFields() {
@@ -107,6 +104,22 @@ public class MetaTable implements Serializable {
 
     public void setUnderlines(Set<String> underlines) {
         this.underlines = underlines;
+    }
+
+    public MetaTable getMain() {
+        return main;
+    }
+
+    public void setMain(MetaTable main) {
+        this.main = main;
+    }
+
+    public MetaTable getSub() {
+        return sub;
+    }
+
+    public void setSub(MetaTable sub) {
+        this.sub = sub;
     }
 
     public String getFullColumns() {
