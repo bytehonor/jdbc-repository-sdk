@@ -13,10 +13,19 @@ import com.bytehonor.sdk.lang.spring.string.SpringString;
  */
 public class MetaTable {
 
+    /**
+     * Model Clazz
+     */
     private String clazz;
 
+    /**
+     * Table Name
+     */
     private String name;
 
+    /**
+     * Table Primary Key
+     */
     private String primary;
 
     private List<MetaTableField> fields;

@@ -183,4 +183,15 @@ public class SqlColumnUtils {
         return IGNORES.contains(column);
     }
 
+    public static String joins(Set<String> columns, String prefix) {
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String column : columns) {
+            if (i > 0) {
+                sb.append(", ");
+            }
+            sb.append(prefix).append(column);
+        }
+        return sb.toString();
+    }
 }
