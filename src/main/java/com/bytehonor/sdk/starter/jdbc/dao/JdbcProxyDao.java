@@ -186,16 +186,15 @@ public class JdbcProxyDao {
     }
 
     /**
-     * @param <T>         Model类的类型
-     * @param <R>         getter的返回值的类型
+     * @param <T>       Model类的类型
+     * @param <R>       getter的返回值的类型
      * @param clazz
      * @param getter
-     * @param elementType
+     * @param type
      * @param condition
      * @return
      */
-    public <T, R> List<R> distinct(Class<T> clazz, ClassGetter<T, R> getter, Class<R> elementType,
-            QueryCondition condition) {
+    public <T, R> List<R> distinct(Class<T> clazz, ClassGetter<T, R> getter, Class<R> type, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(getter, "getter");
         Objects.requireNonNull(condition, "condition");
@@ -205,7 +204,7 @@ public class JdbcProxyDao {
 
         log(clazz, sql);
 
-        return jdbcTemplate.queryForList(sql, statement.args(), statement.types(), elementType);
+        return jdbcTemplate.queryForList(sql, statement.args(), statement.types(), type);
     }
 
     private void log(Class<?> clazz, String sql) {
