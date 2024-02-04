@@ -32,16 +32,16 @@ public class SqlCondition {
         return new SqlCondition(QueryLogic.AND, SqlPager.create(), new UnderlineRewriter());
     }
 
-    public static SqlCondition create(QueryLogic logic, SqlPager page) {
-        return new SqlCondition(logic, page, new UnderlineRewriter());
+    public static SqlCondition create(QueryLogic logic, SqlPager pager) {
+        return new SqlCondition(logic, pager, new UnderlineRewriter());
     }
 
     public static SqlCondition create(KeyRewriter rewriter) {
         return new SqlCondition(QueryLogic.AND, SqlPager.create(), rewriter);
     }
 
-    public static SqlCondition create(QueryLogic logic, SqlPager page, KeyRewriter rewriter) {
-        return new SqlCondition(logic, page, rewriter);
+    public static SqlCondition create(QueryLogic logic, SqlPager pager, KeyRewriter rewriter) {
+        return new SqlCondition(logic, pager, rewriter);
     }
 
     public static SqlCondition id(Long id) {
@@ -191,19 +191,19 @@ public class SqlCondition {
         return this;
     }
 
-    public SqlCondition order(SqlOrder order) {
-        if (order != null) {
-            this.order.setKey(order.getKey());
-            this.order.setDesc(order.isDesc());
+    public SqlCondition order(SqlOrder sqlOrder) {
+        if (sqlOrder != null) {
+            this.order.setKey(sqlOrder.getKey());
+            this.order.setDesc(sqlOrder.isDesc());
         }
         return this;
     }
 
-    public SqlCondition orderIfNon(SqlOrder order) {
+    public SqlCondition orderIfNon(SqlOrder sqlOrder) {
         if (sorted()) {
             return this;
         }
-        return order(order);
+        return order(sqlOrder);
     }
 
     public boolean unlimited() {

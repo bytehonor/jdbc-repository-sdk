@@ -20,8 +20,6 @@ public class SqlWhere {
 
     private final QueryLogic logic;
 
-    private final List<SqlFilter> filters;
-
     private final StringBuilder sql;
 
     /**
@@ -42,7 +40,6 @@ public class SqlWhere {
     private SqlWhere(QueryLogic logic, KeyRewriter rewriter) {
         this.logic = logic != null ? logic : QueryLogic.AND;
         this.rewriter = rewriter;
-        this.filters = new ArrayList<SqlFilter>(128);
         this.sql = new StringBuilder();
         this.keys = new ArrayList<String>(128);
         this.values = new ArrayList<Object>(128);
@@ -66,18 +63,7 @@ public class SqlWhere {
             return this;
         }
         doRead(filter);
-        filters.add(filter);
         return this;
-
-    }
-
-    @Override
-    public String toString() {
-        return toSql();
-    }
-
-    public boolean isEmpty() {
-        return argSize < 1;
     }
 
     private void doRead(SqlFilter filter) {
@@ -95,16 +81,26 @@ public class SqlWhere {
 
         argSize++;
 
+        // in值直接拼在sql语句中
         if (SqlOperator.IN.getKey().equals(filter.getOperator().getKey())) {
             this.sql.append(key).append(BLANK).append(filter.getOperator().getOpt()).append(BLANK)
                     .append(filter.getValue());
-            return;
+        } else {
+            this.sql.append(key).append(BLANK).append(filter.getOperator().getOpt()).append(BLANK)
+                    .append(SqlConstants.PARAM);
+            this.values.add(filter.getValue());
+            this.sqlTypes.add(filter.getSqlType());
+            this.javaTypes.add(filter.getJavaType());
         }
-        this.sql.append(key).append(BLANK).append(filter.getOperator().getOpt()).append(BLANK)
-                .append(SqlConstants.PARAM);
-        this.values.add(filter.getValue());
-        this.sqlTypes.add(filter.getSqlType());
-        this.javaTypes.add(filter.getJavaType());
+    }
+
+    @Override
+    public String toString() {
+        return toSql();
+    }
+
+    public boolean isEmpty() {
+        return argSize < 1;
     }
 
     public String toSql() {
