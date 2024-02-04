@@ -122,7 +122,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
 
-        List<T> result = doQuery(clazz, SqlCondition.id(id), mapper);
+        List<T> result = doQuerySelect(clazz, SqlCondition.id(id), mapper);
         return DataAccessUtils.uniqueResult(result);
     }
 
