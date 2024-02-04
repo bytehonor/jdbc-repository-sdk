@@ -32,7 +32,7 @@ public class DistinctPrepareStatement extends AbstractPrepareStatement {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT DISTINCT(").append(column).append(") FROM ").append(table.getName());
 
-        sql.append(SqlFormatter.toWhereSql(condition));
+        sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
         return sql.toString();
     }
 

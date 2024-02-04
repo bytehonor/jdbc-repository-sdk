@@ -14,7 +14,7 @@ public class SqlCondition {
 
     private final SqlPager pager;
 
-    private final SqlArgHolder holder;
+    private final SqlWhere where;
 
     private SqlCondition(QueryLogic logic, SqlPager pager) {
         Objects.requireNonNull(logic, "logic");
@@ -22,7 +22,7 @@ public class SqlCondition {
 
         this.order = SqlOrder.non();
         this.pager = pager;
-        this.holder = SqlArgHolder.create(logic);
+        this.where = SqlWhere.create(logic);
     }
 
     public static SqlCondition create() {
@@ -146,42 +146,37 @@ public class SqlCondition {
     }
 
     public SqlCondition add(SqlFilter filter) {
-        this.holder.safeAdd(filter);
+        this.where.safeAdd(filter);
         return this;
     }
 
     public static boolean isArgEmpty(SqlCondition condition) {
         Objects.requireNonNull(condition, "condition");
 
-        return condition.getHolder().isEmpty();
+        return condition.getWhere().isEmpty();
     }
 
-    public String toSql() {
-        if (holder.isEmpty()) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(" WHERE ").append(holder.toSql());
-        return sb.toString();
-    }
+//    public String toSql() {
+//        if (holder.isEmpty()) {
+//            return "";
+//        }
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(" WHERE ").append(holder.toSql());
+//        return sb.toString();
+//    }
 
     public List<Object> values() {
-        if (holder == null) {
+        if (where == null) {
             return new ArrayList<Object>();
         }
-        return holder.getValues();
+        return where.getValues();
     }
 
     public List<Integer> types() {
-        if (holder == null) {
+        if (where == null) {
             return new ArrayList<Integer>();
         }
-        return holder.getSqlTypes();
-    }
-
-    @Override
-    public String toString() {
-        return toSql();
+        return where.getSqlTypes();
     }
 
     public SqlOrder getOrder() {
@@ -192,8 +187,8 @@ public class SqlCondition {
         return pager;
     }
 
-    public SqlArgHolder getHolder() {
-        return holder;
+    public SqlWhere getWhere() {
+        return where;
     }
 
     public SqlCondition offset(int offset) {

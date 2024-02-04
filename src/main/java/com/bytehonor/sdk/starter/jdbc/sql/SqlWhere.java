@@ -12,9 +12,9 @@ import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 
-public class SqlArgHolder {
+public class SqlWhere {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SqlArgHolder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SqlWhere.class);
 
     private static final String BLANK = SqlConstants.BLANK;
 
@@ -35,7 +35,7 @@ public class SqlArgHolder {
 
     private int argSize;
 
-    private SqlArgHolder(QueryLogic logic) {
+    private SqlWhere(QueryLogic logic) {
         this.logic = logic != null ? logic : QueryLogic.AND;
         this.sql = new StringBuilder();
         this.keys = new ArrayList<String>();
@@ -45,8 +45,8 @@ public class SqlArgHolder {
         this.argSize = 0;
     }
 
-    public static SqlArgHolder create(QueryLogic logic) {
-        return new SqlArgHolder(logic);
+    public static SqlWhere create(QueryLogic logic) {
+        return new SqlWhere(logic);
     }
 
     /**
@@ -54,7 +54,7 @@ public class SqlArgHolder {
      * @param filter
      * @return
      */
-    public SqlArgHolder safeAdd(SqlFilter filter) {
+    public SqlWhere safeAdd(SqlFilter filter) {
         if (SqlFilter.accept(filter) == false) {
             LOG.warn("SqlFilter ignore, key:{}, value:{}", filter.getKey(), filter.getValue());
             return this;
@@ -97,7 +97,13 @@ public class SqlArgHolder {
     }
 
     public String toSql() {
-        return sql.toString();
+        if (isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(" WHERE ").append(sql.toString());
+        return sb.toString();
+        
     }
 
     public QueryLogic getLogic() {

@@ -26,7 +26,7 @@ public class DeletePrepareStatement extends AbstractPrepareStatement {
             throw new JdbcSdkException("delete sql condition null");
         }
 
-        sql.append(SqlFormatter.toWhereSql(condition));
+        sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
         return sql.toString();
     }
 

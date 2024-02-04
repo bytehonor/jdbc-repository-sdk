@@ -49,7 +49,7 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
         Objects.requireNonNull(getter, "getter");
 
         // confilc check
-        List<String> filterKeys = condition.getHolder().getKeys();
+        List<String> filterKeys = condition.getWhere().getKeys();
         List<ModelKeyValue> keyValues = getter.getKeyValues();
         List<ModelKeyValue> result = SqlColumnUtils.prepareUpdate(getTable(), keyValues, filterKeys);
 
@@ -81,7 +81,7 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
             sql.append(column).append(" = ").append(SqlConstants.PARAM);
         }
 
-        sql.append(SqlFormatter.toWhereSql(condition));
+        sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
         return sql.toString();
     }
 

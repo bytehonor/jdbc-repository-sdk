@@ -21,7 +21,7 @@ public class SelectCountPrepareStatement extends AbstractPrepareStatement {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT COUNT(").append(table.getPrimary()).append(") FROM ").append(table.getName());
 
-        sql.append(SqlFormatter.toWhereSql(condition));
+        sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
         return sql.toString();
     }
 
