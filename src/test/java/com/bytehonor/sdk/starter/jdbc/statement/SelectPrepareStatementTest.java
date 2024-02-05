@@ -35,7 +35,7 @@ public class SelectPrepareStatementTest {
         LOG.info("test sql:({})", sql);
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? ORDER BY `age` DESC LIMIT 0,20";
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? ORDER BY age DESC LIMIT 0,20";
         assertTrue("test", target.equals(sql) && args.length == 2);
     }
 
@@ -130,7 +130,7 @@ public class SelectPrepareStatementTest {
         LOG.info("testSetString sql:({})", sql);
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ('boy4','boy5','boy3','boy1') AND create_at > ? ORDER BY `age` DESC LIMIT 0,20";
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ('boy4','boy5','boy3','boy1') AND create_at > ? ORDER BY age DESC LIMIT 0,20";
         assertTrue("testSetString", target.equals(sql) && args.length == 1);
     }
 
@@ -152,7 +152,30 @@ public class SelectPrepareStatementTest {
         LOG.info("testSetString sql:({})", sql);
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ('boy4','boy5','boy3','boy1') AND create_at > ? ORDER BY `age` DESC LIMIT 0,20";
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ('boy4','boy5','boy3','boy1') AND create_at > ? ORDER BY age DESC LIMIT 0,20";
         assertTrue("testSetString", target.equals(sql) && args.length == 1);
+    }
+    
+    @Test
+    public void testLimitOne() {
+        Set<String> set = new HashSet<String>();
+        set.add("boy1");
+        set.add("boy3");
+        set.add("boy4");
+        set.add("boy5");
+        SqlCondition condition = SqlCondition.create();
+        condition.in("nickname", set, String.class);
+        condition.gt("create_at", System.currentTimeMillis());
+        condition.desc("age");
+        condition.limit(1);
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
+        String sql = statement.sql();
+        Object[] args = statement.args();
+
+        LOG.info("testLimitOne sql:({})", sql);
+        statement.check();
+
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ('boy4','boy5','boy3','boy1') AND create_at > ? ORDER BY age DESC LIMIT 0,1";
+        assertTrue("testLimitOne", target.equals(sql) && args.length == 1);
     }
 }

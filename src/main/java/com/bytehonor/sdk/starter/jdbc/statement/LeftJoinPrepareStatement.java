@@ -55,9 +55,12 @@ public class LeftJoinPrepareStatement implements PrepareStatement {
         if (SqlCondition.isArgEmpty(condition)) {
             if (condition.getPager() == null) {
                 // 禁全表无分页查询
-                throw new JdbcSdkException("select sql condition args isEmpty");
+                throw new JdbcSdkException("left join sql condition args isEmpty");
             }
             return new Object[0];
+        }
+        if (condition.unlimited()) {
+            throw new JdbcSdkException("left join condition unlimited forbidden");
         }
         return condition.values().toArray();
     }
