@@ -11,7 +11,7 @@ import com.bytehonor.sdk.lang.spring.function.setter.SetDouble;
 import com.bytehonor.sdk.lang.spring.function.setter.SetInteger;
 import com.bytehonor.sdk.lang.spring.function.setter.SetLong;
 import com.bytehonor.sdk.lang.spring.function.setter.SetString;
-import com.bytehonor.sdk.starter.jdbc.result.Results;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlResult;
 
 public class ModelSetter<T> {
 
@@ -32,7 +32,7 @@ public class ModelSetter<T> {
 
     public ModelSetter<T> add(SetString<T> setter) throws SQLException {
         String field = Setters.field(setter);
-        String val = Results.string(rs, field);
+        String val = SqlResult.string(rs, field);
         setter.accept(model, val);
 
         return this;
@@ -40,7 +40,7 @@ public class ModelSetter<T> {
 
     public ModelSetter<T> add(SetLong<T> setter) throws SQLException {
         String field = Setters.field(setter);
-        Long val = Results.longer(rs, field);
+        Long val = SqlResult.longer(rs, field);
         setter.accept(model, val);
 
         return this;
@@ -48,7 +48,7 @@ public class ModelSetter<T> {
 
     public ModelSetter<T> add(SetInteger<T> setter) throws SQLException {
         String field = Setters.field(setter);
-        Integer val = Results.integer(rs, field);
+        Integer val = SqlResult.integer(rs, field);
         setter.accept(model, val);
 
         return this;
@@ -56,7 +56,7 @@ public class ModelSetter<T> {
 
     public ModelSetter<T> add(SetBoolean<T> setter) throws SQLException {
         String field = Setters.field(setter);
-        Boolean val = Results.bool(rs, field);
+        Boolean val = SqlResult.bool(rs, field);
         setter.accept(model, val);
 
         return this;
@@ -64,7 +64,7 @@ public class ModelSetter<T> {
 
     public ModelSetter<T> add(SetDouble<T> setter) throws SQLException {
         String field = Setters.field(setter);
-        Double val = Results.doubler(rs, field);
+        Double val = SqlResult.doubler(rs, field);
         setter.accept(model, val);
 
         return this;

@@ -35,7 +35,7 @@ public class SqlWhere {
 
     private final KeyRewriter rewriter;
 
-    private int argSize;
+    private int size;
 
     private SqlWhere(QueryLogic logic, KeyRewriter rewriter) {
         this.logic = logic != null ? logic : QueryLogic.AND;
@@ -45,7 +45,7 @@ public class SqlWhere {
         this.values = new ArrayList<Object>(128);
         this.sqlTypes = new ArrayList<Integer>(128);
         this.javaTypes = new ArrayList<String>(128);
-        this.argSize = 0;
+        this.size = 0;
     }
 
     public static SqlWhere create(QueryLogic logic, KeyRewriter rewriter) {
@@ -75,11 +75,11 @@ public class SqlWhere {
 
         this.keys.add(key);
 
-        if (argSize > 0) {
+        if (size > 0) {
             this.sql.append(BLANK).append(logic.getKey()).append(BLANK);
         }
 
-        argSize++;
+        size++;
 
         // in值直接拼在sql语句中
         if (SqlOperator.IN.getKey().equals(filter.getOperator().getKey())) {
@@ -100,7 +100,7 @@ public class SqlWhere {
     }
 
     public boolean isEmpty() {
-        return argSize < 1;
+        return size < 1;
     }
 
     public String toSql() {
@@ -118,7 +118,7 @@ public class SqlWhere {
     }
 
     public int getArgSize() {
-        return argSize;
+        return size;
     }
 
     public List<String> getKeys() {

@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.result;
+package com.bytehonor.sdk.starter.jdbc.sql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 
-public class Results {
+public class SqlResult {
 
     public static String string(ResultSet rs, String column) throws SQLException {
         return rs.getString(underline(column));
