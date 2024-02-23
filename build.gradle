@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'com.bytehonor.sdk'
-version = '0.5.41'
+version = '0.5.42'
 sourceCompatibility = 1.8
 
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    api('com.bytehonor.sdk:spring-lang-sdk:0.4.23')
+    api('com.bytehonor.sdk:spring-lang-sdk:0.4.24')
     api('org.springframework.data:spring-data-jdbc:2.4.18')
     implementation('org.springframework.boot:spring-boot-starter-jdbc:2.7.18')
     implementation('org.springframework.boot:spring-boot-autoconfigure:2.7.18')
