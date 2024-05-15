@@ -27,7 +27,7 @@ public class JdbcStarterAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "spring.datasource", name = "driver-class-name", matchIfMissing = false)
-    public JdbcProxyDao jdbcProxyDao(JdbcTemplate jdbcTemplate) {
+    JdbcProxyDao jdbcProxyDao(JdbcTemplate jdbcTemplate) {
         LOG.info("[Bytehonor] JdbcProxyDao");
         return new JdbcProxyDao(jdbcTemplate);
     }
