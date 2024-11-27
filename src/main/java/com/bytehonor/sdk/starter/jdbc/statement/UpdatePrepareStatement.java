@@ -22,6 +22,8 @@ import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 /**
  * UPDATE TableName SET c1=?,c2=? WHERE condition
  * 
+ * 支持更新 空字符串值
+ * 
  * @author lijianqiang
  *
  */
