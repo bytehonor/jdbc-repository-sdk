@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
-import com.bytehonor.sdk.starter.jdbc.meta.MetaTableParser;
 import com.bytehonor.sdk.starter.jdbc.meta.MetaTable;
+import com.bytehonor.sdk.starter.jdbc.meta.MetaTableParser;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
