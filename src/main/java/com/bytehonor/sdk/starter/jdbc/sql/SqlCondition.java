@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlOrder.SqlOrderColumn;
 import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
 import com.bytehonor.sdk.starter.jdbc.sql.key.UnderlineRewriter;
 
@@ -23,7 +24,7 @@ public class SqlCondition {
         Objects.requireNonNull(rewriter, "rewriter");
 
         this.where = SqlWhere.create(logic, rewriter);
-        this.order = SqlOrder.plain(rewriter);
+        this.order = SqlOrder.create(rewriter);
         this.pager = pager;
     }
 

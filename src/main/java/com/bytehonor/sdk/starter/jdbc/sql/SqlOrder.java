@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import org.springframework.util.CollectionUtils;
 
+import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
 import com.bytehonor.sdk.starter.jdbc.sql.key.UnderlineRewriter;
@@ -16,35 +17,38 @@ public class SqlOrder implements SqlPart {
 
     private final KeyRewriter rewriter;
 
-    public SqlOrder() {
+    private SqlOrder() {
         this(new UnderlineRewriter());
     }
 
-    public SqlOrder(KeyRewriter rewriter) {
+    private SqlOrder(KeyRewriter rewriter) {
         this.columns = new ArrayList<SqlOrderColumn>();
         this.rewriter = rewriter;
     }
 
     public SqlOrder desc(String key) {
         Objects.requireNonNull(key, "key");
-        return sort(key, SqlConstants.DESC);
+        return with(SqlOrderColumn.desc(key));
     }
 
     public SqlOrder asc(String key) {
         Objects.requireNonNull(key, "key");
-        return sort(key, SqlConstants.ASC);
+        return with(SqlOrderColumn.asc(key));
     }
 
-    public static SqlOrder plain() {
+    public static SqlOrder create() {
         return new SqlOrder();
     }
 
-    public static SqlOrder plain(KeyRewriter rewriter) {
+    public static SqlOrder create(KeyRewriter rewriter) {
         return new SqlOrder(rewriter);
     }
 
-    public SqlOrder sort(String key, String tag) {
-        this.columns.add(SqlOrderColumn.of(key, tag));
+    public SqlOrder with(SqlOrderColumn column) {
+        if (SpringString.isEmpty(column.getKey()) || SpringString.isEmpty(column.getSorter())) {
+            return this;
+        }
+        this.columns.add(column);
         return this;
     }
 
@@ -53,7 +57,7 @@ public class SqlOrder implements SqlPart {
             return this;
         }
         for (SqlOrderColumn item : list) {
-            sort(item.getKey(), item.getTag());
+            with(item);
         }
         return this;
     }
@@ -70,16 +74,16 @@ public class SqlOrder implements SqlPart {
             if (index > 0) {
                 sb.append(", ");
             }
-            sb.append(formatSort(column.getKey(), column.getTag()));
+            sb.append(format(column.getKey(), column.getSorter()));
             index++;
         }
         return sb.toString().trim();
     }
 
-    private String formatSort(String key, String tag) {
+    private String format(String key, String sorter) {
         String column = rewriter.rewrite(key);
         StringBuilder sb = new StringBuilder();
-        sb.append(column).append(SqlConstants.BLANK).append(tag);
+        sb.append(column).append(SqlConstants.BLANK).append(sorter);
         return sb.toString();
     }
 
@@ -98,6 +102,61 @@ public class SqlOrder implements SqlPart {
     @Override
     public String toString() {
         return toSql();
+    }
+
+    public static final class SqlOrderColumn {
+
+        /**
+         * 忽略驼峰或下划线
+         */
+        private String key;
+
+        private String sorter;
+
+        public SqlOrderColumn() {
+            this("", "");
+        }
+
+        public SqlOrderColumn(String key, String sorter) {
+            this.key = key;
+            this.sorter = sorter;
+        }
+
+        public static SqlOrderColumn desc(String key) {
+            Objects.requireNonNull(key, "key");
+            return of(key, SqlConstants.DESC);
+        }
+
+        public static SqlOrderColumn asc(String key) {
+            Objects.requireNonNull(key, "key");
+            return of(key, SqlConstants.ASC);
+        }
+
+        public static SqlOrderColumn of(String key, String sorter) {
+            Objects.requireNonNull(key, "key");
+            return new SqlOrderColumn(key, sorter);
+        }
+
+        public static SqlOrderColumn plain() {
+            return new SqlOrderColumn();
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getSorter() {
+            return sorter;
+        }
+
+        public void setSorter(String sorter) {
+            this.sorter = sorter;
+        }
+
     }
 
 }

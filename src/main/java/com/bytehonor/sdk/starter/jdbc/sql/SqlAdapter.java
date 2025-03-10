@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.util.CollectionUtils;
+
 import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.lang.spring.query.QueryFilter;
 import com.bytehonor.sdk.lang.spring.query.QueryOrder;
+import com.bytehonor.sdk.lang.spring.query.QueryOrder.QueryOrderColumn;
 import com.bytehonor.sdk.lang.spring.query.QueryPager;
-import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlOrder.SqlOrderColumn;
 import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
@@ -19,44 +22,48 @@ public class SqlAdapter {
     public static SqlCondition convert(QueryCondition condition) {
         Objects.requireNonNull(condition, "condition");
 
-        SqlCondition model = SqlCondition.create(condition.getLogic(), pager(condition.getPager()));
+        SqlCondition model = SqlCondition.create(condition.getLogic(), toPager(condition.getPager()));
 
         List<QueryFilter> filters = condition.listFilters();
         for (QueryFilter filter : filters) {
-            model.add(filter(filter));
+            model.add(toFilter(filter));
         }
 
-        model.order(order(condition.getOrder()));
+        model.order(toOrder(condition.getOrder()));
         return model;
     }
 
     public static SqlCondition convert(QueryCondition condition, KeyRewriter rewriter) {
         Objects.requireNonNull(condition, "condition");
 
-        SqlCondition model = SqlCondition.create(condition.getLogic(), pager(condition.getPager()), rewriter);
+        SqlCondition model = SqlCondition.create(condition.getLogic(), toPager(condition.getPager()), rewriter);
 
         List<QueryFilter> filters = condition.listFilters();
         for (QueryFilter filter : filters) {
-            model.add(filter(filter));
+            model.add(toFilter(filter));
         }
 
-        model.order(order(condition.getOrder()));
+        model.order(toOrder(condition.getOrder()));
         return model;
     }
 
-    public static List<SqlOrderColumn> order(QueryOrder order) {
-        List<SqlOrderColumn> columns = new ArrayList<SqlOrderColumn>();
-        if (order != null) {
-            columns.add(SqlOrderColumn.of(order.getKey(), order.isDesc() ? SqlConstants.DESC : SqlConstants.ASC));
+    public static List<SqlOrderColumn> toOrder(QueryOrder order) {
+        List<SqlOrderColumn> list = new ArrayList<SqlOrderColumn>();
+        List<QueryOrderColumn> columns = order.getColumns();
+        if (CollectionUtils.isEmpty(columns)) {
+            return list;
         }
-        return columns;
+        for (QueryOrderColumn column : columns) {
+            list.add(SqlOrderColumn.of(column.getKey(), column.getSorter()));
+        }
+        return list;
     }
 
-    public static SqlPager pager(QueryPager pager) {
+    public static SqlPager toPager(QueryPager pager) {
         return pager != null ? SqlPager.of(pager.getOffset(), pager.getLimit()) : SqlPager.create();
     }
 
-    public static SqlFilter filter(QueryFilter filter) {
+    public static SqlFilter toFilter(QueryFilter filter) {
         Object value = filter.getValue();
         Object copy = "";
         String javaType = filter.getType();

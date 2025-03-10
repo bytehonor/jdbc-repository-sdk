@@ -37,7 +37,7 @@ public class SelectPrepareStatementQueryTest {
         LOG.info("test sql:{}", sql);
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? ORDER BY age DESC LIMIT 0,20";
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname LIKE ? AND age IN (1,2,3) AND create_at > ? ORDER BY age DESC LIMIT 0,20";
         assertTrue("test", target.equals(sql) && args.length == 2);
     }
 
@@ -88,7 +88,7 @@ public class SelectPrepareStatementQueryTest {
         LOG.info("testOrder sql:({})", sql);
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? ORDER BY create_at DESC LIMIT 0,20";
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname LIKE ? AND age IN (1,2,3) AND create_at > ? ORDER BY create_at DESC LIMIT 0,20";
         assertTrue("testOrder", target.equals(sql) && args.length == 2);
     }
 

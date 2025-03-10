@@ -38,7 +38,7 @@ public class CountPrepareStatementQueryTest {
         LOG.info("sql:{}", sql);
         statement.check();
 
-        String target = "SELECT COUNT(id) FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ?";
+        String target = "SELECT COUNT(id) FROM tbl_student WHERE nickname LIKE ? AND age IN (1,2,3) AND create_at > ?";
         assertTrue("test", target.equals(sql) && args.length == 2);
     }
 
