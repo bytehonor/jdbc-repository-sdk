@@ -83,7 +83,7 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
             sql.append(column).append(" = ").append(SqlConstants.PARAM);
         }
 
-        sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
+        SqlFormatter.connect(sql, condition.getWhere());
         return sql.toString();
     }
 

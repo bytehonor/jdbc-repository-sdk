@@ -25,7 +25,7 @@ public class DeletePrepareStatement extends AbstractPrepareStatement {
 
         StringBuilder sql = new StringBuilder();
         sql.append("DELETE FROM ").append(table.getName());
-        sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
+        SqlFormatter.connect(sql, condition.getWhere());
         return sql.toString();
     }
 

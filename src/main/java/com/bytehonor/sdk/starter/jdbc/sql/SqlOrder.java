@@ -1,46 +1,38 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import com.bytehonor.sdk.lang.spring.string.SpringString;
+import org.springframework.util.CollectionUtils;
+
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
 import com.bytehonor.sdk.starter.jdbc.sql.key.UnderlineRewriter;
 
-public class SqlOrder {
+public class SqlOrder implements SqlPart {
 
-    /**
-     * 忽略驼峰或下划线
-     */
-    private String key;
-
-    private boolean desc;
+    private final List<SqlOrderColumn> columns;
 
     private final KeyRewriter rewriter;
 
     public SqlOrder() {
-        this("", false, new UnderlineRewriter());
+        this(new UnderlineRewriter());
     }
 
-    public SqlOrder(String key, boolean desc, KeyRewriter rewriter) {
-        this.key = key;
-        this.desc = desc;
+    public SqlOrder(KeyRewriter rewriter) {
+        this.columns = new ArrayList<SqlOrderColumn>();
         this.rewriter = rewriter;
     }
 
-    public static SqlOrder descOf(String key) {
+    public SqlOrder desc(String key) {
         Objects.requireNonNull(key, "key");
-        return new SqlOrder(key, true, new UnderlineRewriter());
+        return sort(key, SqlConstants.DESC);
     }
 
-    public static SqlOrder ascOf(String key) {
+    public SqlOrder asc(String key) {
         Objects.requireNonNull(key, "key");
-        return new SqlOrder(key, false, new UnderlineRewriter());
-    }
-
-    public static SqlOrder of(String key, boolean desc) {
-        Objects.requireNonNull(key, "key");
-        return new SqlOrder(key, desc, new UnderlineRewriter());
+        return sort(key, SqlConstants.ASC);
     }
 
     public static SqlOrder plain() {
@@ -48,50 +40,64 @@ public class SqlOrder {
     }
 
     public static SqlOrder plain(KeyRewriter rewriter) {
-        return new SqlOrder("", false, rewriter);
+        return new SqlOrder(rewriter);
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public boolean isDesc() {
-        return desc;
-    }
-
-    public void setDesc(boolean desc) {
-        this.desc = desc;
-    }
-
-    public SqlOrder desc(String key) {
-        this.key = key;
-        this.desc = true;
+    public SqlOrder sort(String key, String tag) {
+        this.columns.add(SqlOrderColumn.of(key, tag));
         return this;
     }
 
-    public SqlOrder asc(String key) {
-        this.key = key;
-        this.desc = false;
+    public SqlOrder sorts(List<SqlOrderColumn> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return this;
+        }
+        for (SqlOrderColumn item : list) {
+            sort(item.getKey(), item.getTag());
+        }
         return this;
     }
 
+    @Override
     public String toSql() {
-        if (SpringString.isEmpty(key)) {
+        if (canOrder() == false) {
             return "";
         }
+        StringBuilder sb = new StringBuilder();
+        sb.append("ORDER BY ");
+        int index = 0;
+        for (SqlOrderColumn column : columns) {
+            if (index > 0) {
+                sb.append(", ");
+            }
+            sb.append(formatSort(column.getKey(), column.getTag()));
+            index++;
+        }
+        return sb.toString().trim();
+    }
+
+    private String formatSort(String key, String tag) {
         String column = rewriter.rewrite(key);
         StringBuilder sb = new StringBuilder();
-        sb.append(" ORDER BY ").append(column).append(SqlConstants.BLANK);
-        sb.append(desc ? SqlConstants.DESC : SqlConstants.ASC);
+        sb.append(column).append(SqlConstants.BLANK).append(tag);
         return sb.toString();
+    }
+
+    public boolean canOrder() {
+        return CollectionUtils.isEmpty(columns) == false;
+    }
+
+    public List<SqlOrderColumn> getColumns() {
+        return columns;
+    }
+
+    public KeyRewriter getRewriter() {
+        return rewriter;
     }
 
     @Override
     public String toString() {
         return toSql();
     }
+
 }

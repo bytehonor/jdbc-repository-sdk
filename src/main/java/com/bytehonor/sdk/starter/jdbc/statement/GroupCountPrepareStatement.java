@@ -6,6 +6,7 @@ import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlFormatter;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlOrder;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
@@ -34,15 +35,16 @@ public class GroupCountPrepareStatement extends AbstractPrepareStatement {
         sql.append("SELECT `").append(column).append("` AS `value`,");
         sql.append(" COUNT(").append(table.getPrimary()).append(") AS `size` FROM ").append(table.getName());
 
-        sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
-        sql.append(" GROUP BY `").append(column).append("`");
-        sql.append(orderBy(SqlFormatter.toOrderSql(condition.getOrder())));
+        SqlFormatter.connect(sql, condition.getWhere());
+        sql.append(" GROUP BY `").append(column).append("` ");
+        sql.append(orderBy((condition.getOrder())));
         return sql.toString();
     }
 
-    private String orderBy(String sql) {
+    private String orderBy(SqlOrder order) {
+        String sql = SqlFormatter.toOrderSql(order);
         if (SpringString.isEmpty(sql)) {
-            return " ORDER BY NULL";
+            return "ORDER BY NULL";
         }
         return sql;
     }

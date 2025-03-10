@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 
 import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
-import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
 import com.bytehonor.sdk.starter.jdbc.sql.key.UnderlineRewriter;
 
@@ -191,26 +190,16 @@ public class SqlCondition {
         return this;
     }
 
-    public SqlCondition order(SqlOrder sqlOrder) {
-        if (sqlOrder != null) {
-            this.order.setKey(sqlOrder.getKey());
-            this.order.setDesc(sqlOrder.isDesc());
-        }
+    public SqlCondition order(List<SqlOrderColumn> columns) {
+        this.order.sorts(columns);
         return this;
-    }
-
-    public SqlCondition orderIfNon(SqlOrder sqlOrder) {
-        if (sorted()) {
-            return this;
-        }
-        return order(sqlOrder);
     }
 
     public boolean unlimited() {
         return this.pager.unlimited();
     }
 
-    public boolean sorted() {
-        return SpringString.isEmpty(order.getKey()) == false;
+    public boolean canOrder() {
+        return order.canOrder();
     }
 }

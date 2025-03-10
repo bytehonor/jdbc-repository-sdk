@@ -44,9 +44,10 @@ public class LeftJoinPrepareStatement implements PrepareStatement {
         sql.append(" FROM ").append(table.getMain().getName()).append(" as m");
         sql.append(" LEFT JOIN ").append(table.getSub().getName()).append(" as s");
         sql.append(" ON m.").append(table.getOn()).append(" = s.").append(table.getOn());
-        sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
-        sql.append(SqlFormatter.toOrderSql(condition.getOrder()));
-        sql.append(SqlFormatter.toLimitSql(condition.getPager()));
+//        sql.append(SqlFormatter.toWhereSql(condition.getWhere()));
+//        sql.append(SqlFormatter.toOrderSql(condition.getOrder()));
+//        sql.append(SqlFormatter.toLimitSql(condition.getPager()));
+        SqlFormatter.connect(sql, condition.getWhere(), condition.getOrder(), condition.getPager());
         return sql.toString();
     }
 

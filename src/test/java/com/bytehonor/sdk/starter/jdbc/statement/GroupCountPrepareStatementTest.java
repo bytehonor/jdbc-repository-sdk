@@ -33,7 +33,7 @@ public class GroupCountPrepareStatementTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("test sql:{}", sql);
+        LOG.info("test sql:({})", sql);
         statement.check();
 
         String target = "SELECT `age` AS `value`, COUNT(id) AS `size` FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? GROUP BY `age` ORDER BY NULL";
@@ -56,7 +56,7 @@ public class GroupCountPrepareStatementTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testWithOrder sql:{}", sql);
+        LOG.info("testWithOrder sql:({})", sql);
         statement.check();
 
         //String target = "SELECT `age` AS `value`, COUNT(id) AS `size` FROM tbl_student WHERE nickname LIKE ? AND create_at > ? AND age IN (1,2,3) GROUP BY `age` ORDER BY `size` DESC";

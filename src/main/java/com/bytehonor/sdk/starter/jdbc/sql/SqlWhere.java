@@ -12,7 +12,7 @@ import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
 
-public class SqlWhere {
+public class SqlWhere implements SqlPart {
 
     private static final Logger LOG = LoggerFactory.getLogger(SqlWhere.class);
 
@@ -103,14 +103,15 @@ public class SqlWhere {
         return size < 1;
     }
 
+    @Override
     public String toSql() {
         if (isEmpty()) {
             return "";
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" WHERE ").append(sql.toString());
-        return sb.toString();
+        sb.append("WHERE ").append(sql.toString());
+        return sb.toString().trim();
     }
 
     public QueryLogic getLogic() {

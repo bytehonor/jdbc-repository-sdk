@@ -1,5 +1,6 @@
 package com.bytehonor.sdk.starter.jdbc.sql;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.lang.spring.query.QueryFilter;
 import com.bytehonor.sdk.lang.spring.query.QueryOrder;
 import com.bytehonor.sdk.lang.spring.query.QueryPager;
+import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
@@ -42,8 +44,12 @@ public class SqlAdapter {
         return model;
     }
 
-    public static SqlOrder order(QueryOrder order) {
-        return order != null ? SqlOrder.of(order.getKey(), order.isDesc()) : SqlOrder.plain();
+    public static List<SqlOrderColumn> order(QueryOrder order) {
+        List<SqlOrderColumn> columns = new ArrayList<SqlOrderColumn>();
+        if (order != null) {
+            columns.add(SqlOrderColumn.of(order.getKey(), order.isDesc() ? SqlConstants.DESC : SqlConstants.ASC));
+        }
+        return columns;
     }
 
     public static SqlPager pager(QueryPager pager) {

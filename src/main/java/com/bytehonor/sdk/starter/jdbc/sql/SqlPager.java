@@ -2,7 +2,7 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 
 import com.bytehonor.sdk.lang.spring.constant.HttpConstants;
 
-public class SqlPager {
+public class SqlPager implements SqlPart {
 
     public static int LIMIT_DEF = HttpConstants.LIMIT_DEF;
 
@@ -28,12 +28,13 @@ public class SqlPager {
         return page;
     }
 
+    @Override
     public String toSql() {
         if (unlimited()) {
             return "";
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(" LIMIT ").append(offset).append(",").append(limit);
+        sb.append("LIMIT ").append(offset).append(",").append(limit);
         return sb.toString();
     }
 
