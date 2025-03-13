@@ -55,10 +55,6 @@ public class SqlWhere implements SqlPart {
      * @return
      */
     public SqlWhere filter(SqlFilterColumn column) {
-//        if (SqlFilterColumn.accept(column) == false) {
-//            LOG.warn("SqlFilter ignore, key:{}, value:{}", column.getKey(), column.getValue());
-//            return this;
-//        }
         filter.with(column);
         doRead(column);
         return this;

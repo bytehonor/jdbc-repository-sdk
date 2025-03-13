@@ -41,10 +41,8 @@ public abstract class AbstractPrepareStatement implements PrepareStatement {
 
     @Override
     public void check() {
-        Object[] args = args();
-        int[] types = types();
-        int argLength = args.length;
-        int typeLength = types.length;
+        int argLength = args().length;
+        int typeLength = types().length;
         LOG.debug("argSize:{}, typeSize:{}", argLength, typeLength);
 
         if (argLength != typeLength) {
@@ -52,6 +50,8 @@ public abstract class AbstractPrepareStatement implements PrepareStatement {
         }
 
         if (LOG.isDebugEnabled()) {
+            Object[] args = args();
+            int[] types = types();
             for (int i = 0; i < argLength; i++) {
                 LOG.debug("arg:({}), type:{}, {}", args[i], types[i], SqlAdaptUtils.toJavaType(types[i]));
             }
