@@ -13,8 +13,8 @@ import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatementBuilder;
 
-public class PrepareStatementBuilderQueryTest {
-    private static final Logger LOG = LoggerFactory.getLogger(PrepareStatementBuilderQueryTest.class);
+public class PrepareQueryTest {
+    private static final Logger LOG = LoggerFactory.getLogger(PrepareQueryTest.class);
 
     @Test
     public void test() {

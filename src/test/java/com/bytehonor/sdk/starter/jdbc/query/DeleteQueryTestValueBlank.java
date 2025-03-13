@@ -12,9 +12,9 @@ import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.statement.DeletePrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 
-public class DeletePrepareStatementTestValueBlank {
+public class DeleteQueryTestValueBlank {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DeletePrepareStatementTestValueBlank.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DeleteQueryTestValueBlank.class);
 
     @Test
     public void test() {

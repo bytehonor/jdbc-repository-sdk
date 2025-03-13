@@ -36,8 +36,8 @@ public class LeftJoinPrepareStatementTestOrderDouble {
         LOG.info("test sql:({})", sql);
         statement.check();
 
-        String target = "SELECT m.id, m.nickname, s.phone, m.update_at, m.create_at FROM tbl_student as m LEFT JOIN tbl_user_profile as s ON m.nickname = s.nickname WHERE m.age IN (1,2,3) AND m.create_at > ? AND m.nickname LIKE ? ORDER BY m.id DESC, m.age DESC LIMIT 0,20";
-        assertTrue("test", target.equals(sql) && args.length == 2);
+        String target = "SELECT m.id, m.nickname, s.phone, m.update_at, m.create_at FROM tbl_student as m LEFT JOIN tbl_user_profile as s ON m.nickname = s.nickname WHERE m.age IN ? AND m.create_at > ? AND m.nickname LIKE ? ORDER BY m.id DESC, m.age DESC LIMIT 0,20";
+        assertTrue("test", target.equals(sql) && args.length == 3);
     }
 
     @Test
@@ -54,16 +54,16 @@ public class LeftJoinPrepareStatementTestOrderDouble {
         condition.limit(-1);
         LeftJoinPrepareStatement statement = new LeftJoinPrepareStatement(StudentContact.class, condition);
         String sql = statement.sql();
-        boolean ok = false;
+        boolean hasError = false;
         try {
             statement.args();
         } catch (Exception e) {
-            ok = true;
+            hasError = true;
         }
 
         LOG.info("testNoPager sql:({})", sql);
 
-        String target = "SELECT m.id, m.nickname, s.phone, m.update_at, m.create_at FROM tbl_student as m LEFT JOIN tbl_user_profile as s ON m.nickname = s.nickname WHERE m.age IN (1,2,3) AND m.create_at > ? AND m.nickname LIKE ? ORDER BY m.id DESC";
-        assertTrue("testNoPager", target.equals(sql) && ok);
+        String target = "SELECT m.id, m.nickname, s.phone, m.update_at, m.create_at FROM tbl_student as m LEFT JOIN tbl_user_profile as s ON m.nickname = s.nickname WHERE m.age IN ? AND m.create_at > ? AND m.nickname LIKE ? ORDER BY m.id DESC";
+        assertTrue("testNoPager", target.equals(sql) && hasError);
     }
 }

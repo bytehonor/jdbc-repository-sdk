@@ -15,9 +15,9 @@ import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.SelectCountPrepareStatement;
 
-public class SelectCountPrepareStatementTest {
+public class SelectCountQueryTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SelectCountPrepareStatementTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SelectCountQueryTest.class);
 
     @Test
     public void test() {

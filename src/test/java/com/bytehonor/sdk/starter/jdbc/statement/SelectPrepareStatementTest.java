@@ -130,8 +130,8 @@ public class SelectPrepareStatementTest {
         LOG.info("testSetString sql:({})", sql);
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ('boy4','boy5','boy3','boy1') AND create_at > ? ORDER BY age DESC LIMIT 0,20";
-        assertTrue("testSetString", target.equals(sql) && args.length == 1);
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ? AND create_at > ? ORDER BY age DESC LIMIT 0,20";
+        assertTrue("testSetString", target.equals(sql) && args.length == 2);
     }
 
     @Test
@@ -152,10 +152,10 @@ public class SelectPrepareStatementTest {
         LOG.info("testSetString sql:({})", sql);
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ('boy4','boy5','boy3','boy1') AND create_at > ? ORDER BY age DESC LIMIT 0,20";
-        assertTrue("testSetString", target.equals(sql) && args.length == 1);
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ? AND create_at > ? ORDER BY age DESC LIMIT 0,20";
+        assertTrue("testSetString", target.equals(sql) && args.length == 2);
     }
-    
+
     @Test
     public void testLimitOne() {
         Set<String> set = new HashSet<String>();
@@ -175,7 +175,7 @@ public class SelectPrepareStatementTest {
         LOG.info("testLimitOne sql:({})", sql);
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ('boy4','boy5','boy3','boy1') AND create_at > ? ORDER BY age DESC LIMIT 0,1";
-        assertTrue("testLimitOne", target.equals(sql) && args.length == 1);
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ? AND create_at > ? ORDER BY age DESC LIMIT 0,1";
+        assertTrue("testLimitOne", target.equals(sql) && args.length == 2);
     }
 }

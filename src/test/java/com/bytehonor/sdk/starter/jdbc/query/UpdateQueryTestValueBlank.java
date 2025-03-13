@@ -2,6 +2,9 @@ package com.bytehonor.sdk.starter.jdbc.query;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +17,9 @@ import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.UpdatePrepareStatement;
 
-public class UpdatePrepareStatementTestValueNull {
+public class UpdateQueryTestValueBlank {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UpdatePrepareStatementTestValueNull.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UpdateQueryTestValueBlank.class);
 
     private static final ModelGetterMapper<Student> MAPPER = new ModelGetterMapper<Student>() {
 
@@ -36,16 +39,22 @@ public class UpdatePrepareStatementTestValueNull {
 
     @Test
     public void test() {
+
+        Set<Integer> set = new HashSet<Integer>();
+        set.add(1);
+        set.add(2);
+        set.add(3);
         QueryCondition condition = QueryCondition.and();
+        condition.in(Student::getAge, set); // conflict 不会被更新
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
 
         long now = System.currentTimeMillis();
         Student student = new Student();
         student.setId(123L);
-        student.setAge(1);
-        student.setNickname(null); // null 不会被更新
+        student.setAge(1); // conflict 不会被更新
+        student.setNickname(""); // empty 也会被更新
         student.setCreateAt(now);
-        // student.setUpdateAt(now);
+        student.setUpdateAt(now);
 
         PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlAdapter.convert(condition));
         statement.prepare(student, MAPPER);
@@ -57,7 +66,8 @@ public class UpdatePrepareStatementTestValueNull {
         LOG.info("sql:{}, length:{}", sql, length);
         statement.check();
 
-        String target = "UPDATE tbl_student SET age = ?,update_at = ? WHERE create_at > ?";
-        assertTrue("testSetValueNull", target.equals(sql) && length == 3);
+        String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN ? AND create_at > ?";
+        assertTrue("test", target.equals(sql) && length == 4);
     }
+
 }

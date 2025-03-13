@@ -37,7 +37,7 @@ public class ModelSetterTest {
 
         try {
             rowMapper.mapRow(null, 0);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

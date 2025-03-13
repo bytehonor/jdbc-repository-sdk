@@ -14,9 +14,9 @@ import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.UpdatePrepareStatement;
 
-public class UpdatePrepareStatementTest {
+public class UpdateQueryTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UpdatePrepareStatementTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UpdateQueryTest.class);
 
     private static final ModelGetterMapper<Student> MAPPER = new ModelGetterMapper<Student>() {
 
