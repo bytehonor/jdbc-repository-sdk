@@ -5,18 +5,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.util.CollectionUtils;
+
 import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlFilter.SqlFilterColumn;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlOrder.SqlOrderColumn;
-import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
-import com.bytehonor.sdk.starter.jdbc.sql.key.UnderlineRewriter;
+import com.bytehonor.sdk.starter.jdbc.sql.rewrite.KeyRewriter;
+import com.bytehonor.sdk.starter.jdbc.sql.rewrite.UnderlineRewriter;
 
 public class SqlCondition {
+
+    private final SqlPager pager;
 
     private final SqlWhere where;
 
     private final SqlOrder order;
-
-    private final SqlPager pager;
 
     private SqlCondition(QueryLogic logic, SqlPager pager, KeyRewriter rewriter) {
         Objects.requireNonNull(logic, "logic");
@@ -51,109 +54,117 @@ public class SqlCondition {
     }
 
     public SqlCondition eq(String key, String value) {
-        return this.add(SqlFilter.eq(key, value));
+        return this.filter(SqlFilterColumn.eq(key, value));
     }
 
     public SqlCondition eq(String key, Long value) {
-        return this.add(SqlFilter.eq(key, value));
+        return this.filter(SqlFilterColumn.eq(key, value));
     }
 
     public SqlCondition eq(String key, Integer value) {
-        return this.add(SqlFilter.eq(key, value));
+        return this.filter(SqlFilterColumn.eq(key, value));
     }
 
     public SqlCondition eq(String key, Boolean value) {
-        return this.add(SqlFilter.eq(key, value));
+        return this.filter(SqlFilterColumn.eq(key, value));
     }
 
     public SqlCondition neq(String key, String value) {
-        return this.add(SqlFilter.neq(key, value));
+        return this.filter(SqlFilterColumn.neq(key, value));
     }
 
     public SqlCondition neq(String key, Long value) {
-        return this.add(SqlFilter.neq(key, value));
+        return this.filter(SqlFilterColumn.neq(key, value));
     }
 
     public SqlCondition neq(String key, Integer value) {
-        return this.add(SqlFilter.neq(key, value));
+        return this.filter(SqlFilterColumn.neq(key, value));
     }
 
     public SqlCondition neq(String key, Boolean value) {
-        return this.add(SqlFilter.neq(key, value));
+        return this.filter(SqlFilterColumn.neq(key, value));
     }
 
     public SqlCondition gt(String key, Long value) {
-        return this.add(SqlFilter.gt(key, value));
+        return this.filter(SqlFilterColumn.gt(key, value));
     }
 
     public SqlCondition gt(String key, Integer value) {
-        return this.add(SqlFilter.gt(key, value));
+        return this.filter(SqlFilterColumn.gt(key, value));
     }
 
     public SqlCondition egt(String key, Long value) {
-        return this.add(SqlFilter.egt(key, value));
+        return this.filter(SqlFilterColumn.egt(key, value));
     }
 
     public SqlCondition egt(String key, Integer value) {
-        return this.add(SqlFilter.egt(key, value));
+        return this.filter(SqlFilterColumn.egt(key, value));
     }
 
     public SqlCondition lt(String key, Long value) {
-        return this.add(SqlFilter.lt(key, value));
+        return this.filter(SqlFilterColumn.lt(key, value));
     }
 
     public SqlCondition lt(String key, Integer value) {
-        return this.add(SqlFilter.lt(key, value));
+        return this.filter(SqlFilterColumn.lt(key, value));
     }
 
     public SqlCondition elt(String key, Long value) {
-        return this.add(SqlFilter.elt(key, value));
+        return this.filter(SqlFilterColumn.elt(key, value));
     }
 
     public SqlCondition elt(String key, Integer value) {
-        return this.add(SqlFilter.elt(key, value));
+        return this.filter(SqlFilterColumn.elt(key, value));
     }
 
     public SqlCondition like(String key, String value) {
-        return this.add(SqlFilter.like(key, value));
+        return this.filter(SqlFilterColumn.like(key, value));
     }
 
     public SqlCondition likeLeft(String key, String value) {
-        return this.add(SqlFilter.likeLeft(key, value));
+        return this.filter(SqlFilterColumn.likeLeft(key, value));
     }
 
     public SqlCondition likeRight(String key, String value) {
-        return this.add(SqlFilter.likeRight(key, value));
+        return this.filter(SqlFilterColumn.likeRight(key, value));
     }
 
     public <T> SqlCondition in(String key, Collection<T> value, Class<T> type) {
-        return this.add(SqlFilter.in(key, value, type));
+        return this.filter(SqlFilterColumn.in(key, value, type));
     }
 
     public <T> SqlCondition in(String key, Collection<T> value, String type) {
-        return this.add(SqlFilter.in(key, value, type));
+        return this.filter(SqlFilterColumn.in(key, value, type));
     }
 
-    public SqlCondition desc(String key) {
-        this.order.desc(key);
+    public SqlCondition filter(SqlFilterColumn filter) {
+        this.where.filter(filter);
         return this;
     }
 
-    public SqlCondition asc(String key) {
-        this.order.asc(key);
+    public SqlCondition filters(List<SqlFilterColumn> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return this;
+        }
+        for (SqlFilterColumn item : list) {
+            filter(item);
+        }
         return this;
     }
 
-    public SqlCondition add(SqlFilter filter) {
-        this.where.safeAdd(filter);
-        return this;
+    public boolean canFilter() {
+        return getWhere().canFilter();
     }
 
-    public static boolean isArgEmpty(SqlCondition condition) {
-        Objects.requireNonNull(condition, "condition");
-
-        return condition.getWhere().isEmpty();
+    public boolean nonFilter() {
+        return !canFilter();
     }
+
+//    public static boolean isArgEmpty(SqlCondition condition) {
+//        Objects.requireNonNull(condition, "condition");
+//
+//        return condition.getWhere().canFilter() == false;
+//    }
 
     public List<Object> values() {
         if (where == null) {
@@ -191,8 +202,32 @@ public class SqlCondition {
         return this;
     }
 
-    public SqlCondition order(List<SqlOrderColumn> columns) {
-        this.order.sorts(columns);
+    public boolean canOrder() {
+        return order.canOrder();
+    }
+
+    public SqlCondition desc(String key) {
+        this.order.desc(key);
+        return this;
+    }
+
+    public SqlCondition asc(String key) {
+        this.order.asc(key);
+        return this;
+    }
+
+    public <T> SqlCondition order(SqlOrderColumn column) {
+        this.order.with(column);
+        return this;
+    }
+
+    public <T> SqlCondition orders(List<SqlOrderColumn> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return this;
+        }
+        for (SqlOrderColumn item : list) {
+            order(item);
+        }
         return this;
     }
 
@@ -200,7 +235,4 @@ public class SqlCondition {
         return this.pager.unlimited();
     }
 
-    public boolean canOrder() {
-        return order.canOrder();
-    }
 }

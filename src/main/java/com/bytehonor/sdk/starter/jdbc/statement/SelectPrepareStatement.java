@@ -27,7 +27,7 @@ public class SelectPrepareStatement extends AbstractPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (SqlCondition.isArgEmpty(condition)) {
+        if (condition.nonFilter()) {
             if (condition.getPager() == null) {
                 // 禁全表无分页查询
                 throw new JdbcSdkException("select sql condition args isEmpty");
@@ -39,7 +39,7 @@ public class SelectPrepareStatement extends AbstractPrepareStatement {
 
     @Override
     public int[] types() {
-        if (SqlCondition.isArgEmpty(condition)) {
+        if (condition.nonFilter()) {
             return new int[0];
         }
         return SqlInjectUtils.listArray(condition.types());

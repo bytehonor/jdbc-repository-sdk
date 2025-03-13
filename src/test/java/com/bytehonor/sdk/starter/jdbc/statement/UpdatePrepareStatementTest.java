@@ -63,7 +63,7 @@ public class UpdatePrepareStatementTest {
     }
 
     @Test
-    public void testSetValueEmpty() {
+    public void testSetValueBlank() {
 
         Set<Integer> set = new HashSet<Integer>();
         set.add(1);
@@ -90,8 +90,8 @@ public class UpdatePrepareStatementTest {
         LOG.info("testSetValueEmpty sql:{}", sql);
         statement.check();
 
-        String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
-        assertTrue("testSetValueEmpty", target.equals(sql) && args.length == 3);
+        String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN ? AND create_at > ?";
+        assertTrue("testSetValueBlank", target.equals(sql) && args.length == 4);
     }
 
     @Test

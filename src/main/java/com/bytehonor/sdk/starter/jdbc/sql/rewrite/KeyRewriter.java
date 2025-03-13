@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.starter.jdbc.sql.key;
+package com.bytehonor.sdk.starter.jdbc.sql.rewrite;
 
 public interface KeyRewriter {
 

@@ -13,6 +13,10 @@ public class SqlInjectUtils {
 
     private static final char LK = '%';
 
+    public static String wrapValue(String raw) {
+        return StringCreator.create().append("(").append(raw).append(")").toString();
+    }
+
     public static String like(String src, boolean left, boolean right) {
         if (src == null) {
             return "";

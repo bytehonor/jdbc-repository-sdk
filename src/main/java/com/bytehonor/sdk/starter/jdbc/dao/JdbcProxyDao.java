@@ -30,7 +30,7 @@ import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelSetterMapper;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.sql.key.PrefixRewriter;
+import com.bytehonor.sdk.starter.jdbc.sql.rewrite.PrefixRewriter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatementBuilder;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;

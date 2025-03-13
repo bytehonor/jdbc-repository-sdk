@@ -8,8 +8,8 @@ import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
-import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
-import com.bytehonor.sdk.starter.jdbc.sql.key.UnderlineRewriter;
+import com.bytehonor.sdk.starter.jdbc.sql.rewrite.KeyRewriter;
+import com.bytehonor.sdk.starter.jdbc.sql.rewrite.UnderlineRewriter;
 
 public class SqlOrder implements SqlPart {
 
@@ -49,16 +49,6 @@ public class SqlOrder implements SqlPart {
             return this;
         }
         this.columns.add(column);
-        return this;
-    }
-
-    public SqlOrder sorts(List<SqlOrderColumn> list) {
-        if (CollectionUtils.isEmpty(list)) {
-            return this;
-        }
-        for (SqlOrderColumn item : list) {
-            with(item);
-        }
         return this;
     }
 

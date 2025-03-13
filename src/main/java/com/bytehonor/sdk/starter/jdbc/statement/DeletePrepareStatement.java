@@ -31,7 +31,7 @@ public class DeletePrepareStatement extends AbstractPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (SqlCondition.isArgEmpty(condition)) {
+        if (condition.nonFilter()) {
             throw new JdbcSdkException("delete sql condition args isEmpty");
         }
 
@@ -40,7 +40,7 @@ public class DeletePrepareStatement extends AbstractPrepareStatement {
 
     @Override
     public int[] types() {
-        if (SqlCondition.isArgEmpty(condition)) {
+        if (condition.nonFilter()) {
             throw new JdbcSdkException("delete sql condition args isEmpty");
         }
         return SqlInjectUtils.listArray(condition.types());

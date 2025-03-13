@@ -3,22 +3,20 @@ package com.bytehonor.sdk.starter.jdbc.sql;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
-import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
-import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
+import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlFilter.SqlFilterColumn;
+import com.bytehonor.sdk.starter.jdbc.sql.rewrite.KeyRewriter;
 
 public class SqlWhere implements SqlPart {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SqlWhere.class);
-
-    private static final String BLANK = SqlConstants.BLANK;
-
     private final QueryLogic logic;
+
+    private final SqlFilter filter;
+
+    private final KeyRewriter rewriter;
 
     private final StringBuilder sql;
 
@@ -33,12 +31,11 @@ public class SqlWhere implements SqlPart {
 
     private final List<String> javaTypes;
 
-    private final KeyRewriter rewriter;
-
     private int size;
 
     private SqlWhere(QueryLogic logic, KeyRewriter rewriter) {
         this.logic = logic != null ? logic : QueryLogic.AND;
+        this.filter = SqlFilter.plain();
         this.rewriter = rewriter;
         this.sql = new StringBuilder();
         this.keys = new ArrayList<String>(128);
@@ -54,44 +51,37 @@ public class SqlWhere implements SqlPart {
 
     /**
      * 
-     * @param filter
+     * @param column
      * @return
      */
-    public SqlWhere safeAdd(SqlFilter filter) {
-        if (SqlFilter.accept(filter) == false) {
-            LOG.warn("SqlFilter ignore, key:{}, value:{}", filter.getKey(), filter.getValue());
-            return this;
-        }
-        doRead(filter);
+    public SqlWhere filter(SqlFilterColumn column) {
+//        if (SqlFilterColumn.accept(column) == false) {
+//            LOG.warn("SqlFilter ignore, key:{}, value:{}", column.getKey(), column.getValue());
+//            return this;
+//        }
+        filter.with(column);
+        doRead(column);
         return this;
     }
 
-    private void doRead(SqlFilter filter) {
+    private void doRead(SqlFilterColumn column) {
         // 转成下划线
-        String key = rewriter.rewrite(filter.getKey());
+        String key = rewriter.rewrite(column.getKey());
         if (SpringString.isEmpty(key)) {
             return;
         }
 
-        this.keys.add(key);
-
         if (size > 0) {
-            this.sql.append(BLANK).append(logic.getKey()).append(BLANK);
+            this.sql.append(SqlConstants.BLANK).append(logic.getKey()).append(SqlConstants.BLANK);
         }
 
         size++;
-
-        // in值直接拼在sql语句中
-        if (SqlOperator.IN.getKey().equals(filter.getOperator().getKey())) {
-            this.sql.append(key).append(BLANK).append(filter.getOperator().getOpt()).append(BLANK)
-                    .append(filter.getValue());
-        } else {
-            this.sql.append(key).append(BLANK).append(filter.getOperator().getOpt()).append(BLANK)
-                    .append(SqlConstants.PARAM);
-            this.values.add(filter.getValue());
-            this.sqlTypes.add(filter.getSqlType());
-            this.javaTypes.add(filter.getJavaType());
-        }
+        this.sql.append(key).append(SqlConstants.BLANK).append(column.getOperator().getOpt()).append(SqlConstants.BLANK)
+                .append(SqlConstants.PARAM);
+        this.keys.add(key);
+        this.values.add(SqlFilter.valueOf(column));
+        this.sqlTypes.add(column.getSqlType());
+        this.javaTypes.add(column.getJavaType());
     }
 
     @Override
@@ -99,19 +89,27 @@ public class SqlWhere implements SqlPart {
         return toSql();
     }
 
-    public boolean isEmpty() {
-        return size < 1;
+    public boolean canFilter() {
+        return filter.canFilter();
     }
 
     @Override
     public String toSql() {
-        if (isEmpty()) {
+        if (canFilter() == false) {
             return "";
         }
+
+        check();
 
         StringBuilder sb = new StringBuilder();
         sb.append("WHERE ").append(sql.toString());
         return sb.toString().trim();
+    }
+
+    public void check() {
+        if (keys.size() != values.size()) {
+            throw new JdbcSdkException("keys not match values");
+        }
     }
 
     public QueryLogic getLogic() {

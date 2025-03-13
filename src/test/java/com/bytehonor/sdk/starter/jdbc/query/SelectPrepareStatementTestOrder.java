@@ -15,9 +15,9 @@ import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.SelectPrepareStatement;
 
-public class SelectPrepareStatementQueryTestOrder {
+public class SelectPrepareStatementTestOrder {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SelectPrepareStatementQueryTestOrder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SelectPrepareStatementTestOrder.class);
 
     @Test
     public void test() {
@@ -29,15 +29,15 @@ public class SelectPrepareStatementQueryTestOrder {
         condition.in(Student::getAge, set);
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
         condition.like(Student::getNickname, "boy");
-        condition.desc(Student::getAge);
+        condition.desc(Student::getCreateAt);
         PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("test sql:{}", sql);
+        LOG.info("sql:({})", sql);
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname LIKE ? AND age IN (1,2,3) AND create_at > ? ORDER BY age DESC LIMIT 0,20";
-        assertTrue("test", target.equals(sql) && args.length == 2);
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN ? AND create_at > ? AND nickname LIKE ? ORDER BY create_at DESC LIMIT 0,20";
+        assertTrue("test", target.equals(sql) && args.length == 3);
     }
 }

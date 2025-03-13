@@ -6,16 +6,15 @@ import java.util.Objects;
 
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.lang.spring.query.QueryFilter;
+import com.bytehonor.sdk.lang.spring.query.QueryFilter.QueryFilterColumn;
 import com.bytehonor.sdk.lang.spring.query.QueryOrder;
 import com.bytehonor.sdk.lang.spring.query.QueryOrder.QueryOrderColumn;
 import com.bytehonor.sdk.lang.spring.query.QueryPager;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlFilter.SqlFilterColumn;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlOrder.SqlOrderColumn;
-import com.bytehonor.sdk.starter.jdbc.sql.key.KeyRewriter;
-import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
-import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
+import com.bytehonor.sdk.starter.jdbc.sql.rewrite.KeyRewriter;
 
 public class SqlAdapter {
 
@@ -24,12 +23,8 @@ public class SqlAdapter {
 
         SqlCondition model = SqlCondition.create(condition.getLogic(), toPager(condition.getPager()));
 
-        List<QueryFilter> filters = condition.listFilters();
-        for (QueryFilter filter : filters) {
-            model.add(toFilter(filter));
-        }
-
-        model.order(toOrder(condition.getOrder()));
+        model.filters(toFilters(condition.getFilter()));
+        model.orders(toOrders(condition.getOrder()));
         return model;
     }
 
@@ -38,23 +33,19 @@ public class SqlAdapter {
 
         SqlCondition model = SqlCondition.create(condition.getLogic(), toPager(condition.getPager()), rewriter);
 
-        List<QueryFilter> filters = condition.listFilters();
-        for (QueryFilter filter : filters) {
-            model.add(toFilter(filter));
-        }
-
-        model.order(toOrder(condition.getOrder()));
+        model.filters(toFilters(condition.getFilter()));
+        model.orders(toOrders(condition.getOrder()));
         return model;
     }
 
-    public static List<SqlOrderColumn> toOrder(QueryOrder order) {
+    public static List<SqlOrderColumn> toOrders(QueryOrder order) {
         List<SqlOrderColumn> list = new ArrayList<SqlOrderColumn>();
-        List<QueryOrderColumn> columns = order.getColumns();
-        if (CollectionUtils.isEmpty(columns)) {
+        List<QueryOrderColumn> items = order.getColumns();
+        if (CollectionUtils.isEmpty(items)) {
             return list;
         }
-        for (QueryOrderColumn column : columns) {
-            list.add(SqlOrderColumn.of(column.getKey(), column.getSorter()));
+        for (QueryOrderColumn item : items) {
+            list.add(SqlOrderColumn.of(item.getKey(), item.getSorter()));
         }
         return list;
     }
@@ -63,21 +54,35 @@ public class SqlAdapter {
         return pager != null ? SqlPager.of(pager.getOffset(), pager.getLimit()) : SqlPager.create();
     }
 
-    public static SqlFilter toFilter(QueryFilter filter) {
-        Object value = filter.getValue();
-        Object copy = "";
-        String javaType = filter.getType();
-        if (SqlOperator.IN.equals(filter.getOperator())) {
-            copy = SqlFilter.appendIn(SqlAdaptUtils.joinCollection(javaType, value));
-        } else if (SqlOperator.LIKE.equals(filter.getOperator())) {
-            copy = SqlInjectUtils.like(value.toString(), true, true);
-        } else if (SqlOperator.LIKE_LEFT.equals(filter.getOperator())) {
-            copy = SqlInjectUtils.like(value.toString(), true, false);
-        } else if (SqlOperator.LIKE_RIGHT.equals(filter.getOperator())) {
-            copy = SqlInjectUtils.like(value.toString(), false, true);
-        } else {
-            copy = value;
+    public static List<SqlFilterColumn> toFilters(QueryFilter filter) {
+        List<SqlFilterColumn> list = new ArrayList<SqlFilterColumn>();
+        List<QueryFilterColumn> items = filter.getColumns();
+        if (CollectionUtils.isEmpty(items)) {
+            return list;
         }
-        return SqlFilter.create(filter.getKey(), copy, javaType, filter.getOperator());
+
+        for (QueryFilterColumn item : items) {
+            list.add(SqlFilterColumn.create(item.getKey(), item.getValue(), item.getType(), item.getOperator()));
+        }
+        return list;
     }
+
+//    public static SqlFilter toFilter(QueryFilter filter) {
+//        Object value = filter.getValue();
+//        Object copy = "";
+//        String javaType = filter.getType();
+//        if (SqlOperator.IN.equals(filter.getOperator())) {
+//            copy = SqlFilter.appendIn(SqlAdaptUtils.joinCollection(javaType, value));
+//        } else if (SqlOperator.LIKE.equals(filter.getOperator())) {
+//            copy = SqlInjectUtils.like(value.toString(), true, true);
+//        } else if (SqlOperator.LIKE_LEFT.equals(filter.getOperator())) {
+//            copy = SqlInjectUtils.like(value.toString(), true, false);
+//        } else if (SqlOperator.LIKE_RIGHT.equals(filter.getOperator())) {
+//            copy = SqlInjectUtils.like(value.toString(), false, true);
+//        } else {
+//            copy = value;
+//        }
+//        return SqlFilter.create(filter.getKey(), copy, javaType, filter.getOperator());
+//    }
+
 }

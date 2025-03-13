@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.StudentContact;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.sql.key.PrefixRewriter;
+import com.bytehonor.sdk.starter.jdbc.sql.rewrite.PrefixRewriter;
 
 public class LeftJoinPrepareStatementTestOrderDouble {
 

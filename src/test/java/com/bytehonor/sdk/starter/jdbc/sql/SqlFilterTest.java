@@ -6,14 +6,16 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bytehonor.sdk.starter.jdbc.sql.SqlFilter.SqlFilterColumn;
+
 public class SqlFilterTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(SqlFilterTest.class);
 
     @Test
     public void test() {
-        SqlFilter sc = SqlFilter.like("nickname", "");
-        boolean accept = SqlFilter.accept(sc) == false;
+        SqlFilterColumn sc = SqlFilterColumn.like("nickname", "");
+        boolean accept = SqlFilterColumn.accept(sc) == false;
         LOG.info("test {}, {}, {}, {}, {}", sc.getKey(), sc.getValue(), sc.getOperator(), sc.getSqlType(),
                 sc.getJavaType());
         assertTrue("test", accept);
@@ -21,8 +23,8 @@ public class SqlFilterTest {
 
     @Test
     public void test2() {
-        SqlFilter sc = SqlFilter.like("nickname", "boy");
-        boolean accept = SqlFilter.accept(sc);
+        SqlFilterColumn sc = SqlFilterColumn.like("nickname", "boy");
+        boolean accept = SqlFilterColumn.accept(sc);
 
         LOG.info("test2 {}, {}, {}, {}, {}", sc.getKey(), sc.getValue(), sc.getOperator(), sc.getSqlType(),
                 sc.getJavaType());

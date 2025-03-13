@@ -92,7 +92,7 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
         if (CollectionUtils.isEmpty(saveValues)) {
             throw new JdbcSdkException("update sql saveValues empty");
         }
-        if (SqlCondition.isArgEmpty(condition)) {
+        if (condition.nonFilter()) {
             throw new JdbcSdkException("update sql condition args isEmpty");
         }
 
@@ -109,7 +109,7 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
         if (CollectionUtils.isEmpty(saveTypes)) {
             throw new JdbcSdkException("update sql saveTypes empty");
         }
-        if (SqlCondition.isArgEmpty(condition)) {
+        if (condition.nonFilter()) {
             throw new JdbcSdkException("update sql condition args isEmpty");
         }
 

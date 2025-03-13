@@ -14,11 +14,10 @@ import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.SelectCountPrepareStatement;
-import com.bytehonor.sdk.starter.jdbc.statement.SelectPrepareStatementTest;
 
-public class CountPrepareStatementQueryTest {
+public class SelectCountPrepareStatementTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SelectPrepareStatementTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SelectCountPrepareStatementTest.class);
 
     @Test
     public void test() {
@@ -35,23 +34,24 @@ public class CountPrepareStatementQueryTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("sql:{}", sql);
+        int length = args.length;
+        LOG.info("sql:({}), length:{}", sql, length);
         statement.check();
 
-        String target = "SELECT COUNT(id) FROM tbl_student WHERE nickname LIKE ? AND age IN (1,2,3) AND create_at > ?";
-        assertTrue("test", target.equals(sql) && args.length == 2);
+        String target = "SELECT COUNT(id) FROM tbl_student WHERE age IN ? AND create_at > ? AND nickname LIKE ?";
+        assertTrue("test", target.equals(sql) && length == 3);
     }
 
     @Test
-    public void testNoCondition() {
+    public void testNonFilter() {
         QueryCondition condition = QueryCondition.and();
         PrepareStatement statement = new SelectCountPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testNoCondition:{}", sql);
+        LOG.info("testNonFilter:{}", sql);
         statement.check();
 
-        assertTrue("testNoCondition", "SELECT COUNT(id) FROM tbl_student".equals(sql) && args.length == 0);
+        assertTrue("testNonFilter", "SELECT COUNT(id) FROM tbl_student".equals(sql) && args.length == 0);
     }
 }

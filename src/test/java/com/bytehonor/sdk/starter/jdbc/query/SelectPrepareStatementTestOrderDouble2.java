@@ -15,9 +15,9 @@ import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.SelectPrepareStatement;
 
-public class SelectPrepareStatementQueryTestOrderDouble {
+public class SelectPrepareStatementTestOrderDouble2 {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SelectPrepareStatementQueryTestOrderDouble.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SelectPrepareStatementTestOrderDouble2.class);
 
     @Test
     public void test() {
