@@ -167,6 +167,8 @@ public class JdbcProxyDao {
         Objects.requireNonNull(condition, "condition");
 
         PrepareStatement statement = PrepareStatementBuilder.selectCount(clazz, condition);
+        statement.check();
+
         String sql = statement.sql();
         Object[] args = statement.args();
 
