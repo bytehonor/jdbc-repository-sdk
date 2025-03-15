@@ -108,4 +108,20 @@ public class SqlInjectUtils {
 //            System.out.println("==" + arr1.length);
 //        }
 //    }
+
+    public static String toString(Object[] args) {
+        if (args == null || args.length < 1) {
+            return "";
+        }
+        int index = 0;
+        StringBuilder sb = new StringBuilder();
+        for (Object arg : args) {
+            if (index > 0) {
+                sb.append(",");
+            }
+            index++;
+            sb.append(arg);
+        }
+        return sb.toString();
+    }
 }

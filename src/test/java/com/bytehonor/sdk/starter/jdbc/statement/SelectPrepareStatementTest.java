@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.lang.spring.constant.JavaValueTypes;
 import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 
@@ -32,7 +31,7 @@ public class SelectPrepareStatementTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("test sql:({})", sql);
+        LOG.info("test sql:[{}]", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN ? AND create_at > ? AND nickname LIKE ? ORDER BY age DESC LIMIT 0,20";
@@ -46,7 +45,7 @@ public class SelectPrepareStatementTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testNonFilter sql:({})", sql);
+        LOG.info("testNonFilter sql:[{}]", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student LIMIT 0,20";
@@ -67,7 +66,7 @@ public class SelectPrepareStatementTest {
             LOG.error("error {}", e.getMessage());
         }
 
-        LOG.info("testNonFilterNoPage sql:({})", sql);
+        LOG.info("testNonFilterNoPage sql:[{}]", sql);
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student";
         assertTrue("testNonFilterNoPage", target.equals(sql) && hasError == false);
@@ -81,7 +80,7 @@ public class SelectPrepareStatementTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testEqEmpty sql:({})", sql);
+        LOG.info("testEqEmpty sql:[{}]", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname = ? LIMIT 0,20";
@@ -119,15 +118,14 @@ public class SelectPrepareStatementTest {
         set.add("boy4");
         set.add("boy5");
         SqlCondition condition = SqlCondition.create();
-        // condition.in("nickname", set, String.class);
-        condition.in("nickname", set, JavaValueTypes.STRING);
+        condition.in("nickname", set, String.class);
         condition.gt("create_at", System.currentTimeMillis());
         condition.desc("age");
         PrepareStatement statement = new SelectPrepareStatement(Student.class, condition);
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testSetString sql:({})", sql);
+        LOG.info("testSetString sql:[{}]", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ? AND create_at > ? ORDER BY age DESC LIMIT 0,20";
@@ -149,7 +147,7 @@ public class SelectPrepareStatementTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testSetString sql:({})", sql);
+        LOG.info("testSetString sql:[{}]", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ? AND create_at > ? ORDER BY age DESC LIMIT 0,20";
@@ -172,7 +170,7 @@ public class SelectPrepareStatementTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testLimitOne sql:({})", sql);
+        LOG.info("testLimitOne sql:[{}]", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN ? AND create_at > ? ORDER BY age DESC LIMIT 0,1";

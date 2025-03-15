@@ -16,9 +16,9 @@ import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.SelectCountPrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
-public class SelectCountQueryTest {
+public class SelectCountQueryTestString {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SelectCountQueryTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SelectCountQueryTestString.class);
 
     @Test
     public void test() {
@@ -26,10 +26,14 @@ public class SelectCountQueryTest {
         ages.add(1);
         ages.add(2);
         ages.add(3);
+        Set<String> names = new HashSet<String>();
+        names.add("aa");
+        names.add("bb");
+        names.add("cc");
         QueryCondition condition = QueryCondition.and();
         condition.in(Student::getAge, ages);
+        condition.in(Student::getNickname, names);
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
-        condition.like(Student::getNickname, "boy");
         condition.desc(Student::getAge);
         PrepareStatement statement = new SelectCountPrepareStatement(Student.class, SqlAdapter.convert(condition));
         String sql = statement.sql();
@@ -39,7 +43,7 @@ public class SelectCountQueryTest {
         LOG.info("sql:[{}], args:[{}], length:{}", sql, SqlInjectUtils.toString(args), length);
         statement.check();
 
-        String target = "SELECT COUNT(id) FROM tbl_student WHERE age IN ? AND create_at > ? AND nickname LIKE ?";
+        String target = "SELECT COUNT(id) FROM tbl_student WHERE age IN ? AND nickname IN ? AND create_at > ?";
         assertTrue("test", target.equals(sql) && length == 3);
     }
 

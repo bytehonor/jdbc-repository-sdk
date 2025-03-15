@@ -37,7 +37,7 @@ public class SelectPrepareStatementTestCollection {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("sql:({})", sql);
+        LOG.info("sql:[{}]", sql);
         LOG.info("args:({})", JacksonUtils.toJson(args));
         statement.check();
 

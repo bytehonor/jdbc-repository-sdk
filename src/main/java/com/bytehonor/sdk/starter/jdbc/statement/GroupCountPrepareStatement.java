@@ -42,7 +42,7 @@ public class GroupCountPrepareStatement extends AbstractPrepareStatement {
     }
 
     private String orderBy(SqlOrder order) {
-        String sql = SqlFormatter.toOrderSql(order);
+        String sql = order != null ? order.toSql() : "";
         if (SpringString.isEmpty(sql)) {
             return "ORDER BY NULL";
         }

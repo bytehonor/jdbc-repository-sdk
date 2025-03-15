@@ -133,9 +133,9 @@ public class SqlCondition {
         return this.filter(SqlFilterColumn.in(key, value, type));
     }
 
-    public <T> SqlCondition in(String key, Collection<T> value, String type) {
-        return this.filter(SqlFilterColumn.in(key, value, type));
-    }
+//    public <T> SqlCondition in(String key, Collection<T> value, String type) {
+//        return this.filter(SqlFilterColumn.in(key, value, type));
+//    }
 
     public SqlCondition filter(SqlFilterColumn filter) {
         this.where.filter(filter);

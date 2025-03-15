@@ -22,12 +22,12 @@ public class SqlFormatter {
 //        return where.toSql();
 //    }
 //
-    public static String toOrderSql(SqlOrder order) {
-        if (order == null) {
-            return "";
-        }
-        return order.toSql();
-    }
+//    public static String toOrderSql(SqlOrder order) {
+//        if (order == null) {
+//            return "";
+//        }
+//        return order.toSql();
+//    }
 //
 //    public static String toLimitSql(SqlPager page) {
 //        if (page == null) {
@@ -35,16 +35,5 @@ public class SqlFormatter {
 //        }
 //        return page.toSql();
 //    }
-
-    public static String toString(Object[] args) {
-        if (args == null || args.length < 1) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        for (Object arg : args) {
-            sb.append(arg).append(",");
-        }
-        return sb.toString();
-    }
 
 }

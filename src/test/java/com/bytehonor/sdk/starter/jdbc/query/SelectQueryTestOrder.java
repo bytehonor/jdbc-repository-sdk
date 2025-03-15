@@ -34,7 +34,7 @@ public class SelectQueryTestOrder {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("sql:({})", sql);
+        LOG.info("sql:[{}]", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN ? AND create_at > ? AND nickname LIKE ? ORDER BY create_at DESC LIMIT 0,20";

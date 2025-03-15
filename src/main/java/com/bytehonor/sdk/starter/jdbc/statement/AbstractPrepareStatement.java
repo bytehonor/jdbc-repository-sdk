@@ -12,8 +12,8 @@ import com.bytehonor.sdk.starter.jdbc.meta.MetaTableParser;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlFormatter;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
+import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
 /**
  * @author lijianqiang
@@ -47,7 +47,7 @@ public abstract class AbstractPrepareStatement implements PrepareStatement {
         LOG.debug("argSize:{}, typeSize:{}", argLength, typeLength);
 
         if (argLength != typeLength) {
-            LOG.error("args:{} not equals types:{}", SqlFormatter.toString(args()), types());
+            LOG.error("args:{} not equals types:{}", SqlInjectUtils.toString(args()), types());
             throw new JdbcSdkException("args not equals types");
         }
 

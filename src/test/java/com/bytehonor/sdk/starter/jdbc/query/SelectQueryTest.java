@@ -14,6 +14,7 @@ import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.SelectPrepareStatement;
+import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
 public class SelectQueryTest {
 
@@ -34,7 +35,7 @@ public class SelectQueryTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("test sql:{}", sql);
+        LOG.info("sql:[{}], args:[{}]", sql, SqlInjectUtils.toString(args));
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN ? AND create_at > ? AND nickname LIKE ? ORDER BY age DESC LIMIT 0,20";
@@ -56,7 +57,7 @@ public class SelectQueryTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testOrder sql:({})", sql);
+        LOG.info("testOrder sql:[{}]", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN ? AND create_at > ? AND nickname LIKE ? ORDER BY create_at DESC LIMIT 0,20";
@@ -73,7 +74,7 @@ public class SelectQueryTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testMatchTwice sql:({})", sql);
+        LOG.info("testMatchTwice sql:[{}]", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname = ? AND nickname != ? LIMIT 0,20";

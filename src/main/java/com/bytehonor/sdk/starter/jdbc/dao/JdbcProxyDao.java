@@ -30,11 +30,11 @@ import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelSetterMapper;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlFormatter;
 import com.bytehonor.sdk.starter.jdbc.sql.rewrite.PrefixRewriter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatementBuilder;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
+import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
 
 /**
  * @author lijianqiang
@@ -167,8 +167,6 @@ public class JdbcProxyDao {
         Objects.requireNonNull(condition, "condition");
 
         PrepareStatement statement = PrepareStatementBuilder.selectCount(clazz, condition);
-        statement.check();
-
         String sql = statement.sql();
         Object[] args = statement.args();
 
@@ -218,7 +216,7 @@ public class JdbcProxyDao {
 
     private void print(Class<?> clazz, String sql, Object[] args) {
         if (JdbcConfig.isInfoEnabled()) {
-            LOG.info("clazz:{}, sql:{}, args:{}", clazz.getSimpleName(), sql, SqlFormatter.toString(args));
+            LOG.info("clazz:{}, sql:[{}], args:[{}]", clazz.getSimpleName(), sql, SqlInjectUtils.toString(args));
         }
     }
 

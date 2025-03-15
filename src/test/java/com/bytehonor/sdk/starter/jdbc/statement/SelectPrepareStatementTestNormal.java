@@ -31,7 +31,7 @@ public class SelectPrepareStatementTestNormal {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("test sql:({})", sql);
+        LOG.info("test sql:[{}]", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN ? AND create_at > ? AND nickname LIKE ? ORDER BY age DESC LIMIT 0,20";

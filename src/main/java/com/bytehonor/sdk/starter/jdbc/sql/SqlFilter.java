@@ -9,10 +9,8 @@ import java.util.Set;
 
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.lang.spring.constant.JavaValueTypes;
 import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
-import com.bytehonor.sdk.lang.spring.util.JoinUtils;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
@@ -71,7 +69,10 @@ public class SqlFilter {
     public static Object valueOf(SqlFilterColumn column) {
         Object value = column.getValue();
         Object copy = "";
-        if (SqlOperator.LIKE.equals(column.getOperator())) {
+        if (SqlOperator.IN.equals(column.getOperator())) {
+            String collection = SqlAdaptUtils.joinCollection(column.getJavaType(), value);
+            copy = SqlInjectUtils.wrapValue(collection);
+        } else if (SqlOperator.LIKE.equals(column.getOperator())) {
             copy = SqlInjectUtils.like(value.toString(), true, true);
         } else if (SqlOperator.LIKE_LEFT.equals(column.getOperator())) {
             copy = SqlInjectUtils.like(value.toString(), true, false);
@@ -221,20 +222,20 @@ public class SqlFilter {
         }
 
         public static <T> SqlFilterColumn in(String key, Collection<T> value, Class<T> type) {
-            return in(key, value, type.getName());
+            return create(key, value, type.getName(), SqlOperator.IN);
         }
 
-        public static <T> SqlFilterColumn in(String key, Collection<T> value, String type) {
-            String src = null;
-            if (value != null && value.isEmpty() == false) {
-                if (JavaValueTypes.STRING.equals(type)) {
-                    src = JoinUtils.joinSafe(value);
-                } else {
-                    src = JoinUtils.join(value);
-                }
-            }
-            return create(key, src, SqlValueTypes.STRING, SqlOperator.IN);
-        }
+//        public static <T> SqlFilterColumn in(String key, Collection<T> value, String type) {
+//            String src = null;
+//            if (value != null && value.isEmpty() == false) {
+//                if (JavaValueTypes.STRING.equals(type)) {
+//                    src = JoinUtils.joinSafe(value);
+//                } else {
+//                    src = JoinUtils.join(value);
+//                }
+//            }
+//            return create(key, src, SqlValueTypes.STRING, SqlOperator.IN);
+//        }
 
         public String getKey() {
             return key;

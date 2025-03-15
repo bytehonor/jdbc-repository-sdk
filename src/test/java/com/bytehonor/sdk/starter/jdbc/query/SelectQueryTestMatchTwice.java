@@ -26,7 +26,7 @@ public class SelectQueryTestMatchTwice {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("sql:({})", sql);
+        LOG.info("sql:[{}]", sql);
         statement.check();
 
         String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname = ? AND nickname != ? LIMIT 0,20";
