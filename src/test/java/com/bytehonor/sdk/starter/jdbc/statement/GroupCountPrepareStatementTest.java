@@ -36,7 +36,7 @@ public class GroupCountPrepareStatementTest {
         LOG.info("test sql:[{}]", sql);
         statement.check();
 
-        String target = "SELECT `age` AS `value`, COUNT(id) AS `size` FROM tbl_student WHERE age IN (?) AND create_at > ? AND nickname LIKE ? GROUP BY `age` ORDER BY NULL";
+        String target = "SELECT `age` AS `value`, COUNT(id) AS `size` FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? GROUP BY `age` ORDER BY NULL";
         assertTrue("test", target.equals(sql) && args.length == 3);
     }
 
@@ -59,7 +59,7 @@ public class GroupCountPrepareStatementTest {
         LOG.info("testWithOrder sql:[{}]", sql);
         statement.check();
 
-        String target = "SELECT `age` AS `value`, COUNT(id) AS `size` FROM tbl_student WHERE age IN (?) AND create_at > ? AND nickname LIKE ? GROUP BY `age` ORDER BY size DESC";
+        String target = "SELECT `age` AS `value`, COUNT(id) AS `size` FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? GROUP BY `age` ORDER BY size DESC";
         assertTrue("testWithOrder", target.equals(sql) && args.length == 3);
     }
 }

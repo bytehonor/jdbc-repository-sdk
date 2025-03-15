@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
@@ -16,10 +14,9 @@ import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlConvertor;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.UpdatePrepareStatement;
+import com.bytehonor.sdk.starter.jdbc.util.SqlPrinter;
 
 public class UpdateQueryTestValueBlank {
-
-    private static final Logger LOG = LoggerFactory.getLogger(UpdateQueryTestValueBlank.class);
 
     private static final ModelGetterMapper<Student> MAPPER = new ModelGetterMapper<Student>() {
 
@@ -40,12 +37,12 @@ public class UpdateQueryTestValueBlank {
     @Test
     public void test() {
 
-        Set<Integer> set = new HashSet<Integer>();
-        set.add(1);
-        set.add(2);
-        set.add(3);
+        Set<Integer> ages = new HashSet<Integer>();
+        ages.add(1);
+        ages.add(2);
+        ages.add(3);
         QueryCondition condition = QueryCondition.and();
-        condition.in(Student::getAge, set); // conflict 不会被更新
+        condition.in(Student::getAge, ages); // conflict 不会被更新
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
 
         long now = System.currentTimeMillis();
@@ -61,13 +58,11 @@ public class UpdateQueryTestValueBlank {
 
         String sql = statement.sql();
         Object[] args = statement.args();
-        int length = args.length;
-
-        LOG.info("sql:{}, length:{}", sql, length);
+        SqlPrinter.print(sql, args);
         statement.check();
 
-        String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN (?) AND create_at > ?";
-        assertTrue("test", target.equals(sql) && length == 4);
+        String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
+        assertTrue("test", target.equals(sql) && args.length == 3);
     }
 
 }

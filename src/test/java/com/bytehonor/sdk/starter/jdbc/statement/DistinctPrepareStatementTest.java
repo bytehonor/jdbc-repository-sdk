@@ -34,7 +34,7 @@ public class DistinctPrepareStatementTest {
         LOG.info("sql:{}", sql);
         statement.check();
 
-        String target = "SELECT DISTINCT(age) FROM tbl_student WHERE age IN (?) AND create_at > ? AND nickname LIKE ?";
+        String target = "SELECT DISTINCT(age) FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ?";
         assertTrue("test", target.equals(sql) && args.length == 3);
     }
 

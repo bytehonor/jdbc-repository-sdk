@@ -7,7 +7,6 @@ import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
 import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
-import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlFilter.SqlFilterColumn;
 import com.bytehonor.sdk.starter.jdbc.sql.rewrite.KeyRewriter;
 
@@ -32,8 +31,6 @@ public class SqlWhere implements SqlPart {
 
     private final List<String> javaTypes;
 
-    private int size;
-
     private SqlWhere(QueryLogic logic, KeyRewriter rewriter) {
         this.logic = logic != null ? logic : QueryLogic.AND;
         this.filter = SqlFilter.plain();
@@ -43,7 +40,6 @@ public class SqlWhere implements SqlPart {
         this.values = new ArrayList<Object>(128);
         this.sqlTypes = new ArrayList<Integer>(128);
         this.javaTypes = new ArrayList<String>(128);
-        this.size = 0;
     }
 
     public static SqlWhere create(QueryLogic logic, KeyRewriter rewriter) {
@@ -68,18 +64,16 @@ public class SqlWhere implements SqlPart {
             return;
         }
 
-        if (size > 0) {
+        if (keys.size() > 0) {
             this.sql.append(SqlConstants.BLANK).append(logic.getKey()).append(SqlConstants.BLANK);
         }
-
-        size++;
+        this.keys.add(key); // keys 只记录
 
         // in 不支持占位符写法
         if (SqlOperator.IN.equals(column.getOperator())) {
             this.sql.append(SqlFilter.patternIn(key, SqlFilter.valueIn(column)));
         } else {
             this.sql.append(SqlFilter.patternOf(key, column.getOperator()));
-            this.keys.add(key);
             this.values.add(SqlFilter.valueOf(column));
             this.sqlTypes.add(column.getSqlType());
             this.javaTypes.add(column.getJavaType());
@@ -102,25 +96,13 @@ public class SqlWhere implements SqlPart {
             return "";
         }
 
-        check();
-
         StringBuilder sb = new StringBuilder();
         sb.append("WHERE ").append(sql.toString());
         return sb.toString().trim();
     }
 
-    public void check() {
-        if (keys.size() != values.size()) {
-            throw new JdbcSdkException("keys not match values");
-        }
-    }
-
     public QueryLogic getLogic() {
         return logic;
-    }
-
-    public int getArgSize() {
-        return size;
     }
 
     public List<String> getKeys() {

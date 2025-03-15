@@ -38,8 +38,8 @@ public class SelectCountQueryTest {
         SqlPrinter.print(sql, args);
         statement.check();
 
-        String target = "SELECT COUNT(id) FROM tbl_student WHERE age IN (?) AND create_at > ? AND nickname LIKE ?";
-        assertTrue("test", target.equals(sql) && args.length == 3);
+        String target = "SELECT COUNT(id) FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ?";
+        assertTrue("test", target.equals(sql) && args.length == 2);
     }
 
     @Test

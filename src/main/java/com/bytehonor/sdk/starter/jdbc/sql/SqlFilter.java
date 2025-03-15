@@ -101,10 +101,16 @@ public class SqlFilter {
         return sb.toString();
     }
 
+    /**
+     * IN 只能直接拼接
+     * 
+     * @param key
+     * @param value
+     * @return
+     */
     public static String patternIn(String key, String value) {
         StringBuilder sb = new StringBuilder();
-        sb.append(key).append(SqlConstants.BLANK).append(SqlOperator.IN.getOpt()).append(SqlConstants.BLANK);
-        sb.append("(").append(value).append(")");
+        sb.append(key).append(" IN (").append(value).append(")");
         return sb.toString();
     }
 

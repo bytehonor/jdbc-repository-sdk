@@ -41,7 +41,7 @@ public class SelectPrepareStatementTestCollection {
         LOG.info("args:({})", JacksonUtils.toJson(args));
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN (?) AND age IN (?) AND create_at > ? ORDER BY age DESC LIMIT 0,20";
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE nickname IN (?) AND age IN (1,2,3) AND create_at > ? ORDER BY age DESC LIMIT 0,20";
         assertTrue("testSetString", target.equals(sql) && args.length == 3);
     }
 

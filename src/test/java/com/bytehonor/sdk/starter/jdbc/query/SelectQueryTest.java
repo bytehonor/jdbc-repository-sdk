@@ -14,7 +14,7 @@ import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlConvertor;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.SelectPrepareStatement;
-import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
+import com.bytehonor.sdk.starter.jdbc.util.SqlPrinter;
 
 public class SelectQueryTest {
 
@@ -35,11 +35,11 @@ public class SelectQueryTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("sql:[{}], args:[{}]", sql, SqlInjectUtils.toString(args));
+        SqlPrinter.print(sql, args);
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (?) AND create_at > ? AND nickname LIKE ? ORDER BY age DESC LIMIT 0,20";
-        assertTrue("test", target.equals(sql) && args.length == 3);
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? ORDER BY age DESC LIMIT 0,20";
+        assertTrue("test", target.equals(sql) && args.length == 2);
     }
 
     @Test
@@ -57,11 +57,11 @@ public class SelectQueryTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("testOrder sql:[{}]", sql);
+        SqlPrinter.print(sql, args);
         statement.check();
 
-        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (?) AND create_at > ? AND nickname LIKE ? ORDER BY create_at DESC LIMIT 0,20";
-        assertTrue("testOrder", target.equals(sql) && args.length == 3);
+        String target = "SELECT id, nickname, age, update_at, create_at FROM tbl_student WHERE age IN (1,2,3) AND create_at > ? AND nickname LIKE ? ORDER BY create_at DESC LIMIT 0,20";
+        assertTrue("testOrder", target.equals(sql) && args.length == 2);
     }
 
     @Test
