@@ -36,4 +36,15 @@ public class SqlFormatter {
 //        return page.toSql();
 //    }
 
+    public static String toString(Object[] args) {
+        if (args == null || args.length < 1) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Object arg : args) {
+            sb.append(arg).append(",");
+        }
+        return sb.toString();
+    }
+
 }

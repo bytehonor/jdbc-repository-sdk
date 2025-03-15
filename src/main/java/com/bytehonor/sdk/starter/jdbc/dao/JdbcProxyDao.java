@@ -30,6 +30,7 @@ import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelSetterMapper;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlFormatter;
 import com.bytehonor.sdk.starter.jdbc.sql.rewrite.PrefixRewriter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatementBuilder;
@@ -95,10 +96,11 @@ public class JdbcProxyDao {
     private <T> List<T> doQuerySelect(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
         PrepareStatement statement = PrepareStatementBuilder.select(clazz, condition);
         String sql = statement.sql();
+        Object[] args = statement.args();
 
-        log(clazz, sql);
+        print(clazz, sql, args);
 
-        return jdbcTemplate.query(sql, statement.args(), statement.types(), mapper);
+        return jdbcTemplate.query(sql, args, statement.types(), mapper);
     }
 
     public <T> List<T> queryLeftJoin(Class<T> clazz, QueryCondition condition, ModelSetterMapper<T> mapper) {
@@ -112,10 +114,11 @@ public class JdbcProxyDao {
     private <T> List<T> doQueryLeftJoin(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
         PrepareStatement statement = PrepareStatementBuilder.leftJoin(clazz, condition);
         String sql = statement.sql();
+        Object[] args = statement.args();
 
-        log(clazz, sql);
+        print(clazz, sql, args);
 
-        return jdbcTemplate.query(sql, statement.args(), statement.types(), mapper);
+        return jdbcTemplate.query(sql, args, statement.types(), mapper);
     }
 
     public <T> T queryById(Class<T> clazz, Long id, ModelSetterMapper<T> mapper) {
@@ -132,10 +135,11 @@ public class JdbcProxyDao {
 
         PrepareStatement statement = PrepareStatementBuilder.delete(clazz, SqlAdapter.convert(condition));
         String sql = statement.sql();
+        Object[] args = statement.args();
 
-        log(clazz, sql);
+        print(clazz, sql, args);
 
-        return jdbcTemplate.update(sql, statement.args(), statement.types());
+        return jdbcTemplate.update(sql, args, statement.types());
     }
 
     public int deleteById(Class<?> clazz, Long id) {
@@ -144,10 +148,11 @@ public class JdbcProxyDao {
 
         PrepareStatement statement = PrepareStatementBuilder.deleteById(clazz, id);
         String sql = statement.sql();
+        Object[] args = statement.args();
 
-        log(clazz, sql);
+        print(clazz, sql, args);
 
-        return jdbcTemplate.update(sql, statement.args(), statement.types());
+        return jdbcTemplate.update(sql, args, statement.types());
     }
 
     public int count(Class<?> clazz, QueryCondition condition) {
@@ -163,10 +168,11 @@ public class JdbcProxyDao {
 
         PrepareStatement statement = PrepareStatementBuilder.selectCount(clazz, condition);
         String sql = statement.sql();
+        Object[] args = statement.args();
 
-        log(clazz, sql);
+        print(clazz, sql, args);
 
-        return jdbcTemplate.queryForObject(sql, statement.args(), statement.types(), Integer.class);
+        return jdbcTemplate.queryForObject(sql, args, statement.types(), Integer.class);
     }
 
     public <T> List<String> strings(Class<T> clazz, GetString<T> getter, QueryCondition condition) {
@@ -201,15 +207,16 @@ public class JdbcProxyDao {
 
         PrepareStatement statement = PrepareStatementBuilder.distinct(clazz, getter, SqlAdapter.convert(condition));
         String sql = statement.sql();
+        Object[] args = statement.args();
 
-        log(clazz, sql);
+        print(clazz, sql, args);
 
-        return jdbcTemplate.queryForList(sql, statement.args(), statement.types(), type);
+        return jdbcTemplate.queryForList(sql, args, statement.types(), type);
     }
 
-    private void log(Class<?> clazz, String sql) {
+    private void print(Class<?> clazz, String sql, Object[] args) {
         if (JdbcConfig.isInfoEnabled()) {
-            LOG.info("clazz:{}, sql:{}", clazz.getSimpleName(), sql);
+            LOG.info("clazz:{}, sql:{}, args:{}", clazz.getSimpleName(), sql, SqlFormatter.toString(args));
         }
     }
 
@@ -223,9 +230,10 @@ public class JdbcProxyDao {
         statement.prepare(model, mapper);
 
         String sql = statement.sql();
-        log(clazz, sql);
+        Object[] args = statement.args();
+        print(clazz, sql, args);
 
-        return jdbcTemplate.update(sql, statement.args(), statement.types());
+        return jdbcTemplate.update(sql, args, statement.types());
     }
 
     public <T> int updateById(T model, Long id, ModelGetterMapper<T> mapper) {
@@ -238,9 +246,10 @@ public class JdbcProxyDao {
         statement.prepare(model, mapper);
 
         String sql = statement.sql();
-        log(clazz, sql);
+        Object[] args = statement.args();
+        print(clazz, sql, args);
 
-        return jdbcTemplate.update(sql, statement.args(), statement.types());
+        return jdbcTemplate.update(sql, args, statement.types());
     }
 
     public <T> long insert(T model, ModelGetterMapper<T> mapper) {
@@ -252,7 +261,8 @@ public class JdbcProxyDao {
         final List<ModelKeyValue> items = statement.prepare(model, mapper);
 
         final String sql = statement.sql();
-        log(clazz, sql);
+        Object[] args = statement.args();
+        print(clazz, sql, args);
 
         KeyHolder holder = new GeneratedKeyHolder();
 
@@ -277,9 +287,10 @@ public class JdbcProxyDao {
         statement.prepare(model, mapper);
 
         String sql = statement.sql();
-        log(clazz, sql);
+        Object[] args = statement.args();
+        print(clazz, sql, args);
 
-        return jdbcTemplate.update(sql, statement.args(), statement.types());
+        return jdbcTemplate.update(sql, args, statement.types());
     }
 
     public <T> List<GroupCountItem> groupCount(Class<T> clazz, ClassGetter<T, ?> getter, QueryCondition condition) {
@@ -288,9 +299,9 @@ public class JdbcProxyDao {
 
         PrepareStatement statement = PrepareStatementBuilder.groupCount(clazz, getter, SqlAdapter.convert(condition));
         String sql = statement.sql();
+        Object[] args = statement.args();
+        print(clazz, sql, args);
 
-        log(clazz, sql);
-
-        return jdbcTemplate.query(sql, statement.args(), statement.types(), GroupCountItem.SETTERS);
+        return jdbcTemplate.query(sql, args, statement.types(), GroupCountItem.SETTERS);
     }
 }
