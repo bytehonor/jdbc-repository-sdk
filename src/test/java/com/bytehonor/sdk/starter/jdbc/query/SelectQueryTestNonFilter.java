@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlConvertor;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.SelectPrepareStatement;
 
@@ -19,7 +19,7 @@ public class SelectQueryTestNonFilter {
     @Test
     public void testNonFilter() {
         QueryCondition condition = QueryCondition.and();
-        PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlAdapter.convert(condition));
+        PrepareStatement statement = new SelectPrepareStatement(Student.class, SqlConvertor.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 

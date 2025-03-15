@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
 
-public class SqlAdapterTest {
+public class SqlConvertorTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SqlAdapterTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SqlConvertorTest.class);
 
     @Test
     public void testConvert() {
@@ -28,7 +28,7 @@ public class SqlAdapterTest {
         condition.like(Student::getNickname, "boy");
         condition.desc(Student::getAge);
 
-        SqlCondition model = SqlAdapter.convert(condition);
+        SqlCondition model = SqlConvertor.convert(condition);
 
         String where = model.getWhere().toSql().trim();
         String target = "WHERE age IN (?) AND create_at > ? AND nickname LIKE ?";

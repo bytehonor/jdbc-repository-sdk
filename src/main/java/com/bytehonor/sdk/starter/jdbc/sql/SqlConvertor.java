@@ -16,7 +16,7 @@ import com.bytehonor.sdk.starter.jdbc.sql.SqlFilter.SqlFilterColumn;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlOrder.SqlOrderColumn;
 import com.bytehonor.sdk.starter.jdbc.sql.rewrite.KeyRewriter;
 
-public class SqlAdapter {
+public class SqlConvertor {
 
     public static SqlCondition convert(QueryCondition condition) {
         Objects.requireNonNull(condition, "condition");

@@ -28,8 +28,8 @@ import com.bytehonor.sdk.starter.jdbc.model.GroupCountItem;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.model.ModelKeyValue;
 import com.bytehonor.sdk.starter.jdbc.model.ModelSetterMapper;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlConvertor;
 import com.bytehonor.sdk.starter.jdbc.sql.rewrite.PrefixRewriter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatementBuilder;
@@ -55,7 +55,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
 
-        return doQuery(clazz, SqlAdapter.convert(condition), mapper);
+        return doQuery(clazz, SqlConvertor.convert(condition), mapper);
     }
 
     private <T> List<T> doQuery(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
@@ -108,7 +108,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(mapper, "mapper");
 
-        return doQueryLeftJoin(clazz, SqlAdapter.convert(condition, PrefixRewriter.leftJoin()), mapper);
+        return doQueryLeftJoin(clazz, SqlConvertor.convert(condition, PrefixRewriter.leftJoin()), mapper);
     }
 
     private <T> List<T> doQueryLeftJoin(Class<T> clazz, SqlCondition condition, ModelSetterMapper<T> mapper) {
@@ -133,7 +133,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
-        PrepareStatement statement = PrepareStatementBuilder.delete(clazz, SqlAdapter.convert(condition));
+        PrepareStatement statement = PrepareStatementBuilder.delete(clazz, SqlConvertor.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 
@@ -159,7 +159,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
-        return doCount(clazz, SqlAdapter.convert(condition));
+        return doCount(clazz, SqlConvertor.convert(condition));
     }
 
     private int doCount(Class<?> clazz, SqlCondition condition) {
@@ -205,7 +205,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(getter, "getter");
         Objects.requireNonNull(condition, "condition");
 
-        PrepareStatement statement = PrepareStatementBuilder.distinct(clazz, getter, SqlAdapter.convert(condition));
+        PrepareStatement statement = PrepareStatementBuilder.distinct(clazz, getter, SqlConvertor.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 
@@ -226,7 +226,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(mapper, "mapper");
 
         Class<? extends Object> clazz = model.getClass();
-        PrepareStatement statement = PrepareStatementBuilder.update(clazz, SqlAdapter.convert(condition));
+        PrepareStatement statement = PrepareStatementBuilder.update(clazz, SqlConvertor.convert(condition));
         statement.prepare(model, mapper);
 
         String sql = statement.sql();
@@ -297,7 +297,7 @@ public class JdbcProxyDao {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
-        PrepareStatement statement = PrepareStatementBuilder.groupCount(clazz, getter, SqlAdapter.convert(condition));
+        PrepareStatement statement = PrepareStatementBuilder.groupCount(clazz, getter, SqlConvertor.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
         print(clazz, sql, args);

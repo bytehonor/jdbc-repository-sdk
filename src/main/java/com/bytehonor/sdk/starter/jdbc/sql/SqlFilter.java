@@ -13,6 +13,7 @@ import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlValueTypes;
+import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
@@ -70,14 +71,15 @@ public class SqlFilter {
     public static Object valueOf(SqlFilterColumn column) {
         Object value = column.getValue();
         Object copy = "";
-        if (SqlOperator.IN.equals(column.getOperator())) {
-//            copy = SqlInjectUtils.wrapValue(collection);
-            copy = SqlAdaptUtils.joinCollection(column.getJavaType(), value);
-        } else if (SqlOperator.LIKE.equals(column.getOperator())) {
+        SqlOperator operator = column.getOperator();
+        if (SqlOperator.IN.equals(operator)) {
+//            copy = SqlAdaptUtils.joinCollection(column.getJavaType(), value);
+            throw new JdbcSdkException("not support in, but " + operator.getKey());
+        } else if (SqlOperator.LIKE.equals(operator)) {
             copy = SqlInjectUtils.like(value.toString(), true, true);
-        } else if (SqlOperator.LIKE_LEFT.equals(column.getOperator())) {
+        } else if (SqlOperator.LIKE_LEFT.equals(operator)) {
             copy = SqlInjectUtils.like(value.toString(), true, false);
-        } else if (SqlOperator.LIKE_RIGHT.equals(column.getOperator())) {
+        } else if (SqlOperator.LIKE_RIGHT.equals(operator)) {
             copy = SqlInjectUtils.like(value.toString(), false, true);
         } else {
             copy = value;
@@ -85,15 +87,24 @@ public class SqlFilter {
         return copy;
     }
 
+    public static String valueIn(SqlFilterColumn column) {
+        if (SqlOperator.IN.equals(column.getOperator()) == false) {
+            throw new JdbcSdkException("only support in, but " + column.getOperator().getKey());
+        }
+        return SqlAdaptUtils.joinCollection(column.getJavaType(), column.getValue());
+    }
+
     public static String patternOf(String key, SqlOperator operator) {
-        boolean isIn = SqlOperator.IN.equals(operator);
         StringBuilder sb = new StringBuilder();
         sb.append(key).append(SqlConstants.BLANK).append(operator.getOpt()).append(SqlConstants.BLANK);
-        if (isIn) {
-            sb.append("(").append(SqlConstants.PARAM).append(")");
-        } else {
-            sb.append(SqlConstants.PARAM);
-        }
+        sb.append(SqlConstants.PARAM);
+        return sb.toString();
+    }
+
+    public static String patternIn(String key, String value) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(key).append(SqlConstants.BLANK).append(SqlOperator.IN.getOpt()).append(SqlConstants.BLANK);
+        sb.append("(").append(value).append(")");
         return sb.toString();
     }
 

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlConvertor;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatementBuilder;
 
@@ -28,7 +28,7 @@ public class PrepareQueryTest {
         condition.like(Student::getNickname, "boy");
         condition.desc(Student::getAge);
 
-        PrepareStatement select = PrepareStatementBuilder.select(Student.class, SqlAdapter.convert(condition));
+        PrepareStatement select = PrepareStatementBuilder.select(Student.class, SqlConvertor.convert(condition));
         LOG.info("select sql:{}", select.sql());
         select.check();
 
@@ -36,11 +36,11 @@ public class PrepareQueryTest {
         LOG.info("selectById sql:{}", selectById.sql());
         selectById.check();
 
-        PrepareStatement count = PrepareStatementBuilder.selectCount(Student.class, SqlAdapter.convert(condition));
+        PrepareStatement count = PrepareStatementBuilder.selectCount(Student.class, SqlConvertor.convert(condition));
         LOG.info("count sql:{}", count.sql());
         count.check();
 
-        PrepareStatement delete = PrepareStatementBuilder.delete(Student.class, SqlAdapter.convert(condition));
+        PrepareStatement delete = PrepareStatementBuilder.delete(Student.class, SqlConvertor.convert(condition));
         LOG.info("delete sql:{}", delete.sql());
         delete.check();
 

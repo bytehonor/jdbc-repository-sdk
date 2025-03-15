@@ -10,7 +10,7 @@ import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlConvertor;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.UpdatePrepareStatement;
 
@@ -49,7 +49,7 @@ public class UpdateQueryTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlAdapter.convert(condition));
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlConvertor.convert(condition));
         statement.prepare(student, MAPPER);
 
         String sql = statement.sql();
@@ -75,7 +75,7 @@ public class UpdateQueryTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlAdapter.convert(condition));
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlConvertor.convert(condition));
         statement.prepare(student, MAPPER);
 
         String sql = statement.sql();
@@ -100,7 +100,7 @@ public class UpdateQueryTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlAdapter.convert(condition));
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlConvertor.convert(condition));
         statement.prepare(student, MAPPER);
 
         String sql = statement.sql();
@@ -128,7 +128,7 @@ public class UpdateQueryTest {
         student.setCreateAt(now);
         student.setUpdateAt(now);
 
-        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlAdapter.convert(condition));
+        PrepareStatement statement = new UpdatePrepareStatement(Student.class, SqlConvertor.convert(condition));
         statement.prepare(student, MAPPER);
 
         String sql = statement.sql();

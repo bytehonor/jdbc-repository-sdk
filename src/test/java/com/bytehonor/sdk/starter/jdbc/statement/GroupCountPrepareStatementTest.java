@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import com.bytehonor.sdk.lang.spring.query.QueryCondition;
 import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.model.GroupCountItem;
-import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.sql.SqlConvertor;
 
 public class GroupCountPrepareStatementTest {
 
@@ -52,7 +52,7 @@ public class GroupCountPrepareStatementTest {
         condition.like(Student::getNickname, "boy");
         condition.desc(GroupCountItem::getSize);
         PrepareStatement statement = new GroupCountPrepareStatement(Student.class, Student::getAge,
-                SqlAdapter.convert(condition));
+                SqlConvertor.convert(condition));
         String sql = statement.sql();
         Object[] args = statement.args();
 

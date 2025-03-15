@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
+import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
@@ -72,11 +73,18 @@ public class SqlWhere implements SqlPart {
         }
 
         size++;
-        this.sql.append(SqlFilter.patternOf(key, column.getOperator()));
-        this.keys.add(key);
-        this.values.add(SqlFilter.valueOf(column));
-        this.sqlTypes.add(column.getSqlType());
-        this.javaTypes.add(column.getJavaType());
+
+        // in 不支持占位符写法
+        if (SqlOperator.IN.equals(column.getOperator())) {
+            this.sql.append(SqlFilter.patternIn(key, SqlFilter.valueIn(column)));
+        } else {
+            this.sql.append(SqlFilter.patternOf(key, column.getOperator()));
+            this.keys.add(key);
+            this.values.add(SqlFilter.valueOf(column));
+            this.sqlTypes.add(column.getSqlType());
+            this.javaTypes.add(column.getJavaType());
+        }
+
     }
 
     @Override
