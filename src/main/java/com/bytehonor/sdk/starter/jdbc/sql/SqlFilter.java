@@ -13,7 +13,6 @@ import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
 import com.bytehonor.sdk.lang.spring.string.SpringString;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.starter.jdbc.constant.SqlValueTypes;
-import com.bytehonor.sdk.starter.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.starter.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
@@ -72,10 +71,7 @@ public class SqlFilter {
         Object value = column.getValue();
         Object copy = "";
         SqlOperator operator = column.getOperator();
-        if (SqlOperator.IN.equals(operator)) {
-//            copy = SqlAdaptUtils.joinCollection(column.getJavaType(), value);
-            throw new JdbcSdkException("not support in, but " + operator.getKey());
-        } else if (SqlOperator.LIKE.equals(operator)) {
+        if (SqlOperator.LIKE.equals(operator)) {
             copy = SqlInjectUtils.like(value.toString(), true, true);
         } else if (SqlOperator.LIKE_LEFT.equals(operator)) {
             copy = SqlInjectUtils.like(value.toString(), true, false);
@@ -85,13 +81,6 @@ public class SqlFilter {
             copy = value;
         }
         return copy;
-    }
-
-    public static String valueIn(SqlFilterColumn column) {
-        if (SqlOperator.IN.equals(column.getOperator()) == false) {
-            throw new JdbcSdkException("only support in, but " + column.getOperator().getKey());
-        }
-        return SqlAdaptUtils.joinCollection(column.getJavaType(), column.getValue());
     }
 
     public static String patternOf(String key, SqlOperator operator) {
@@ -106,11 +95,12 @@ public class SqlFilter {
      * 
      * @param key
      * @param value
+     * @param javaType
      * @return
      */
-    public static String patternIn(String key, String value) {
+    public static Object patternIn(String key, Object value, String javaType) {
         StringBuilder sb = new StringBuilder();
-        sb.append(key).append(" IN (").append(value).append(")");
+        sb.append(key).append(" IN (").append(SqlAdaptUtils.joinCollection(javaType, value)).append(")");
         return sb.toString();
     }
 

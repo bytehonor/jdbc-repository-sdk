@@ -108,6 +108,7 @@ public class SqlAdaptUtils {
         if (enabled == false) {
             throw new JdbcSdkException("no collection, class:" + value.getClass().getName());
         }
+
         if (JavaValueTypes.STRING.equals(type)) {
             return JoinUtils.joinSafe((Collection<?>) value);
         }
@@ -123,7 +124,8 @@ public class SqlAdaptUtils {
         if (JavaValueTypes.DOUBLE.equals(type)) {
             return JoinUtils.join((Collection<?>) value);
         }
+
         LOG.error("not support type, type:{}", type);
-        throw new JdbcSdkException("not support type");
+        throw new JdbcSdkException("not support type:" + type);
     }
 }

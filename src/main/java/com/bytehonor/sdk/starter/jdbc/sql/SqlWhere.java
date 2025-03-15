@@ -71,7 +71,7 @@ public class SqlWhere implements SqlPart {
 
         // in 不支持占位符写法
         if (SqlOperator.IN.equals(column.getOperator())) {
-            this.sql.append(SqlFilter.patternIn(key, SqlFilter.valueIn(column)));
+            this.sql.append(SqlFilter.patternIn(key, column.getValue(), column.getJavaType()));
         } else {
             this.sql.append(SqlFilter.patternOf(key, column.getOperator()));
             this.values.add(SqlFilter.valueOf(column));
