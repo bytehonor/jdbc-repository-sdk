@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlColumn;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlPrimary;
 import com.bytehonor.sdk.starter.jdbc.annotation.SqlTable;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
+import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 
 @SqlTable(name = "tbl_student", primary = "id")
 public class Student {
@@ -30,12 +32,12 @@ public class Student {
         LOG.info("hello {}", msg);
         return "hello" + msg;
     }
-    
+
     public static String hi(String msg) {
         LOG.info("hi {}", msg);
         return "hi" + msg;
     }
-    
+
     public String repeat(String msg) {
         return nickname + "repeat" + msg;
     }
@@ -80,4 +82,19 @@ public class Student {
         this.createAt = createAt;
     }
 
+    public static final ModelGetterMapper<Student> MAPPER = new ModelGetterMapper<Student>() {
+
+        @Override
+        public ModelGetter<Student> create(Student model) {
+            ModelGetter<Student> getter = new ModelGetter<Student>(model);
+
+            getter.add(Student::getId);
+            getter.add(Student::getAge);
+            getter.add(Student::getNickname);
+            getter.add(Student::getUpdateAt);
+            getter.add(Student::getCreateAt);
+            return getter;
+        }
+
+    };
 }

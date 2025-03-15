@@ -9,26 +9,11 @@ import org.slf4j.LoggerFactory;
 import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
 import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
+import com.bytehonor.sdk.starter.jdbc.util.SqlPrinter;
 
 public class InsertPrepareStatementTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(InsertPrepareStatementTest.class);
-
-    private static final ModelGetterMapper<Student> MAPPER = new ModelGetterMapper<Student>() {
-
-        @Override
-        public ModelGetter<Student> create(Student model) {
-            ModelGetter<Student> getter = new ModelGetter<Student>(model);
-
-            getter.add(Student::getId);
-            getter.add(Student::getAge);
-            getter.add(Student::getNickname);
-            getter.add(Student::getUpdateAt);
-            getter.add(Student::getCreateAt);
-            return getter;
-        }
-
-    };
 
     @Test
     public void test() {
@@ -42,12 +27,12 @@ public class InsertPrepareStatementTest {
         student.setUpdateAt(now);
 
         PrepareStatement statement = new InsertPrepareStatement(Student.class);
-        statement.prepare(student, MAPPER);
+        statement.prepare(student, Student.MAPPER);
 
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("sql:{}", sql);
+        SqlPrinter.print(sql, args);
         statement.check();
 
         String target = "INSERT INTO tbl_student (age,nickname,update_at,create_at) VALUES (?,?,?,?)";
@@ -66,7 +51,7 @@ public class InsertPrepareStatementTest {
         student.setUpdateAt(now);
 
         PrepareStatement statement = new InsertPrepareStatement(Student.class);
-        statement.prepare(student, MAPPER);
+        statement.prepare(student, Student.MAPPER);
 
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -90,7 +75,7 @@ public class InsertPrepareStatementTest {
         student.setUpdateAt(now);
 
         PrepareStatement statement = new InsertPrepareStatement(Student.class);
-        statement.prepare(student, MAPPER);
+        statement.prepare(student, Student.MAPPER);
 
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -113,7 +98,7 @@ public class InsertPrepareStatementTest {
         student.setUpdateAt(null);
 
         PrepareStatement statement = new InsertPrepareStatement(Student.class);
-        statement.prepare(student, MAPPER);
+        statement.prepare(student, Student.MAPPER);
 
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -175,7 +160,7 @@ public class InsertPrepareStatementTest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < size; i++) {
             PrepareStatement statement = new InsertPrepareStatement(Student.class);
-            statement.prepare(student, MAPPER);
+            statement.prepare(student, Student.MAPPER);
 
             statement.sql();
             statement.args();
@@ -197,7 +182,7 @@ public class InsertPrepareStatementTest {
         boolean isOk = false;
         try {
             PrepareStatement statement = new InsertPrepareStatement(Student.class);
-            statement.prepare(student, MAPPER);
+            statement.prepare(student, Student.MAPPER);
         } catch (Exception e) {
             isOk = true;
             LOG.info("testAllValueNull {}", e.getMessage());

@@ -10,29 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.starter.jdbc.Student;
-import com.bytehonor.sdk.starter.jdbc.model.ModelGetter;
-import com.bytehonor.sdk.starter.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
+import com.bytehonor.sdk.starter.jdbc.util.SqlPrinter;
 
 public class UpdatePrepareStatementTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdatePrepareStatementTest.class);
-
-    private static final ModelGetterMapper<Student> MAPPER = new ModelGetterMapper<Student>() {
-
-        @Override
-        public ModelGetter<Student> create(Student model) {
-            ModelGetter<Student> getter = new ModelGetter<Student>(model);
-
-            getter.add(Student::getId);
-            getter.add(Student::getAge);
-            getter.add(Student::getNickname);
-            getter.add(Student::getUpdateAt);
-            getter.add(Student::getCreateAt);
-            return getter;
-        }
-
-    };
 
     @Test
     public void test() {
@@ -50,12 +33,12 @@ public class UpdatePrepareStatementTest {
         student.setUpdateAt(now);
 
         PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
-        statement.prepare(student, MAPPER);
+        statement.prepare(student, Student.MAPPER);
 
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        LOG.info("sql:{}", sql);
+        SqlPrinter.print(sql, args);
         statement.check();
 
         String target = "UPDATE tbl_student SET age = ?,nickname = ?,update_at = ? WHERE create_at > ?";
@@ -65,12 +48,12 @@ public class UpdatePrepareStatementTest {
     @Test
     public void testSetValueBlank() {
 
-        Set<Integer> set = new HashSet<Integer>();
-        set.add(1);
-        set.add(2);
-        set.add(3);
+        Set<Integer> ages = new HashSet<Integer>();
+        ages.add(1);
+        ages.add(2);
+        ages.add(3);
         SqlCondition condition = SqlCondition.create();
-        condition.in("age", set, Integer.class); // conflict 不会被更新
+        condition.in("age", ages, Integer.class); // conflict 不会被更新
         condition.gt("createAt", System.currentTimeMillis());
 
         long now = System.currentTimeMillis();
@@ -82,7 +65,7 @@ public class UpdatePrepareStatementTest {
         student.setUpdateAt(now);
 
         PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
-        statement.prepare(student, MAPPER);
+        statement.prepare(student, Student.MAPPER);
 
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -91,7 +74,7 @@ public class UpdatePrepareStatementTest {
         statement.check();
 
         String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN (1,2,3) AND create_at > ?";
-        assertTrue("testSetValueBlank", target.equals(sql) && args.length == 4);
+        assertTrue("testSetValueBlank", target.equals(sql) && args.length == 3);
     }
 
     @Test
@@ -108,7 +91,7 @@ public class UpdatePrepareStatementTest {
         student.setUpdateAt(now);
 
         PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
-        statement.prepare(student, MAPPER);
+        statement.prepare(student, Student.MAPPER);
 
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -134,7 +117,7 @@ public class UpdatePrepareStatementTest {
         student.setUpdateAt(now);
 
         PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
-        statement.prepare(student, MAPPER);
+        statement.prepare(student, Student.MAPPER);
 
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -159,7 +142,7 @@ public class UpdatePrepareStatementTest {
         student.setUpdateAt(now);
 
         PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
-        statement.prepare(student, MAPPER);
+        statement.prepare(student, Student.MAPPER);
 
         String sql = statement.sql();
         Object[] args = statement.args();
@@ -187,7 +170,7 @@ public class UpdatePrepareStatementTest {
         student.setUpdateAt(now);
 
         PrepareStatement statement = new UpdatePrepareStatement(Student.class, condition);
-        statement.prepare(student, MAPPER);
+        statement.prepare(student, Student.MAPPER);
 
         String sql = statement.sql();
         Object[] args = statement.args();

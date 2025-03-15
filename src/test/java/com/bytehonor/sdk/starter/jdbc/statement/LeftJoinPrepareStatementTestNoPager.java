@@ -13,9 +13,9 @@ import com.bytehonor.sdk.starter.jdbc.StudentContact;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.starter.jdbc.sql.rewrite.PrefixRewriter;
 
-public class LeftJoinPrepareStatementTestOrderDouble {
+public class LeftJoinPrepareStatementTestNoPager {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LeftJoinPrepareStatementTestOrderDouble.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LeftJoinPrepareStatementTestNoPager.class);
 
     @Test
     public void test() {
@@ -28,15 +28,19 @@ public class LeftJoinPrepareStatementTestOrderDouble {
         condition.gt("create_at", System.currentTimeMillis());
         condition.like("nickname", "boy");
         condition.desc("id");
-        condition.desc("age");
+        condition.limit(-1);
         LeftJoinPrepareStatement statement = new LeftJoinPrepareStatement(StudentContact.class, condition);
         String sql = statement.sql();
-        Object[] args = statement.args();
+        boolean hasError = false;
+        try {
+            statement.args();
+        } catch (Exception e) {
+            hasError = true;
+        }
 
-        LOG.info("test sql:[{}]", sql);
-        statement.check();
+        LOG.info("sql:[{}]", sql);
 
-        String target = "SELECT m.id, m.nickname, s.phone, m.update_at, m.create_at FROM tbl_student as m LEFT JOIN tbl_user_profile as s ON m.nickname = s.nickname WHERE m.age IN (1,2,3) AND m.create_at > ? AND m.nickname LIKE ? ORDER BY m.id DESC, m.age DESC LIMIT 0,20";
-        assertTrue("test", target.equals(sql) && args.length == 2);
+        String target = "SELECT m.id, m.nickname, s.phone, m.update_at, m.create_at FROM tbl_student as m LEFT JOIN tbl_user_profile as s ON m.nickname = s.nickname WHERE m.age IN (1,2,3) AND m.create_at > ? AND m.nickname LIKE ? ORDER BY m.id DESC";
+        assertTrue("testNoPager", target.equals(sql) && hasError);
     }
 }
