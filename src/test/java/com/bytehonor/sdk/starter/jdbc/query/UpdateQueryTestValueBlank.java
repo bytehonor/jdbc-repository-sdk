@@ -66,7 +66,7 @@ public class UpdateQueryTestValueBlank {
         LOG.info("sql:{}, length:{}", sql, length);
         statement.check();
 
-        String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN ? AND create_at > ?";
+        String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN (?) AND create_at > ?";
         assertTrue("test", target.equals(sql) && length == 4);
     }
 

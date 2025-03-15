@@ -35,7 +35,7 @@ public class DeletePrepareStatementTest {
         LOG.info("sql:[{}], args:[{}]", sql, SqlInjectUtils.toString(args));
         statement.check();
 
-        String target = "DELETE FROM tbl_student WHERE age IN ? AND create_at > ? AND nickname LIKE ?";
+        String target = "DELETE FROM tbl_student WHERE age IN (?) AND create_at > ? AND nickname LIKE ?";
         assertTrue("test", target.equals(sql) && args.length == 3);
     }
 

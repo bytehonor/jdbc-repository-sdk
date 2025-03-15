@@ -14,7 +14,7 @@ import com.bytehonor.sdk.starter.jdbc.Student;
 import com.bytehonor.sdk.starter.jdbc.sql.SqlAdapter;
 import com.bytehonor.sdk.starter.jdbc.statement.PrepareStatement;
 import com.bytehonor.sdk.starter.jdbc.statement.SelectCountPrepareStatement;
-import com.bytehonor.sdk.starter.jdbc.util.SqlInjectUtils;
+import com.bytehonor.sdk.starter.jdbc.util.SqlPrinter;
 
 public class SelectCountQueryTest {
 
@@ -35,12 +35,11 @@ public class SelectCountQueryTest {
         String sql = statement.sql();
         Object[] args = statement.args();
 
-        int length = args.length;
-        LOG.info("sql:[{}], args:[{}], length:{}", sql, SqlInjectUtils.toString(args), length);
+        SqlPrinter.print(sql, args);
         statement.check();
 
-        String target = "SELECT COUNT(id) FROM tbl_student WHERE age IN ? AND create_at > ? AND nickname LIKE ?";
-        assertTrue("test", target.equals(sql) && length == 3);
+        String target = "SELECT COUNT(id) FROM tbl_student WHERE age IN (?) AND create_at > ? AND nickname LIKE ?";
+        assertTrue("test", target.equals(sql) && args.length == 3);
     }
 
     @Test

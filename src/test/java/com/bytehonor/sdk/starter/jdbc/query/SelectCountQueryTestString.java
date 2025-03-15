@@ -43,7 +43,7 @@ public class SelectCountQueryTestString {
         LOG.info("sql:[{}], args:[{}], length:{}", sql, SqlInjectUtils.toString(args), length);
         statement.check();
 
-        String target = "SELECT COUNT(id) FROM tbl_student WHERE age IN ? AND nickname IN ? AND create_at > ?";
+        String target = "SELECT COUNT(id) FROM tbl_student WHERE age IN (?) AND nickname IN (?) AND create_at > ?";
         assertTrue("test", target.equals(sql) && length == 3);
     }
 

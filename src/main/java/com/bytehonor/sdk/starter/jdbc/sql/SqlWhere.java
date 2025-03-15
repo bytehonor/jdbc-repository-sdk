@@ -72,8 +72,7 @@ public class SqlWhere implements SqlPart {
         }
 
         size++;
-        this.sql.append(key).append(SqlConstants.BLANK).append(column.getOperator().getOpt()).append(SqlConstants.BLANK)
-                .append(SqlConstants.PARAM);
+        this.sql.append(SqlFilter.patternOf(key, column.getOperator()));
         this.keys.add(key);
         this.values.add(SqlFilter.valueOf(column));
         this.sqlTypes.add(column.getSqlType());

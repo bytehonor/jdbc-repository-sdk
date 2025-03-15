@@ -90,7 +90,7 @@ public class UpdatePrepareStatementTest {
         LOG.info("testSetValueEmpty sql:{}", sql);
         statement.check();
 
-        String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN ? AND create_at > ?";
+        String target = "UPDATE tbl_student SET nickname = ?,update_at = ? WHERE age IN (?) AND create_at > ?";
         assertTrue("testSetValueBlank", target.equals(sql) && args.length == 4);
     }
 
