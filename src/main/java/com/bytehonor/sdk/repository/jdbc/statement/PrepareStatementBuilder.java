@@ -2,7 +2,7 @@ package com.bytehonor.sdk.repository.jdbc.statement;
 
 import java.util.Objects;
 
-import com.bytehonor.sdk.lang.spring.function.ClassGetter;
+import com.bytehonor.sdk.framework.lang.function.ClassGetter;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlCondition;
 
 /**

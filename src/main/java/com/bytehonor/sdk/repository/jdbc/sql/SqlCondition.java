@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.lang.spring.constant.QueryLogic;
+import com.bytehonor.sdk.framework.lang.constant.QueryLogic;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlFilter.SqlFilterColumn;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlOrder.SqlOrderColumn;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.KeyRewriter;

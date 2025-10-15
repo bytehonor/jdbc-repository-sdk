@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.repository.jdbc.sql;
 
-import com.bytehonor.sdk.lang.spring.constant.HttpConstants;
+import com.bytehonor.sdk.framework.lang.constant.HttpConstants;
 
 public class SqlPager implements SqlPart {
 

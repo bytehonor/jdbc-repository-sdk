@@ -9,8 +9,8 @@ import java.util.Set;
 
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.lang.spring.constant.SqlOperator;
-import com.bytehonor.sdk.lang.spring.string.SpringString;
+import com.bytehonor.sdk.framework.lang.constant.SqlOperator;
+import com.bytehonor.sdk.framework.lang.string.SpringString;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.repository.jdbc.util.SqlAdaptUtils;

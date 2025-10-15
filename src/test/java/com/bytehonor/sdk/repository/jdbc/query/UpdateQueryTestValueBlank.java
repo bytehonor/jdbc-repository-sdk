@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.bytehonor.sdk.lang.spring.query.QueryCondition;
+import com.bytehonor.sdk.framework.lang.query.QueryCondition;
 import com.bytehonor.sdk.repository.jdbc.Student;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetter;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetterMapper;

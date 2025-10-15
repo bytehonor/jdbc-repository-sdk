@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.bytehonor.sdk.lang.spring.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.SpringString;
 
 public class MetaTableLeftJoin implements Serializable {
 

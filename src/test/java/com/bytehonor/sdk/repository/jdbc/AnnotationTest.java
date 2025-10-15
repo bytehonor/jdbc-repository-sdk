@@ -12,9 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
-import com.bytehonor.sdk.lang.spring.function.ClassGetter;
-import com.bytehonor.sdk.lang.spring.function.ObjectGetter;
-import com.bytehonor.sdk.lang.spring.function.consumer.ConsumeString;
+import com.bytehonor.sdk.framework.lang.function.ClassGetter;
+import com.bytehonor.sdk.framework.lang.function.ObjectGetter;
+import com.bytehonor.sdk.framework.lang.function.consumer.ConsumeString;
 import com.bytehonor.sdk.repository.jdbc.annotation.SqlColumn;
 import com.bytehonor.sdk.repository.jdbc.annotation.SqlTable;
 import com.bytehonor.sdk.repository.jdbc.function.IConvert;

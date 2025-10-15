@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.lang.spring.function.ClassGetter;
+import com.bytehonor.sdk.framework.lang.function.ClassGetter;
 import com.bytehonor.sdk.repository.jdbc.Student;
 
 public class ClassGetterTest {

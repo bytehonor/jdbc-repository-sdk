@@ -6,15 +6,15 @@ import java.util.Objects;
 
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.lang.spring.query.QueryCondition;
-import com.bytehonor.sdk.lang.spring.query.QueryFilter;
-import com.bytehonor.sdk.lang.spring.query.QueryFilter.QueryFilterColumn;
-import com.bytehonor.sdk.lang.spring.query.QueryOrder;
-import com.bytehonor.sdk.lang.spring.query.QueryOrder.QueryOrderColumn;
+import com.bytehonor.sdk.framework.lang.query.QueryCondition;
+import com.bytehonor.sdk.framework.lang.query.QueryFilter;
+import com.bytehonor.sdk.framework.lang.query.QueryFilter.QueryFilterColumn;
+import com.bytehonor.sdk.framework.lang.query.QueryOrder;
+import com.bytehonor.sdk.framework.lang.query.QueryOrder.QueryOrderColumn;
+import com.bytehonor.sdk.framework.lang.query.QueryPager;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlFilter.SqlFilterColumn;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlOrder.SqlOrderColumn;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.KeyRewriter;
-import com.bytehonor.sdk.lang.spring.query.QueryPager;
 
 public class SqlConvertor {
 

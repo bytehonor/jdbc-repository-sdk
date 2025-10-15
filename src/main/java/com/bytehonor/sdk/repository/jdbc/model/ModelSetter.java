@@ -5,12 +5,12 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import com.bytehonor.sdk.lang.spring.function.Setters;
-import com.bytehonor.sdk.lang.spring.function.setter.SetBoolean;
-import com.bytehonor.sdk.lang.spring.function.setter.SetDouble;
-import com.bytehonor.sdk.lang.spring.function.setter.SetInteger;
-import com.bytehonor.sdk.lang.spring.function.setter.SetLong;
-import com.bytehonor.sdk.lang.spring.function.setter.SetString;
+import com.bytehonor.sdk.framework.lang.function.Setters;
+import com.bytehonor.sdk.framework.lang.function.setter.SetBoolean;
+import com.bytehonor.sdk.framework.lang.function.setter.SetDouble;
+import com.bytehonor.sdk.framework.lang.function.setter.SetInteger;
+import com.bytehonor.sdk.framework.lang.function.setter.SetLong;
+import com.bytehonor.sdk.framework.lang.function.setter.SetString;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlResult;
 
 public class ModelSetter<T> {

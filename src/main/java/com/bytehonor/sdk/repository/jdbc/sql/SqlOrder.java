@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.lang.spring.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.SpringString;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.KeyRewriter;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.UnderlineRewriter;

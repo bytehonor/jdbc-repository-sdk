@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.repository.jdbc.sql;
 
-import com.bytehonor.sdk.lang.spring.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.SpringString;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 
 public class SqlFormatter {

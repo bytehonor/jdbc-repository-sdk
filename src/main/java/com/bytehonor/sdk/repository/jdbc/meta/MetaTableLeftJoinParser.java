@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
-import com.bytehonor.sdk.lang.spring.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.SpringString;
 import com.bytehonor.sdk.repository.jdbc.annotation.SqlColumn;
 import com.bytehonor.sdk.repository.jdbc.annotation.SqlTableLeftJoin;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;

@@ -13,12 +13,12 @@ import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.lang.spring.constant.JavaValueTypes;
-import com.bytehonor.sdk.lang.spring.getter.BooleanGetter;
-import com.bytehonor.sdk.lang.spring.getter.DoubleGetter;
-import com.bytehonor.sdk.lang.spring.getter.IntegerGetter;
-import com.bytehonor.sdk.lang.spring.getter.LongGetter;
-import com.bytehonor.sdk.lang.spring.util.JoinUtils;
+import com.bytehonor.sdk.framework.lang.constant.JavaValueTypes;
+import com.bytehonor.sdk.framework.lang.getter.BooleanGetter;
+import com.bytehonor.sdk.framework.lang.getter.DoubleGetter;
+import com.bytehonor.sdk.framework.lang.getter.IntegerGetter;
+import com.bytehonor.sdk.framework.lang.getter.LongGetter;
+import com.bytehonor.sdk.framework.lang.util.JoinUtils;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.model.ModelKeyValue;

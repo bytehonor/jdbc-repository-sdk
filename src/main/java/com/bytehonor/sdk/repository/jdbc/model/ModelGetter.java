@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.bytehonor.sdk.lang.spring.function.Getters;
-import com.bytehonor.sdk.lang.spring.function.getter.GetBoolean;
-import com.bytehonor.sdk.lang.spring.function.getter.GetDouble;
-import com.bytehonor.sdk.lang.spring.function.getter.GetInteger;
-import com.bytehonor.sdk.lang.spring.function.getter.GetLong;
-import com.bytehonor.sdk.lang.spring.function.getter.GetString;
+import com.bytehonor.sdk.framework.lang.function.Getters;
+import com.bytehonor.sdk.framework.lang.function.getter.GetBoolean;
+import com.bytehonor.sdk.framework.lang.function.getter.GetDouble;
+import com.bytehonor.sdk.framework.lang.function.getter.GetInteger;
+import com.bytehonor.sdk.framework.lang.function.getter.GetLong;
+import com.bytehonor.sdk.framework.lang.function.getter.GetString;
 
 public class ModelGetter<T> {
 

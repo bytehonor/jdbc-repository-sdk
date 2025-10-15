@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.lang.spring.function.ObjectGetter;
+import com.bytehonor.sdk.framework.lang.function.ObjectGetter;
 import com.bytehonor.sdk.repository.jdbc.Student;
 
 public class ObjectGetterTest {

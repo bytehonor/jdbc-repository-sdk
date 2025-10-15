@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.lang.spring.query.QueryCondition;
+import com.bytehonor.sdk.framework.lang.query.QueryCondition;
 import com.bytehonor.sdk.repository.jdbc.Student;
 import com.bytehonor.sdk.repository.jdbc.model.GroupCountItem;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlCondition;
