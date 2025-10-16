@@ -2,7 +2,7 @@ package com.bytehonor.sdk.repository.jdbc.statement;
 
 import com.bytehonor.sdk.framework.lang.function.ClassGetter;
 import com.bytehonor.sdk.framework.lang.function.Getters;
-import com.bytehonor.sdk.framework.lang.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.StringKit;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlFormatter;
@@ -28,7 +28,7 @@ public class GroupCountPrepareStatement extends AbstractPrepareStatement {
 
     @Override
     public String sql() {
-        if (SpringString.isEmpty(column)) {
+        if (StringKit.isEmpty(column)) {
             throw new JdbcSdkException("GROUP BY column isEmpty");
         }
         StringBuilder sql = new StringBuilder();
@@ -43,7 +43,7 @@ public class GroupCountPrepareStatement extends AbstractPrepareStatement {
 
     private String orderBy(SqlOrder order) {
         String sql = order != null ? order.toSql() : "";
-        if (SpringString.isEmpty(sql)) {
+        if (StringKit.isEmpty(sql)) {
             return "ORDER BY NULL";
         }
         return sql;

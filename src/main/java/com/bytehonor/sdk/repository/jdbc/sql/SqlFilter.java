@@ -10,7 +10,7 @@ import java.util.Set;
 import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.framework.lang.constant.SqlOperator;
-import com.bytehonor.sdk.framework.lang.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.StringKit;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.repository.jdbc.util.SqlAdaptUtils;
@@ -146,7 +146,7 @@ public class SqlFilter {
                 return false;
             }
 
-            if (SpringString.isEmpty(filter.getKey())) {
+            if (StringKit.isEmpty(filter.getKey())) {
                 return false;
             }
 
@@ -155,7 +155,7 @@ public class SqlFilter {
                 return false;
             }
 
-            if (SqlOperator.LIKE.equals(filter.getOperator()) && SpringString.isEmpty(filter.getValue().toString())) {
+            if (SqlOperator.LIKE.equals(filter.getOperator()) && StringKit.isEmpty(filter.getValue().toString())) {
                 return false;
             }
 

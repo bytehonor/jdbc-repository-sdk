@@ -2,7 +2,7 @@ package com.bytehonor.sdk.repository.jdbc.statement;
 
 import com.bytehonor.sdk.framework.lang.function.ClassGetter;
 import com.bytehonor.sdk.framework.lang.function.Getters;
-import com.bytehonor.sdk.framework.lang.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.StringKit;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlFormatter;
@@ -26,7 +26,7 @@ public class DistinctPrepareStatement extends AbstractPrepareStatement {
 
     @Override
     public String sql() {
-        if (SpringString.isEmpty(column)) {
+        if (StringKit.isEmpty(column)) {
             throw new JdbcSdkException("DISTINCT column isEmpty");
         }
 

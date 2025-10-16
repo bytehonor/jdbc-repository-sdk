@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
-import com.bytehonor.sdk.framework.lang.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.StringKit;
 import com.bytehonor.sdk.repository.jdbc.annotation.SqlColumn;
 import com.bytehonor.sdk.repository.jdbc.annotation.SqlTable;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
@@ -42,7 +42,7 @@ public class MetaTableParser {
 
         SqlTable annotation = AnnotationUtils.getAnnotation(clazz, SqlTable.class);
         String primary = annotation.primary();
-        if (SpringString.isEmpty(primary)) {
+        if (StringKit.isEmpty(primary)) {
             throw new JdbcSdkException("No SqlTable primary, clazz:" + clazzName);
         }
 
@@ -74,7 +74,7 @@ public class MetaTableParser {
                 }
                 underline = sqlColumn.name();
             }
-            if (SpringString.isEmpty(underline)) {
+            if (StringKit.isEmpty(underline)) {
                 LOG.debug("camel:{}, use camelToUnderline", camel);
                 underline = SqlColumnUtils.camelToUnderline(camel);
             }

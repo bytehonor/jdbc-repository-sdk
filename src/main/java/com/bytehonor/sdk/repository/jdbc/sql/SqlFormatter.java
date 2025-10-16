@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.repository.jdbc.sql;
 
-import com.bytehonor.sdk.framework.lang.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.StringKit;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 
 public class SqlFormatter {
@@ -8,7 +8,7 @@ public class SqlFormatter {
     public static void connect(StringBuilder sb, SqlPart... parts) {
         for (SqlPart part : parts) {
             String sql = part.toSql();
-            if (SpringString.isEmpty(sql)) {
+            if (StringKit.isEmpty(sql)) {
                 continue;
             }
             sb.append(SqlConstants.BLANK).append(sql);

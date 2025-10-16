@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.framework.lang.regex.PatternUtils;
-import com.bytehonor.sdk.framework.lang.string.SpringString;
+import com.bytehonor.sdk.framework.lang.regex.PatternKit;
+import com.bytehonor.sdk.framework.lang.string.StringKit;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.meta.MetaTable;
@@ -142,13 +142,13 @@ public class SqlColumnUtils {
         Objects.requireNonNull(column, "column");
 
         String val = UNDERLINE_CACHE.get(column);
-        if (SpringString.isEmpty(val) == false) {
+        if (StringKit.isEmpty(val) == false) {
             return val;
         }
 
         acceptChar(column);
 
-        val = SpringString.camelToUnderline(column);
+        val = StringKit.camelToUnderline(column);
         UNDERLINE_CACHE.put(column, val);
         return val;
     }
@@ -166,10 +166,10 @@ public class SqlColumnUtils {
             if (UNDERLINE == ch) {
                 continue;
             }
-            if (PatternUtils.isLetterChar(ch)) {
+            if (PatternKit.isLetterChar(ch)) {
                 continue;
             }
-            if (PatternUtils.isNumberChar(ch)) {
+            if (PatternKit.isNumberChar(ch)) {
                 continue;
             }
             throw new JdbcSdkException("column only accept _ number letter, column:" + column);
@@ -177,7 +177,7 @@ public class SqlColumnUtils {
     }
 
     public static boolean isSaveIgnore(String primary, String column) {
-        if (SpringString.equals(primary, column)) {
+        if (StringKit.equals(primary, column)) {
             return true;
         }
         return IGNORES.contains(column);

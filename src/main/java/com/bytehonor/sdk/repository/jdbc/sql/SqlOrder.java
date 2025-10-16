@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.springframework.util.CollectionUtils;
 
-import com.bytehonor.sdk.framework.lang.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.StringKit;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.KeyRewriter;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.UnderlineRewriter;
@@ -45,7 +45,7 @@ public class SqlOrder implements SqlPart {
     }
 
     public SqlOrder with(SqlOrderColumn column) {
-        if (SpringString.isEmpty(column.getKey()) || SpringString.isEmpty(column.getSorter())) {
+        if (StringKit.isEmpty(column.getKey()) || StringKit.isEmpty(column.getSorter())) {
             return this;
         }
         this.columns.add(column);

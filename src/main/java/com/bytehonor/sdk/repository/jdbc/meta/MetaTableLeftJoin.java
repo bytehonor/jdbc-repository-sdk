@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.bytehonor.sdk.framework.lang.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.StringKit;
 
 public class MetaTableLeftJoin implements Serializable {
 
@@ -38,7 +38,7 @@ public class MetaTableLeftJoin implements Serializable {
     }
 
     public void finish() {
-        if (SpringString.isEmpty(fullColumns) == false) {
+        if (StringKit.isEmpty(fullColumns) == false) {
             return;
         }
         camels = new HashSet<String>();

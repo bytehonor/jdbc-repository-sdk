@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.bytehonor.sdk.framework.lang.constant.QueryLogic;
 import com.bytehonor.sdk.framework.lang.constant.SqlOperator;
-import com.bytehonor.sdk.framework.lang.string.SpringString;
+import com.bytehonor.sdk.framework.lang.string.StringKit;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlFilter.SqlFilterColumn;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.KeyRewriter;
@@ -60,7 +60,7 @@ public class SqlWhere implements SqlPart {
     private void doRead(SqlFilterColumn column) {
         // 转成下划线
         String key = rewriter.rewrite(column.getKey());
-        if (SpringString.isEmpty(key)) {
+        if (StringKit.isEmpty(key)) {
             return;
         }
 
