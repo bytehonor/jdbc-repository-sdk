@@ -1,1 +1,1 @@
-com.bytehonor.sdk.repository.jdbc.config.JdbcRepositoryAutoConfiguration
+com.bytehonor.sdk.repository.jdbc.config.JdbcRepositorySdkConfiguration

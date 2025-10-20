@@ -21,9 +21,9 @@ import com.bytehonor.sdk.repository.jdbc.dao.JdbcProxyDao;
 @Configuration
 @ConditionalOnClass({ DataSourceProperties.class, JdbcTemplate.class, JdbcProperties.class })
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
-public class JdbcRepositoryAutoConfiguration {
+public class JdbcRepositorySdkConfiguration {
 
-    private static final Logger LOG = LoggerFactory.getLogger(JdbcRepositoryAutoConfiguration.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcRepositorySdkConfiguration.class);
 
     @Bean
     @ConditionalOnProperty(prefix = "spring.datasource", name = "driver-class-name", matchIfMissing = false)
