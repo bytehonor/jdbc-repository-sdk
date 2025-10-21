@@ -9,7 +9,7 @@ import com.bytehonor.sdk.framework.lang.function.getter.GetInteger;
 import com.bytehonor.sdk.framework.lang.function.getter.GetLong;
 import com.bytehonor.sdk.framework.lang.function.getter.GetString;
 import com.bytehonor.sdk.framework.lang.query.QueryCondition;
-import com.bytehonor.sdk.repository.jdbc.model.GroupCountItem;
+import com.bytehonor.sdk.repository.jdbc.model.GroupStats;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.repository.jdbc.model.ModelSetterMapper;
 
@@ -107,7 +107,7 @@ public abstract class AbstractDao<T> {
         return JdbcProxyDao.insertQuick(model, getterMapper());
     }
 
-    public List<GroupCountItem> groupCount(ClassGetter<T, ?> getter, QueryCondition condition) {
+    public List<GroupStats> groupCount(ClassGetter<T, ?> getter, QueryCondition condition) {
         Objects.requireNonNull(condition, "condition");
 
         return JdbcProxyDao.groupCount(clazz(), getter, condition);
