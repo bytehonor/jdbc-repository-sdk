@@ -10,7 +10,7 @@ import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.meta.MetaTableLeftJoin;
 import com.bytehonor.sdk.repository.jdbc.meta.MetaTableLeftJoinParser;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetterMapper;
-import com.bytehonor.sdk.repository.jdbc.model.ModelKeyValue;
+import com.bytehonor.sdk.repository.jdbc.model.ModelField;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlFormatter;
 import com.bytehonor.sdk.repository.jdbc.util.SqlAdaptUtils;
@@ -53,7 +53,7 @@ public class LeftJoinPrepareStatement implements PrepareStatement {
 
     @Override
     public Object[] args() {
-        if (condition.nonFilter()) {
+        if (condition.ignoreFilter()) {
             if (condition.getPager() == null) {
                 // 禁全表无分页查询
                 throw new JdbcSdkException("left join sql condition args isEmpty");
@@ -68,15 +68,15 @@ public class LeftJoinPrepareStatement implements PrepareStatement {
 
     @Override
     public int[] types() {
-        if (condition.nonFilter()) {
+        if (condition.ignoreFilter()) {
             return new int[0];
         }
         return SqlInjectUtils.listArray(condition.types());
     }
 
     @Override
-    public <T> List<ModelKeyValue> prepare(T model, ModelGetterMapper<T> mapper) {
-        return new ArrayList<ModelKeyValue>();
+    public <T> List<ModelField> prepare(T model, ModelGetterMapper<T> mapper) {
+        return new ArrayList<ModelField>();
     }
 
     @Override

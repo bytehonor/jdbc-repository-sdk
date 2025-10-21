@@ -38,7 +38,7 @@ public class DistinctPrepareStatement extends AbstractPrepareStatement {
 
     @Override
     public Object[] args() {
-        if (condition.nonFilter()) {
+        if (condition.ignoreFilter()) {
             return new Object[0];
         }
         return condition.values().toArray();
@@ -46,7 +46,7 @@ public class DistinctPrepareStatement extends AbstractPrepareStatement {
 
     @Override
     public int[] types() {
-        if (condition.nonFilter()) {
+        if (condition.ignoreFilter()) {
             return new int[0];
         }
         return SqlInjectUtils.listArray(condition.types());

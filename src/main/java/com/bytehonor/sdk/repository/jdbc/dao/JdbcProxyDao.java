@@ -24,9 +24,9 @@ import com.bytehonor.sdk.framework.lang.function.getter.GetLong;
 import com.bytehonor.sdk.framework.lang.function.getter.GetString;
 import com.bytehonor.sdk.framework.lang.query.QueryCondition;
 import com.bytehonor.sdk.repository.jdbc.JdbcConfig;
-import com.bytehonor.sdk.repository.jdbc.model.GroupCountItem;
+import com.bytehonor.sdk.repository.jdbc.model.GroupStats;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetterMapper;
-import com.bytehonor.sdk.repository.jdbc.model.ModelKeyValue;
+import com.bytehonor.sdk.repository.jdbc.model.ModelField;
 import com.bytehonor.sdk.repository.jdbc.model.ModelSetterMapper;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlConvertor;
@@ -258,7 +258,7 @@ public class JdbcProxyDao {
 
         final Class<? extends Object> clazz = model.getClass();
         final PrepareStatement statement = PrepareStatementBuilder.insert(clazz);
-        final List<ModelKeyValue> items = statement.prepare(model, mapper);
+        final List<ModelField> fields = statement.prepare(model, mapper);
 
         final String sql = statement.sql();
         Object[] args = statement.args();
@@ -271,7 +271,7 @@ public class JdbcProxyDao {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 
-                return SqlAdaptUtils.make(sql, items, connection);
+                return SqlAdaptUtils.make(sql, fields, connection);
             }
         }, holder);
 
@@ -293,7 +293,7 @@ public class JdbcProxyDao {
         return jdbcTemplate.update(sql, args, statement.types());
     }
 
-    public <T> List<GroupCountItem> groupCount(Class<T> clazz, ClassGetter<T, ?> getter, QueryCondition condition) {
+    public <T> List<GroupStats> groupCount(Class<T> clazz, ClassGetter<T, ?> getter, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
 
@@ -302,6 +302,6 @@ public class JdbcProxyDao {
         Object[] args = statement.args();
         print(clazz, sql, args);
 
-        return jdbcTemplate.query(sql, args, statement.types(), GroupCountItem.SETTERS);
+        return jdbcTemplate.query(sql, args, statement.types(), GroupStats.SETTERS);
     }
 }

@@ -12,7 +12,7 @@ import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetter;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetterMapper;
-import com.bytehonor.sdk.repository.jdbc.model.ModelKeyValue;
+import com.bytehonor.sdk.repository.jdbc.model.ModelField;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlFormatter;
 import com.bytehonor.sdk.repository.jdbc.util.SqlAdaptUtils;
@@ -43,7 +43,7 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
     }
 
     @Override
-    public <T> List<ModelKeyValue> prepare(T model, ModelGetterMapper<T> mapper) {
+    public <T> List<ModelField> prepare(T model, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
@@ -52,19 +52,19 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
 
         // confilc check
         List<String> filterKeys = condition.getWhere().getKeys();
-        List<ModelKeyValue> keyValues = getter.getKeyValues();
-        List<ModelKeyValue> result = SqlColumnUtils.prepareUpdate(getTable(), keyValues, filterKeys);
+        List<ModelField> rawFields = getter.getFields();
+        List<ModelField> fields = SqlColumnUtils.prepareUpdate(getTable(), rawFields, filterKeys);
 
-        for (ModelKeyValue mkv : result) {
-            saveColumns.add(mkv.getKey());
-            saveValues.add(mkv.getValue());
-            saveTypes.add(SqlAdaptUtils.toSqlType(mkv.getJavaType())); // 转换
+        for (ModelField field : fields) {
+            saveColumns.add(field.getKey());
+            saveValues.add(field.getValue());
+            saveTypes.add(SqlAdaptUtils.toSqlType(field.getJavaType())); // 转换
         }
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("prepare saveColumns:{}, saveValues:{}", saveColumns.size(), saveValues.size());
         }
-        return result;
+        return fields;
     }
 
     @Override
@@ -92,7 +92,7 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
         if (CollectionUtils.isEmpty(saveValues)) {
             throw new JdbcSdkException("update sql saveValues empty");
         }
-        if (condition.nonFilter()) {
+        if (condition.ignoreFilter()) {
             throw new JdbcSdkException("update sql condition args isEmpty");
         }
 
@@ -109,7 +109,7 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
         if (CollectionUtils.isEmpty(saveTypes)) {
             throw new JdbcSdkException("update sql saveTypes empty");
         }
-        if (condition.nonFilter()) {
+        if (condition.ignoreFilter()) {
             throw new JdbcSdkException("update sql condition args isEmpty");
         }
 

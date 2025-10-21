@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.framework.lang.query.QueryCondition;
 import com.bytehonor.sdk.repository.jdbc.Student;
-import com.bytehonor.sdk.repository.jdbc.model.GroupCountItem;
+import com.bytehonor.sdk.repository.jdbc.model.GroupStats;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlConvertor;
 import com.bytehonor.sdk.repository.jdbc.util.SqlPrinter;
@@ -50,7 +50,7 @@ public class GroupCountPrepareStatementTest {
         condition.in(Student::getAge, set);
         condition.gt(Student::getCreateAt, System.currentTimeMillis());
         condition.like(Student::getNickname, "boy");
-        condition.desc(GroupCountItem::getSize);
+        condition.desc(GroupStats::getSize);
         PrepareStatement statement = new GroupCountPrepareStatement(Student.class, Student::getAge,
                 SqlConvertor.convert(condition));
         String sql = statement.sql();

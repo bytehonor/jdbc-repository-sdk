@@ -15,13 +15,13 @@ public class ModelGetter<T> {
 
     private final T model;
 
-    private final List<ModelKeyValue> keyValues;
+    private final List<ModelField> fields;
 
     public ModelGetter(T model) {
         Objects.requireNonNull(model, "model");
 
         this.model = model;
-        this.keyValues = new ArrayList<ModelKeyValue>();
+        this.fields = new ArrayList<ModelField>();
     }
 
     public static <T> ModelGetter<T> of(T model) {
@@ -36,7 +36,7 @@ public class ModelGetter<T> {
             return;
         }
         String key = Getters.field(getter);
-        keyValues.add(ModelKeyValue.of(key, value));
+        fields.add(ModelField.of(key, value));
     }
 
     public void add(GetLong<T> getter) {
@@ -45,7 +45,7 @@ public class ModelGetter<T> {
             return;
         }
         String key = Getters.field(getter);
-        keyValues.add(ModelKeyValue.of(key, value));
+        fields.add(ModelField.of(key, value));
     }
 
     public void add(GetInteger<T> getter) {
@@ -54,7 +54,7 @@ public class ModelGetter<T> {
             return;
         }
         String key = Getters.field(getter);
-        keyValues.add(ModelKeyValue.of(key, value));
+        fields.add(ModelField.of(key, value));
     }
 
     public void add(GetBoolean<T> getter) {
@@ -63,7 +63,7 @@ public class ModelGetter<T> {
             return;
         }
         String key = Getters.field(getter);
-        keyValues.add(ModelKeyValue.of(key, value));
+        fields.add(ModelField.of(key, value));
     }
 
     public void add(GetDouble<T> getter) {
@@ -72,15 +72,15 @@ public class ModelGetter<T> {
             return;
         }
         String key = Getters.field(getter);
-        keyValues.add(ModelKeyValue.of(key, value));
+        fields.add(ModelField.of(key, value));
     }
 
     public T getModel() {
         return model;
     }
 
-    public List<ModelKeyValue> getKeyValues() {
-        return keyValues;
+    public List<ModelField> getFields() {
+        return fields;
     }
 
 }

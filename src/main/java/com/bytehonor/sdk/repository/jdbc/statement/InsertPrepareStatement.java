@@ -12,7 +12,7 @@ import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetter;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetterMapper;
-import com.bytehonor.sdk.repository.jdbc.model.ModelKeyValue;
+import com.bytehonor.sdk.repository.jdbc.model.ModelField;
 import com.bytehonor.sdk.repository.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.repository.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
@@ -39,26 +39,26 @@ public class InsertPrepareStatement extends AbstractPrepareStatement {
     }
 
     @Override
-    public <T> List<ModelKeyValue> prepare(T model, ModelGetterMapper<T> mapper) {
+    public <T> List<ModelField> prepare(T model, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
 
         ModelGetter<T> getter = mapper.create(model);
         Objects.requireNonNull(getter, "getter");
 
-        List<ModelKeyValue> keyValues = getter.getKeyValues();
-        List<ModelKeyValue> result = SqlColumnUtils.prepareInsert(getTable(), keyValues);
+        List<ModelField> rawFields = getter.getFields();
+        List<ModelField> fields = SqlColumnUtils.prepareInsert(getTable(), rawFields);
 
-        for (ModelKeyValue mkv : result) {
-            saveColumns.add(mkv.getKey());
-            saveValues.add(mkv.getValue());
-            saveTypes.add(SqlAdaptUtils.toSqlType(mkv.getJavaType())); // 转换
+        for (ModelField field : fields) {
+            saveColumns.add(field.getKey());
+            saveValues.add(field.getValue());
+            saveTypes.add(SqlAdaptUtils.toSqlType(field.getJavaType())); // 转换
         }
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("prepare saveColumns:{}, saveValues:{}", saveColumns.size(), saveValues.size());
         }
-        return result;
+        return fields;
     }
 
     @Override

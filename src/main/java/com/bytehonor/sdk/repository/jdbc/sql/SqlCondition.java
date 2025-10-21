@@ -133,10 +133,6 @@ public class SqlCondition {
         return this.filter(SqlFilterColumn.in(key, value, type));
     }
 
-//    public <T> SqlCondition in(String key, Collection<T> value, String type) {
-//        return this.filter(SqlFilterColumn.in(key, value, type));
-//    }
-
     public SqlCondition filter(SqlFilterColumn filter) {
         this.where.filter(filter);
         return this;
@@ -156,15 +152,9 @@ public class SqlCondition {
         return getWhere().canFilter();
     }
 
-    public boolean nonFilter() {
+    public boolean ignoreFilter() {
         return !canFilter();
     }
-
-//    public static boolean isArgEmpty(SqlCondition condition) {
-//        Objects.requireNonNull(condition, "condition");
-//
-//        return condition.getWhere().canFilter() == false;
-//    }
 
     public List<Object> values() {
         if (where == null) {

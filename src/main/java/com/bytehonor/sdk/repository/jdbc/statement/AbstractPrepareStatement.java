@@ -10,7 +10,7 @@ import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.meta.MetaTable;
 import com.bytehonor.sdk.repository.jdbc.meta.MetaTableParser;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetterMapper;
-import com.bytehonor.sdk.repository.jdbc.model.ModelKeyValue;
+import com.bytehonor.sdk.repository.jdbc.model.ModelField;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.repository.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
@@ -36,8 +36,8 @@ public abstract class AbstractPrepareStatement implements PrepareStatement {
     }
 
     @Override
-    public <T> List<ModelKeyValue> prepare(T model, ModelGetterMapper<T> mapper) {
-        return new ArrayList<ModelKeyValue>();
+    public <T> List<ModelField> prepare(T model, ModelGetterMapper<T> mapper) {
+        return new ArrayList<ModelField>();
     }
 
     @Override

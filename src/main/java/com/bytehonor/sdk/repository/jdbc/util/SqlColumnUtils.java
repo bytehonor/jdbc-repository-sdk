@@ -17,7 +17,7 @@ import com.bytehonor.sdk.framework.lang.string.StringKit;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.meta.MetaTable;
-import com.bytehonor.sdk.repository.jdbc.model.ModelKeyValue;
+import com.bytehonor.sdk.repository.jdbc.model.ModelField;
 import com.google.common.collect.Sets;
 
 public class SqlColumnUtils {
@@ -33,65 +33,64 @@ public class SqlColumnUtils {
     private static final Set<String> IGNORES = Sets.newHashSet(SqlConstants.UPDATE_AT_KEY,
             SqlConstants.UPDATE_AT_COLUMN, SqlConstants.CREATE_AT_KEY, SqlConstants.CREATE_AT_COLUMN);
 
-    public static List<ModelKeyValue> prepareInsert(MetaTable metaTable, List<ModelKeyValue> keyValues) {
-        Objects.requireNonNull(metaTable, "metaTable");
+    public static List<ModelField> prepareInsert(MetaTable table, List<ModelField> fields) {
+        Objects.requireNonNull(table, "table");
 
-        List<ModelKeyValue> result = new ArrayList<ModelKeyValue>();
+        List<ModelField> result = new ArrayList<ModelField>();
 
-        String primary = metaTable.getPrimary();
-        for (ModelKeyValue item : keyValues) {
-            if (isSaveIgnore(primary, item.getKey())) {
+        String primary = table.getPrimary();
+        for (ModelField field : fields) {
+            if (isSaveIgnore(primary, field.getKey())) {
                 continue;
             }
-            LOG.debug("insert key:{}, value:{}, javaType:{}", item.getKey(), item.getValue(), item.getJavaType());
-            result.add(item);
+            LOG.debug("insert key:{}, value:{}, javaType:{}", field.getKey(), field.getValue(), field.getJavaType());
+            result.add(field);
         }
 
         if (CollectionUtils.isEmpty(result)) {
-            throw new JdbcSdkException("prepareInsert ModelColumnValue empty");
+            throw new JdbcSdkException("prepareInsert ModelField empty");
         }
 
         // 自动补充更新时间和创建时间
         long now = System.currentTimeMillis();
-        if (autoUpdateAt(metaTable)) {
-            result.add(ModelKeyValue.of(SqlConstants.UPDATE_AT_COLUMN, now));
+        if (autoUpdateAt(table)) {
+            result.add(ModelField.of(SqlConstants.UPDATE_AT_COLUMN, now));
         }
-        if (autoCreateAt(metaTable)) {
-            result.add(ModelKeyValue.of(SqlConstants.CREATE_AT_COLUMN, now));
+        if (autoCreateAt(table)) {
+            result.add(ModelField.of(SqlConstants.CREATE_AT_COLUMN, now));
         }
         return result;
     }
 
-    public static List<ModelKeyValue> prepareUpdate(MetaTable metaTable, List<ModelKeyValue> keyValues,
-            List<String> filterKeys) {
-        Objects.requireNonNull(metaTable, "metaTable");
+    public static List<ModelField> prepareUpdate(MetaTable table, List<ModelField> fields, List<String> filterKeys) {
+        Objects.requireNonNull(table, "table");
 
-        List<ModelKeyValue> result = new ArrayList<ModelKeyValue>();
+        List<ModelField> result = new ArrayList<ModelField>();
 
-        String primary = metaTable.getPrimary();
+        String primary = table.getPrimary();
 
-        Set<String> filters = new HashSet<String>();
+        Set<String> ignores = new HashSet<String>();
         if (CollectionUtils.isEmpty(filterKeys) == false) {
-            filters = new HashSet<String>(filterKeys);
+            ignores = new HashSet<String>(filterKeys);
         }
 
-        boolean filter = CollectionUtils.isEmpty(filters) == false;
-        for (ModelKeyValue item : keyValues) {
-            if (isSaveIgnore(primary, item.getKey())) {
+        boolean canFilter = CollectionUtils.isEmpty(ignores) == false;
+        for (ModelField field : fields) {
+            if (isSaveIgnore(primary, field.getKey())) {
                 continue;
             }
-            if (filter && filters.contains(item.getKey())) {
-                LOG.debug("prepare ({}) filter", item.getKey());
+            if (canFilter && ignores.contains(field.getKey())) {
+                LOG.debug("prepare ({}) filter", field.getKey());
                 continue;
             }
-            LOG.debug("update key:{}, value:{}, javaType:{}", item.getKey(), item.getValue(), item.getJavaType());
-            result.add(item);
+            LOG.debug("update key:{}, value:{}, javaType:{}", field.getKey(), field.getValue(), field.getJavaType());
+            result.add(field);
         }
 
         // 自动补充更新时间和创建时间
         long now = System.currentTimeMillis();
-        if (autoUpdateAt(metaTable)) {
-            result.add(ModelKeyValue.of(SqlConstants.UPDATE_AT_COLUMN, now));
+        if (autoUpdateAt(table)) {
+            result.add(ModelField.of(SqlConstants.UPDATE_AT_COLUMN, now));
         }
         return result;
     }

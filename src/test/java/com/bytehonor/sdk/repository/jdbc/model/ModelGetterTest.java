@@ -30,9 +30,9 @@ public class ModelGetterTest {
         getter.add(Student::getUpdateAt);
         getter.add(Student::getCreateAt);
 
-        List<ModelKeyValue> items = getter.getKeyValues();
-        for (ModelKeyValue item : items) {
-            LOG.info("key:{}, value:{}, javaType:{}", item.getKey(), item.getValue(), item.getJavaType());
+        List<ModelField> fields = getter.getFields();
+        for (ModelField field : fields) {
+            LOG.info("key:{}, value:{}, javaType:{}", field.getKey(), field.getValue(), field.getJavaType());
         }
     }
 
@@ -57,7 +57,7 @@ public class ModelGetterTest {
             getter.add(Student::getUpdateAt);
             getter.add(Student::getCreateAt);
 
-            getter.getKeyValues();
+            getter.getFields();
         }
 
         long millis = (System.currentTimeMillis() - now);

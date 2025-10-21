@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import com.bytehonor.sdk.repository.jdbc.util.SqlColumnUtils;
 
-public class ModelKeyValue {
+public class ModelField {
 
     /**
      * 表字段名
@@ -21,7 +21,7 @@ public class ModelKeyValue {
      */
     private final String javaType;
 
-    public ModelKeyValue(String key, Object value) {
+    public ModelField(String key, Object value) {
         Objects.requireNonNull(key, "key");
         Objects.requireNonNull(value, "value");
 
@@ -30,11 +30,11 @@ public class ModelKeyValue {
         this.javaType = value.getClass().getName();
     }
 
-    public static ModelKeyValue of(String key, Object value) {
+    public static ModelField of(String key, Object value) {
         Objects.requireNonNull(key, "key");
         Objects.requireNonNull(value, "value");
 
-        return new ModelKeyValue(key, value);
+        return new ModelField(key, value);
     }
 
     public String getKey() {
