@@ -2,8 +2,8 @@ package com.bytehonor.sdk.repository.jdbc.statement;
 
 import java.util.List;
 
-import com.bytehonor.sdk.repository.jdbc.model.ModelGetterMapper;
 import com.bytehonor.sdk.repository.jdbc.model.ModelField;
+import com.bytehonor.sdk.repository.jdbc.model.ModelGetterMapper;
 
 /**
  * @author lijianqiang

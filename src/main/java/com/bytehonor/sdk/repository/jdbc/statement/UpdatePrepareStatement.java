@@ -10,9 +10,9 @@ import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
+import com.bytehonor.sdk.repository.jdbc.model.ModelField;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetter;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetterMapper;
-import com.bytehonor.sdk.repository.jdbc.model.ModelField;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlCondition;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlFormatter;
 import com.bytehonor.sdk.repository.jdbc.util.SqlAdaptUtils;

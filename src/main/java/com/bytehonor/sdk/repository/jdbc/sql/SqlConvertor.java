@@ -8,9 +8,9 @@ import org.springframework.util.CollectionUtils;
 
 import com.bytehonor.sdk.framework.lang.query.QueryCondition;
 import com.bytehonor.sdk.framework.lang.query.QueryFilter;
-import com.bytehonor.sdk.framework.lang.query.QueryFilter.QueryFilterColumn;
+import com.bytehonor.sdk.framework.lang.query.QueryFilterColumn;
 import com.bytehonor.sdk.framework.lang.query.QueryOrder;
-import com.bytehonor.sdk.framework.lang.query.QueryOrder.QueryOrderColumn;
+import com.bytehonor.sdk.framework.lang.query.QueryOrderColumn;
 import com.bytehonor.sdk.framework.lang.query.QueryPager;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlFilter.SqlFilterColumn;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlOrder.SqlOrderColumn;
