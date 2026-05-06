@@ -1,8 +1,9 @@
 package com.bytehonor.sdk.repository.jdbc.meta;
 
 /**
- * @author lijianqiang
+ * 表字段元信息。
  *
+ * @author lijianqiang
  */
 public class MetaTableField {
 

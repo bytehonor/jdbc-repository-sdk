@@ -1,8 +1,9 @@
 package com.bytehonor.sdk.repository.jdbc.exception;
 
 /**
- * @author lijianqiang
+ * JDBC SDK 运行时异常。
  *
+ * @author lijianqiang
  */
 public class JdbcSdkException extends RuntimeException {
 

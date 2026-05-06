@@ -6,8 +6,9 @@ import com.bytehonor.sdk.framework.lang.function.ClassGetter;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlCondition;
 
 /**
- * @author lijianqiang
+ * PrepareStatement 工厂入口。
  *
+ * @author lijianqiang
  */
 public final class PrepareStatementBuilder {
 

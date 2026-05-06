@@ -16,8 +16,9 @@ import com.bytehonor.sdk.repository.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
 
 /**
- * @author lijianqiang
+ * PrepareStatement 抽象基类，封装表元数据与参数校验逻辑。
  *
+ * @author lijianqiang
  */
 public abstract class AbstractPrepareStatement implements PrepareStatement {
 
@@ -40,6 +41,9 @@ public abstract class AbstractPrepareStatement implements PrepareStatement {
         return new ArrayList<ModelField>();
     }
 
+    /**
+     * 校验参数与类型长度一致，避免 JDBC 绑定错位。
+     */
     @Override
     public void check() {
         int argLength = args().length;

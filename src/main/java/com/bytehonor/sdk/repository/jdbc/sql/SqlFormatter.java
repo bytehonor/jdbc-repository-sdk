@@ -3,6 +3,11 @@ package com.bytehonor.sdk.repository.jdbc.sql;
 import com.bytehonor.sdk.framework.lang.string.StringKit;
 import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 
+/**
+ * SQL 片段拼接工具。
+ *
+ * @author lijianqiang
+ */
 public class SqlFormatter {
 
     public static void connect(StringBuilder sb, SqlPart... parts) {

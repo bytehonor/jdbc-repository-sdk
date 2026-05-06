@@ -7,9 +7,10 @@ import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
 
 /**
  * SELECT columns FROM TableName WHERE condition Order Page
- * 
- * @author lijianqiang
  *
+ * 标准分页查询语句构造器。
+ *
+ * @author lijianqiang
  */
 public class SelectPrepareStatement extends AbstractPrepareStatement {
 

@@ -3,8 +3,9 @@ package com.bytehonor.sdk.repository.jdbc.constant;
 import java.sql.Types;
 
 /**
- * @author lijianqiang
+ * Java 到 JDBC Types 的核心类型常量。
  *
+ * @author lijianqiang
  */
 public class SqlValueTypes {
     

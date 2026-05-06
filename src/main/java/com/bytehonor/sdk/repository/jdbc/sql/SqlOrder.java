@@ -11,6 +11,11 @@ import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.KeyRewriter;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.UnderlineRewriter;
 
+/**
+ * ORDER BY 子句构建器。
+ *
+ * @author lijianqiang
+ */
 public class SqlOrder implements SqlPart {
 
     private final List<SqlOrderColumn> columns;

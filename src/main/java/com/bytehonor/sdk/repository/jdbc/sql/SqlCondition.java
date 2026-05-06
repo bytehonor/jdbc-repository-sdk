@@ -13,6 +13,11 @@ import com.bytehonor.sdk.repository.jdbc.sql.SqlOrder.SqlOrderColumn;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.KeyRewriter;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.UnderlineRewriter;
 
+/**
+ * SQL 条件聚合对象，统一管理 where/order/pager 三段信息。
+ *
+ * @author lijianqiang
+ */
 public class SqlCondition {
 
     private final SqlPager pager;
@@ -47,6 +52,12 @@ public class SqlCondition {
         return new SqlCondition(logic, pager, rewriter);
     }
 
+    /**
+     * 按主键查询的快捷构造，默认限制为 1 条。
+     *
+     * @param id 主键值
+     * @return 条件对象
+     */
     public static SqlCondition id(Long id) {
         Objects.requireNonNull(id, "id");
         SqlCondition condition = SqlCondition.create(QueryLogic.AND, SqlPager.of(0, 1));

@@ -10,6 +10,11 @@ import com.bytehonor.sdk.repository.jdbc.constant.SqlConstants;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlFilter.SqlFilterColumn;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.KeyRewriter;
 
+/**
+ * WHERE 子句构建器，负责维护过滤表达式、参数值和参数类型。
+ *
+ * @author lijianqiang
+ */
 public class SqlWhere implements SqlPart {
 
     private final QueryLogic logic;
@@ -20,9 +25,7 @@ public class SqlWhere implements SqlPart {
 
     private final StringBuilder sql;
 
-    /**
-     * 下划线key
-     */
+    /** 经过重写后的列名（通常为下划线或带前缀）。 */
     private final List<String> keys;
 
     private final List<Object> values;
@@ -47,9 +50,10 @@ public class SqlWhere implements SqlPart {
     }
 
     /**
-     * 
-     * @param column
-     * @return
+     * 追加一个过滤列，并同步写入 SQL 片段与参数列表。
+     *
+     * @param column 过滤列
+     * @return 当前对象
      */
     public SqlWhere filter(SqlFilterColumn column) {
         filter.with(column);
@@ -58,7 +62,7 @@ public class SqlWhere implements SqlPart {
     }
 
     private void doRead(SqlFilterColumn column) {
-        // 转成下划线
+        // 通过 KeyRewriter 统一列名（例如驼峰转下划线、或补 m./s. 前缀）。
         String key = rewriter.rewrite(column.getKey());
         if (StringKit.isEmpty(key)) {
             return;
@@ -67,9 +71,9 @@ public class SqlWhere implements SqlPart {
         if (keys.size() > 0) {
             this.sql.append(SqlConstants.BLANK).append(logic.getKey()).append(SqlConstants.BLANK);
         }
-        this.keys.add(key); // keys 只记录
+        this.keys.add(key); // keys 只做记录，不与占位符一一对应。
 
-        // in 不支持占位符写法
+        // IN 分支直接拼接列表，其它操作符使用占位符并进入 values/sqlTypes。
         if (SqlOperator.IN.equals(column.getOperator())) {
             this.sql.append(SqlFilter.patternIn(key, column.getValue(), column.getJavaType()));
         } else {

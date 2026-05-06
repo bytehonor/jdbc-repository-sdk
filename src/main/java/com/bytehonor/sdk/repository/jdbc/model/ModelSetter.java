@@ -13,6 +13,11 @@ import com.bytehonor.sdk.framework.lang.function.setter.SetLong;
 import com.bytehonor.sdk.framework.lang.function.setter.SetString;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlResult;
 
+/**
+ * 模型字段回填器，把 ResultSet 列值写回模型对象。
+ *
+ * @author lijianqiang
+ */
 public class ModelSetter<T> {
 
     private final T model;

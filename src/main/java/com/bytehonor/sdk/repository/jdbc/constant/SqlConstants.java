@@ -1,8 +1,9 @@
 package com.bytehonor.sdk.repository.jdbc.constant;
 
 /**
- * @author lijianqiang
+ * SQL 片段常量定义。
  *
+ * @author lijianqiang
  */
 public class SqlConstants {
 

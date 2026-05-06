@@ -18,12 +18,23 @@ import com.bytehonor.sdk.repository.jdbc.annotation.SqlTable;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.util.SqlColumnUtils;
 
+/**
+ * 单表元数据解析器，负责把注解模型解析为 {@link MetaTable} 并做缓存。
+ *
+ * @author lijianqiang
+ */
 public class MetaTableParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(MetaTableParser.class);
 
     private static final Map<String, MetaTable> CACHE = new ConcurrentHashMap<String, MetaTable>(1024);
 
+    /**
+     * 解析模型元数据，解析后会写入本地静态缓存。
+     *
+     * @param clazz 模型类型
+     * @return 元数据
+     */
     public static MetaTable parse(Class<?> clazz) {
         Objects.requireNonNull(clazz, "clazz");
 

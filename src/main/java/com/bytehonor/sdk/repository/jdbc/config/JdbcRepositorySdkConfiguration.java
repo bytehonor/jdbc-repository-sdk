@@ -15,8 +15,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.bytehonor.sdk.repository.jdbc.dao.JdbcProxyDao;
 
 /**
- * @author lijianqiang
+ * JDBC Repository SDK 自动装配配置。
+ * <p>
+ * 当 Spring 环境存在数据源相关类且配置了 {@code spring.datasource.driver-class-name}
+ * 时，自动注册 {@link JdbcProxyDao}。
+ * </p>
  *
+ * @author lijianqiang
  */
 @Configuration
 @ConditionalOnClass({ DataSourceProperties.class, JdbcTemplate.class, JdbcProperties.class })

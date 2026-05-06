@@ -17,9 +17,9 @@ import com.bytehonor.sdk.repository.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
 
 /**
- * 
- * @author lijianqiang
+ * LEFT JOIN 查询语句构造器。
  *
+ * @author lijianqiang
  */
 public class LeftJoinPrepareStatement implements PrepareStatement {
 
@@ -60,6 +60,7 @@ public class LeftJoinPrepareStatement implements PrepareStatement {
             }
             return new Object[0];
         }
+        // 当前实现要求 left join 场景必须使用显式分页参数。
         if (condition.unlimited()) {
             throw new JdbcSdkException("left join condition unlimited forbidden");
         }

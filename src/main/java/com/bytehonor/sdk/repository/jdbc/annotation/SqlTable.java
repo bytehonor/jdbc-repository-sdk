@@ -10,11 +10,12 @@ import org.springframework.core.annotation.AliasFor;
 
 /**
  * <pre>
- * 数据模型映射表
+ * 数据模型与数据库表映射。
  * </pre>
- * 
- * @author lijianqiang
  *
+ * name/value 用于声明表名；primary 用于声明主键列名。
+ *
+ * @author lijianqiang
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

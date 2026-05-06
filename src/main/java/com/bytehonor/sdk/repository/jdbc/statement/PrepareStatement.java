@@ -6,8 +6,9 @@ import com.bytehonor.sdk.repository.jdbc.model.ModelField;
 import com.bytehonor.sdk.repository.jdbc.model.ModelGetterMapper;
 
 /**
- * @author lijianqiang
+ * SQL 语句构建接口。
  *
+ * @author lijianqiang
  */
 public interface PrepareStatement {
 

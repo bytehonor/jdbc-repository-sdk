@@ -19,9 +19,10 @@ import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
 
 /**
  * INSERT INTO TableName (columns) VALUE (values)
- * 
- * @author lijianqiang
  *
+ * INSERT 语句构造器，prepare 后写入列、值、类型缓存。
+ *
+ * @author lijianqiang
  */
 public class InsertPrepareStatement extends AbstractPrepareStatement {
 
@@ -38,6 +39,9 @@ public class InsertPrepareStatement extends AbstractPrepareStatement {
         this.saveTypes = new ArrayList<Integer>();
     }
 
+    /**
+     * 从模型中提取待保存字段并转换成 SQL 类型。
+     */
     @Override
     public <T> List<ModelField> prepare(T model, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
@@ -52,7 +56,8 @@ public class InsertPrepareStatement extends AbstractPrepareStatement {
         for (ModelField field : fields) {
             saveColumns.add(field.getKey());
             saveValues.add(field.getValue());
-            saveTypes.add(SqlAdaptUtils.toSqlType(field.getJavaType())); // 转换
+            // Java 类型名 -> java.sql.Types 整数值。
+            saveTypes.add(SqlAdaptUtils.toSqlType(field.getJavaType()));
         }
 
         if (LOG.isDebugEnabled()) {

@@ -4,6 +4,11 @@ import java.util.Objects;
 
 import com.bytehonor.sdk.repository.jdbc.util.SqlColumnUtils;
 
+/**
+ * 模型字段值对象，保存列名、列值与 Java 类型。
+ *
+ * @author lijianqiang
+ */
 public class ModelField {
 
     /**

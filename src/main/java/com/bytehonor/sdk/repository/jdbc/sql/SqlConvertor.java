@@ -16,8 +16,19 @@ import com.bytehonor.sdk.repository.jdbc.sql.SqlFilter.SqlFilterColumn;
 import com.bytehonor.sdk.repository.jdbc.sql.SqlOrder.SqlOrderColumn;
 import com.bytehonor.sdk.repository.jdbc.sql.rewrite.KeyRewriter;
 
+/**
+ * QueryCondition 到 SqlCondition 的适配转换器。
+ *
+ * @author lijianqiang
+ */
 public class SqlConvertor {
 
+    /**
+     * 使用默认列重写策略进行转换。
+     *
+     * @param condition 外部查询条件
+     * @return 内部 SQL 条件
+     */
     public static SqlCondition convert(QueryCondition condition) {
         Objects.requireNonNull(condition, "condition");
 
@@ -28,6 +39,13 @@ public class SqlConvertor {
         return model;
     }
 
+    /**
+     * 使用指定列重写策略进行转换。
+     *
+     * @param condition 外部查询条件
+     * @param rewriter 列重写器
+     * @return 内部 SQL 条件
+     */
     public static SqlCondition convert(QueryCondition condition, KeyRewriter rewriter) {
         Objects.requireNonNull(condition, "condition");
 

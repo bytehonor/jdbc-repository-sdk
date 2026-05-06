@@ -2,6 +2,11 @@ package com.bytehonor.sdk.repository.jdbc.sql;
 
 import com.bytehonor.sdk.framework.lang.constant.HttpConstants;
 
+/**
+ * 分页条件对象，负责 LIMIT 片段生成。
+ *
+ * @author lijianqiang
+ */
 public class SqlPager implements SqlPart {
 
     public static int LIMIT_DEF = HttpConstants.LIMIT_DEF;

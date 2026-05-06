@@ -13,9 +13,10 @@ import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
 /**
  * SELECT column, COUNT(PrimaryKey) as size FROM TableName WHERE condition GROUP
  * BY column;
- * 
- * @author lijianqiang
  *
+ * 分组计数语句构造器。
+ *
+ * @author lijianqiang
  */
 public class GroupCountPrepareStatement extends AbstractPrepareStatement {
 
@@ -44,6 +45,7 @@ public class GroupCountPrepareStatement extends AbstractPrepareStatement {
     private String orderBy(SqlOrder order) {
         String sql = order != null ? order.toSql() : "";
         if (StringKit.isEmpty(sql)) {
+            // 空排序时显式返回 ORDER BY NULL，避免数据库隐式排序。
             return "ORDER BY NULL";
         }
         return sql;

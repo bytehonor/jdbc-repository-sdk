@@ -37,8 +37,13 @@ import com.bytehonor.sdk.repository.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
 
 /**
- * @author lijianqiang
+ * JDBC 访问门面，统一封装查询、聚合、增删改能力。
+ * <p>
+ * 该类负责把 {@link QueryCondition} 转换为内部 {@link SqlCondition}，
+ * 再通过不同的 PrepareStatement 生成 SQL 并交给 {@link JdbcTemplate} 执行。
+ * </p>
  *
+ * @author lijianqiang
  */
 public class JdbcProxyDao {
 
@@ -50,6 +55,14 @@ public class JdbcProxyDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /**
+     * 按条件查询实体列表。
+     *
+     * @param clazz 数据模型类型
+     * @param condition 查询条件
+     * @param mapper 结果映射器
+     * @return 命中数据列表
+     */
     public <T> List<T> query(Class<T> clazz, QueryCondition condition, ModelSetterMapper<T> mapper) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
@@ -79,8 +92,10 @@ public class JdbcProxyDao {
         List<T> result = new ArrayList<T>(total * 2);
         List<T> part = new ArrayList<T>();
         int offset = 0;
+        // 单次查询限制，避免一次性全量拉取导致内存峰值过高。
         int limit = HttpConstants.LIMIT_MAX_TOP;
         while (offset < total) {
+            // 注意：这里会修改传入的 condition 分页参数，默认用于一次性调用链。
             condition.limit(limit);
             condition.offset(offset);
             part = doQuerySelect(clazz, condition, mapper);
@@ -103,6 +118,14 @@ public class JdbcProxyDao {
         return jdbcTemplate.query(sql, args, statement.types(), mapper);
     }
 
+    /**
+     * 使用左关联方式查询列表，列名会按 m./s. 前缀改写。
+     *
+     * @param clazz 左关联视图模型
+     * @param condition 查询条件
+     * @param mapper 结果映射器
+     * @return 命中数据列表
+     */
     public <T> List<T> queryLeftJoin(Class<T> clazz, QueryCondition condition, ModelSetterMapper<T> mapper) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
@@ -121,6 +144,14 @@ public class JdbcProxyDao {
         return jdbcTemplate.query(sql, args, statement.types(), mapper);
     }
 
+    /**
+     * 按主键查询单条数据。
+     *
+     * @param clazz 数据模型类型
+     * @param id 主键值
+     * @param mapper 结果映射器
+     * @return 唯一结果，不存在时返回 null
+     */
     public <T> T queryById(Class<T> clazz, Long id, ModelSetterMapper<T> mapper) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
@@ -129,6 +160,13 @@ public class JdbcProxyDao {
         return DataAccessUtils.uniqueResult(result);
     }
 
+    /**
+     * 按条件删除。
+     *
+     * @param clazz 数据模型类型
+     * @param condition 删除条件
+     * @return 受影响行数
+     */
     public int delete(Class<?> clazz, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
@@ -142,6 +180,13 @@ public class JdbcProxyDao {
         return jdbcTemplate.update(sql, args, statement.types());
     }
 
+    /**
+     * 按主键删除。
+     *
+     * @param clazz 数据模型类型
+     * @param id 主键值
+     * @return 受影响行数
+     */
     public int deleteById(Class<?> clazz, Long id) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(id, "id");
@@ -155,6 +200,13 @@ public class JdbcProxyDao {
         return jdbcTemplate.update(sql, args, statement.types());
     }
 
+    /**
+     * 按条件统计总数。
+     *
+     * @param clazz 数据模型类型
+     * @param condition 统计条件
+     * @return 条数
+     */
     public int count(Class<?> clazz, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");
@@ -192,13 +244,15 @@ public class JdbcProxyDao {
     }
 
     /**
-     * @param <T>       Model类的类型
-     * @param <R>       getter的返回值的类型
-     * @param clazz
-     * @param getter
-     * @param type
-     * @param condition
-     * @return
+     * 查询指定列的去重值集合。
+     *
+     * @param <T> Model 类类型
+     * @param <R> 目标列值类型
+     * @param clazz 数据模型类型
+     * @param getter 列 getter
+     * @param type 列值类型
+     * @param condition 查询条件
+     * @return 去重后的列值列表
      */
     public <T, R> List<R> distinct(Class<T> clazz, ClassGetter<T, R> getter, Class<R> type, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
@@ -220,6 +274,14 @@ public class JdbcProxyDao {
         }
     }
 
+    /**
+     * 按条件更新。
+     *
+     * @param model 更新模型
+     * @param condition 更新条件
+     * @param mapper 字段提取映射器
+     * @return 受影响行数
+     */
     public <T> int update(T model, QueryCondition condition, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(condition, "condition");
@@ -236,6 +298,14 @@ public class JdbcProxyDao {
         return jdbcTemplate.update(sql, args, statement.types());
     }
 
+    /**
+     * 按主键更新。
+     *
+     * @param model 更新模型
+     * @param id 主键值
+     * @param mapper 字段提取映射器
+     * @return 受影响行数
+     */
     public <T> int updateById(T model, Long id, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(id, "id");
@@ -252,6 +322,13 @@ public class JdbcProxyDao {
         return jdbcTemplate.update(sql, args, statement.types());
     }
 
+    /**
+     * 插入并返回数据库生成的主键值。
+     *
+     * @param model 新增模型
+     * @param mapper 字段提取映射器
+     * @return 生成主键
+     */
     public <T> long insert(T model, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
@@ -270,7 +347,7 @@ public class JdbcProxyDao {
 
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-
+                // 通过 RETURN_GENERATED_KEYS 让 KeyHolder 可读取自增主键。
                 return SqlAdaptUtils.make(sql, fields, connection);
             }
         }, holder);
@@ -278,6 +355,13 @@ public class JdbcProxyDao {
         return holder.getKey().longValue();
     }
 
+    /**
+     * 快速插入（不回填主键）。
+     *
+     * @param model 新增模型
+     * @param mapper 字段提取映射器
+     * @return 受影响行数
+     */
     public <T> int insertQuick(T model, ModelGetterMapper<T> mapper) {
         Objects.requireNonNull(model, "model");
         Objects.requireNonNull(mapper, "mapper");
@@ -293,6 +377,14 @@ public class JdbcProxyDao {
         return jdbcTemplate.update(sql, args, statement.types());
     }
 
+    /**
+     * 按指定列分组统计。
+     *
+     * @param clazz 数据模型类型
+     * @param getter 分组列 getter
+     * @param condition 统计条件
+     * @return 分组统计结果
+     */
     public <T> List<GroupStats> groupCount(Class<T> clazz, ClassGetter<T, ?> getter, QueryCondition condition) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(condition, "condition");

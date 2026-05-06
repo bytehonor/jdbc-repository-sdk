@@ -7,9 +7,10 @@ import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
 
 /**
  * DELETE FROM TableName WHERE condition
- * 
- * @author lijianqiang
  *
+ * 删除语句构造器，要求必须有过滤条件。
+ *
+ * @author lijianqiang
  */
 public class DeletePrepareStatement extends AbstractPrepareStatement {
 

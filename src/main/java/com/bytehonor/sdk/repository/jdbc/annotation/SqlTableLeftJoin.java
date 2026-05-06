@@ -8,11 +8,12 @@ import java.lang.annotation.Target;
 
 /**
  * <pre>
- * 数据模型映射表
+ * 左关联查询模型映射定义。
  * </pre>
- * 
- * @author lijianqiang
  *
+ * 通过 main/sub 指定主表与从表模型，on 指定关联列。
+ *
+ * @author lijianqiang
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

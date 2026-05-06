@@ -6,6 +6,11 @@ import java.util.Objects;
 
 import com.bytehonor.sdk.repository.jdbc.util.SqlColumnUtils;
 
+/**
+ * ResultSet 读取工具，统一做列名驼峰转下划线。
+ *
+ * @author lijianqiang
+ */
 public class SqlResult {
 
     public static String string(ResultSet rs, String column) throws SQLException {

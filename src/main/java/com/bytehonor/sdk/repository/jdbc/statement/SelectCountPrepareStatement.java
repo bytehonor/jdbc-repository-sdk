@@ -6,9 +6,10 @@ import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
 
 /**
  * SELECT COUNT(PrimaryKey) FROM TableName WHERE condition
- * 
- * @author lijianqiang
  *
+ * 统计查询语句构造器。
+ *
+ * @author lijianqiang
  */
 public class SelectCountPrepareStatement extends AbstractPrepareStatement {
 

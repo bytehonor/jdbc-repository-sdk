@@ -17,6 +17,11 @@ import com.bytehonor.sdk.repository.jdbc.util.SqlAdaptUtils;
 import com.bytehonor.sdk.repository.jdbc.util.SqlColumnUtils;
 import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
 
+/**
+ * 过滤条件集合，提供过滤列工厂与值格式化能力。
+ *
+ * @author lijianqiang
+ */
 public class SqlFilter {
 
     private final Set<String> keys;
@@ -67,6 +72,12 @@ public class SqlFilter {
         return value;
     }
 
+    /**
+     * 根据操作符对值进行归一化处理（主要用于 LIKE 家族）。
+     *
+     * @param column 过滤列
+     * @return 归一化后的值
+     */
     public static Object valueOf(SqlFilterColumn column) {
         Object value = column.getValue();
         Object copy = "";
@@ -91,12 +102,12 @@ public class SqlFilter {
     }
 
     /**
-     * IN 只能直接拼接
-     * 
-     * @param key
-     * @param value
-     * @param javaType
-     * @return
+     * IN 条件字符串拼接。
+     *
+     * @param key 列名
+     * @param value 集合值
+     * @param javaType Java 类型
+     * @return SQL 片段
      */
     public static Object patternIn(String key, Object value, String javaType) {
         StringBuilder sb = new StringBuilder();
@@ -104,6 +115,11 @@ public class SqlFilter {
         return sb.toString();
     }
 
+    /**
+     * 单个过滤列定义。
+     *
+     * @author lijianqiang
+     */
     public static final class SqlFilterColumn {
 
         /**
@@ -136,10 +152,13 @@ public class SqlFilter {
         }
 
         /**
-         * 允许空字符串做value
-         * 
-         * @param filter
-         * @return
+         * 过滤列有效性检查。
+         * <p>
+         * 允许空字符串，但不允许 null；LIKE 额外要求值非空字符串。
+         * </p>
+         *
+         * @param filter 过滤列
+         * @return 是否可接受
          */
         public static boolean accept(SqlFilterColumn filter) {
             if (filter == null) {
@@ -151,7 +170,7 @@ public class SqlFilter {
             }
 
             if (filter.getValue() == null) {
-                // 仅非null判断
+                // 仅校验非 null，空字符串在非 LIKE 场景可作为合法值。
                 return false;
             }
 

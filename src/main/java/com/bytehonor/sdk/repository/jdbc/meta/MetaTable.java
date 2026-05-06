@@ -9,8 +9,9 @@ import java.util.Set;
 import com.bytehonor.sdk.framework.lang.string.StringKit;
 
 /**
- * @author lijianqiang
+ * 单表元数据定义，包含表名、主键、字段与列集合。
  *
+ * @author lijianqiang
  */
 public class MetaTable implements Serializable {
 
@@ -45,6 +46,9 @@ public class MetaTable implements Serializable {
         underlines = new HashSet<String>();
     }
 
+    /**
+     * 计算并冻结列缓存，供查询 SQL 直接复用。
+     */
     public void finish() {
         if (StringKit.isEmpty(fullColumns) == false) {
             return;

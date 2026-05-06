@@ -11,9 +11,10 @@ import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
 
 /**
  * SELECT DISTINCT(column) FROM TableName WHERE condition
- * 
- * @author lijianqiang
  *
+ * 去重列查询语句构造器。
+ *
+ * @author lijianqiang
  */
 public class DistinctPrepareStatement extends AbstractPrepareStatement {
 

@@ -8,6 +8,11 @@ import java.lang.annotation.Target;
 
 import org.springframework.core.annotation.AliasFor;
 
+/**
+ * 主键字段声明注解（预留语义）。
+ *
+ * @author lijianqiang
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

@@ -6,6 +6,11 @@ import java.util.Objects;
 
 import org.springframework.jdbc.core.RowMapper;
 
+/**
+ * 模型行映射抽象类，适配 Spring RowMapper。
+ *
+ * @author lijianqiang
+ */
 public abstract class ModelSetterMapper<T> implements RowMapper<T> {
 
     @Override

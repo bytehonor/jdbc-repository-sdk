@@ -3,6 +3,11 @@ package com.bytehonor.sdk.repository.jdbc.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 分组统计结果模型。
+ *
+ * @author lijianqiang
+ */
 public class GroupStats {
 
     private String value;

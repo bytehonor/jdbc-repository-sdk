@@ -20,6 +20,11 @@ import com.bytehonor.sdk.repository.jdbc.meta.MetaTable;
 import com.bytehonor.sdk.repository.jdbc.model.ModelField;
 import com.google.common.collect.Sets;
 
+/**
+ * 列名与持久化字段处理工具。
+ *
+ * @author lijianqiang
+ */
 public class SqlColumnUtils {
 
     private static final Logger LOG = LoggerFactory.getLogger(SqlColumnUtils.class);
@@ -33,6 +38,9 @@ public class SqlColumnUtils {
     private static final Set<String> IGNORES = Sets.newHashSet(SqlConstants.UPDATE_AT_KEY,
             SqlConstants.UPDATE_AT_COLUMN, SqlConstants.CREATE_AT_KEY, SqlConstants.CREATE_AT_COLUMN);
 
+    /**
+     * INSERT 字段预处理：过滤不可保存字段并按需自动补时间字段。
+     */
     public static List<ModelField> prepareInsert(MetaTable table, List<ModelField> fields) {
         Objects.requireNonNull(table, "table");
 
@@ -62,6 +70,9 @@ public class SqlColumnUtils {
         return result;
     }
 
+    /**
+     * UPDATE 字段预处理：过滤不可更新字段并避免与 where 条件字段冲突。
+     */
     public static List<ModelField> prepareUpdate(MetaTable table, List<ModelField> fields, List<String> filterKeys) {
         Objects.requireNonNull(table, "table");
 

@@ -21,11 +21,13 @@ import com.bytehonor.sdk.repository.jdbc.util.SqlInjectUtils;
 
 /**
  * UPDATE TableName SET c1=?,c2=? WHERE condition
- * 
- * 支持更新 空字符串值
- * 
- * @author lijianqiang
  *
+ * 支持更新 空字符串值
+ * <p>
+ * 参数顺序固定为：先 SET 段参数，再 WHERE 段参数。
+ * </p>
+ *
+ * @author lijianqiang
  */
 public class UpdatePrepareStatement extends AbstractPrepareStatement {
 
@@ -50,7 +52,7 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
         ModelGetter<T> getter = mapper.create(model);
         Objects.requireNonNull(getter, "getter");
 
-        // confilc check
+        // 防止更新列与过滤列冲突（例如 where id=? 同时 set id=?）。
         List<String> filterKeys = condition.getWhere().getKeys();
         List<ModelField> rawFields = getter.getFields();
         List<ModelField> fields = SqlColumnUtils.prepareUpdate(getTable(), rawFields, filterKeys);
@@ -58,7 +60,8 @@ public class UpdatePrepareStatement extends AbstractPrepareStatement {
         for (ModelField field : fields) {
             saveColumns.add(field.getKey());
             saveValues.add(field.getValue());
-            saveTypes.add(SqlAdaptUtils.toSqlType(field.getJavaType())); // 转换
+            // Java 类型名 -> java.sql.Types 整数值。
+            saveTypes.add(SqlAdaptUtils.toSqlType(field.getJavaType()));
         }
 
         if (LOG.isDebugEnabled()) {

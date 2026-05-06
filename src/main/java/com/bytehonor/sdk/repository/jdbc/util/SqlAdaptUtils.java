@@ -23,6 +23,11 @@ import com.bytehonor.sdk.repository.jdbc.constant.SqlValueTypes;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.model.ModelField;
 
+/**
+ * Java 类型与 JDBC SQL 类型适配工具。
+ *
+ * @author lijianqiang
+ */
 public class SqlAdaptUtils {
 
     private static final Logger LOG = LoggerFactory.getLogger(SqlAdaptUtils.class);
@@ -45,6 +50,9 @@ public class SqlAdaptUtils {
         JAVA_SQL.put(JavaValueTypes.DOUBLE, SqlValueTypes.DOUBLE);
     }
 
+    /**
+     * 根据字段列表创建 PreparedStatement，并开启自增主键回填能力。
+     */
     public static PreparedStatement make(String sql, List<ModelField> fields, Connection connection)
             throws SQLException {
         PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

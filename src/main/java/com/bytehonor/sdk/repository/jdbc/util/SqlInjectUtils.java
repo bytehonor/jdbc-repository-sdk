@@ -7,6 +7,11 @@ import org.springframework.util.CollectionUtils;
 import com.bytehonor.sdk.framework.lang.string.StringCreator;
 import com.bytehonor.sdk.framework.lang.string.StringKit;
 
+/**
+ * SQL 参数与字符串处理工具。
+ *
+ * @author lijianqiang
+ */
 public class SqlInjectUtils {
 
     private static final char TA = '\'';
@@ -17,6 +22,9 @@ public class SqlInjectUtils {
         return StringCreator.create().append("(").append(raw).append(")").toString();
     }
 
+    /**
+     * LIKE 值拼接：按需补齐左右百分号。
+     */
     public static String like(String src, boolean left, boolean right) {
         if (src == null) {
             return "";
@@ -82,6 +90,9 @@ public class SqlInjectUtils {
         return src;
     }
 
+    /**
+     * Integer 列表转 int[]，用于 JdbcTemplate 类型参数。
+     */
     public static int[] listArray(List<Integer> list) {
         if (CollectionUtils.isEmpty(list)) {
             return new int[0];

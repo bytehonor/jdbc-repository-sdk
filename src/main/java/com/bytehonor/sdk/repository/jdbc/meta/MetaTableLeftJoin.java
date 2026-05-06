@@ -8,6 +8,11 @@ import java.util.Set;
 
 import com.bytehonor.sdk.framework.lang.string.StringKit;
 
+/**
+ * 左关联元数据定义，包含主表、从表、关联键与查询列集合。
+ *
+ * @author lijianqiang
+ */
 public class MetaTableLeftJoin implements Serializable {
 
     private static final long serialVersionUID = -3957039146909053296L;
@@ -37,6 +42,9 @@ public class MetaTableLeftJoin implements Serializable {
         underlines = new HashSet<String>();
     }
 
+    /**
+     * 生成 left join 的全量查询列清单，主表列前缀 m.，从表列前缀 s.。
+     */
     public void finish() {
         if (StringKit.isEmpty(fullColumns) == false) {
             return;

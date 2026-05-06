@@ -1,5 +1,10 @@
 package com.bytehonor.sdk.repository.jdbc;
 
+/**
+ * SDK 运行时开关配置（当前用于 SQL info 日志开关）。
+ *
+ * @author lijianqiang
+ */
 public class JdbcConfig {
 
     private boolean infoEnabled;

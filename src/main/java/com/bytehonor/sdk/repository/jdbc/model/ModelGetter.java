@@ -11,6 +11,11 @@ import com.bytehonor.sdk.framework.lang.function.getter.GetInteger;
 import com.bytehonor.sdk.framework.lang.function.getter.GetLong;
 import com.bytehonor.sdk.framework.lang.function.getter.GetString;
 
+/**
+ * 模型字段提取器，把 getter 表达式转换为待持久化字段集合。
+ *
+ * @author lijianqiang
+ */
 public class ModelGetter<T> {
 
     private final T model;

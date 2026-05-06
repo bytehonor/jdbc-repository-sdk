@@ -18,6 +18,11 @@ import com.bytehonor.sdk.repository.jdbc.annotation.SqlTableLeftJoin;
 import com.bytehonor.sdk.repository.jdbc.exception.JdbcSdkException;
 import com.bytehonor.sdk.repository.jdbc.util.SqlColumnUtils;
 
+/**
+ * 左关联元数据解析器。
+ *
+ * @author lijianqiang
+ */
 public class MetaTableLeftJoinParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(MetaTableParser.class);
