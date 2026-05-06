@@ -269,7 +269,7 @@ public class JdbcProxyDao {
     }
 
     private void print(Class<?> clazz, String sql, Object[] args) {
-        if (JdbcConfig.isInfoEnabled()) {
+        if (JdbcConfig.isInfoEnabled() && LOG.isInfoEnabled()) {
             LOG.info("clazz:{}, sql:[{}], args:[{}]", clazz.getSimpleName(), sql, SqlInjectUtils.toString(args));
         }
     }
