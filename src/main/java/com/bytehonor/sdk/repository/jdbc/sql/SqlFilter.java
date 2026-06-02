@@ -64,7 +64,7 @@ public class SqlFilter {
 
         String value = "";
         for (SqlFilterColumn column : columns) {
-            if (Objects.equals(key, column.getValue()) || Objects.equals(operator, column.getOperator().getKey())) {
+            if (Objects.equals(key, column.getValue()) || Objects.equals(operator, column.getOperator().key())) {
                 value = column.getValue().toString();
                 break;
             }
@@ -96,7 +96,7 @@ public class SqlFilter {
 
     public static String patternOf(String key, SqlOperator operator) {
         StringBuilder sb = new StringBuilder();
-        sb.append(key).append(SqlConstants.BLANK).append(operator.getOpt()).append(SqlConstants.BLANK);
+        sb.append(key).append(SqlConstants.BLANK).append(operator.opt()).append(SqlConstants.BLANK);
         sb.append(SqlConstants.PARAM);
         return sb.toString();
     }
@@ -104,8 +104,8 @@ public class SqlFilter {
     /**
      * IN 条件字符串拼接。
      *
-     * @param key 列名
-     * @param value 集合值
+     * @param key      列名
+     * @param value    集合值
      * @param javaType Java 类型
      * @return SQL 片段
      */
